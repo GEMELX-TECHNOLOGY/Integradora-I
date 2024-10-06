@@ -6,6 +6,8 @@ class Categoria(models.Model):
     id_categoria = models.IntegerField(primary_key=True)
     nombre = models.TextField(max_length=100)
     referencia = models.CharField(max_length=8)
+    def __str__(self):
+        return self.nombre
 #Tabla Productos
 class Producto(models.Model):
     cod_producto = models.IntegerField(primary_key=True)
@@ -18,5 +20,7 @@ class Producto(models.Model):
     stock = models.IntegerField
     #llave foranea
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.nombre
 
 
