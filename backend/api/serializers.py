@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 class ProductoSerializer(serializers.ModelSerializer):
+    categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())
     class Meta:
         model = Producto
         fields = ['cod_producto','nombre','descripcion','referencia','modelo','marca','precio','stock','categoria']
