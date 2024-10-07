@@ -1,5 +1,5 @@
 import React from 'react';
-import './googleLoginButton.css';
+import '../styles/googleLoginButton.css';
  
 
 const GoogleLoginButton = () => {

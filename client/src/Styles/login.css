@@ -1,0 +1,138 @@
+/* Estructura básica */
+.login-page {
+    display: flex;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Sección de la imagen */
+  .login-image {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00b7a3;
+  }
+  
+  .login-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Sección del formulario */
+  .login-form {
+    flex: 1;
+    padding: 3rem;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  /* Logo centrado en la parte superior */
+  .logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+  
+  .logo img {
+    width: 60px;
+    height: 60px;
+    margin-right: 5px;
+  }
+  
+  /* Estilos de los encabezados */
+  h2 {
+    color: #ff3c3c;
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  h3 {
+    font-size: 40px;
+    font-weight: bold;
+    color: #060606;
+    margin-bottom: 2rem;
+  }
+  
+  /* Estilos de los campos de entrada */
+  .input-wrapper {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .input-wrapper label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input-wrapper input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  input::placeholder {
+    color: #aaa;
+  }
+  
+  /* Opciones extras (checkbox y enlace de olvidé contraseña) */
+  .extra-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .extra-options div {
+    margin-right: 10px;
+  }
+  
+  .extra-options label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .forgot-password {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  /* Botón de inicio de sesión */
+  .login-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Footer */
+  footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: #666;
+  }
+  

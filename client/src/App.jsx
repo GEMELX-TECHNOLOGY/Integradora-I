@@ -4,7 +4,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import 'font-awesome/css/font-awesome.min.css';
 
 export function App() {
   function Logout() {
