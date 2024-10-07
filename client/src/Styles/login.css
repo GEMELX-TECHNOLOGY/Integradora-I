@@ -117,7 +117,7 @@
   .login-btn {
     width: 100%;
     padding: 1rem;
-    background-color: #007bff;
+    background-color: #022d5c;
     color: white;
     font-size: 18px;
     border: none;
@@ -126,7 +126,7 @@
   }
   
   .login-btn:hover {
-    background-color: #0056b3;
+    background-color: #042f5e;
   }
   
   /* Footer */
