@@ -11,11 +11,6 @@ export function App() {
     return <Navigate to="login" />;
   }
 
-  function RegisterAndLogout() {
-    localStorage.clear();
-    return <Register />;
-  }
-
   return (
     <BrowserRouter>
       <Routes>
