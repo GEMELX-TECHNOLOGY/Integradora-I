@@ -1,10 +1,11 @@
 /* Styles for the Dashboard Navigation */
 nav {
+    display: flex;
     background-color: #F8F9FA;
     width: 250px;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+  
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   }

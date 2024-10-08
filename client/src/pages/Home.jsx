@@ -5,8 +5,10 @@ import '../Styles/Estilodash.css';
 function Home() {
   return (
     <>
+    <div classname="flex">
     <Dashboard/>
     <Card/>
+    </div>
     </>
   )
 }
