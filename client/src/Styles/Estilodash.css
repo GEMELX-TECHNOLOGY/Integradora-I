@@ -1,0 +1,35 @@
+/* Styles for the Dashboard Navigation */
+nav {
+    background-color: #F8F9FA;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav li {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  nav li:hover {
+    color: #007bff;
+  }
+  
+  nav li:first-child {
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    padding: 10px;
+    border-radius: 5px;
+  }
