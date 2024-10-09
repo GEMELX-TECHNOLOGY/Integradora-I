@@ -1,7 +1,7 @@
 import React from 'react';
 import { AiOutlineHome, AiOutlineAppstore, AiOutlinePlusCircle, AiOutlineMessage, AiOutlineUser, AiOutlineQuestionCircle, AiOutlineSetting, AiOutlineLogout } from 'react-icons/ai';
 import logoAlpro from '../Assets/img/logoAlpro.png';
-
+import { Link } from 'react-router-dom';
 function Dashboard() {
   return (
     <nav>
@@ -10,31 +10,31 @@ function Dashboard() {
         <img src={logoAlpro} alt="Logo" className="logo" />
         </li>
         <li>
-          <AiOutlineHome className="icon" /> Inicio
+          <Link to={"/"}> <AiOutlineHome className="icon" />Inicio</Link>
         </li>
         <li>
-          <AiOutlineAppstore className="icon" /> Inventario
+          <Link to={"/Inventario"}><AiOutlineAppstore className="icon" />Inventario</Link> 
         </li>
         <li>
-          <AiOutlinePlusCircle className="icon" /> Agregar producto
+          <Link to={"/Agregar-Producto"}><AiOutlinePlusCircle className="icon" /> Agregar producto</Link> 
         </li>
         <li>
-          <AiOutlineMessage className="icon" /> Chat
+          <Link to={"/Chat"}><AiOutlineMessage className="icon" /> Chat</Link>
         </li>
         <li>
-          <AiOutlineUser className="icon" /> Usuarios
+          <Link to={"/Usuarios"}><AiOutlineUser className="icon" /> Usuarios</Link>
         </li>
         <li>
-          <AiOutlineQuestionCircle className="icon" /> Ayuda
+          <Link to={"/Ayuda"}><AiOutlineQuestionCircle className="icon" /> Ayuda</Link>
         </li>
       </ul>
 
       <ul style={{ marginTop: 'auto' }}> {/* Este estilo empuja las dos últimas opciones hacia abajo */}
         <li>
-          <AiOutlineSetting className="icon" /> Configuración
+          <Link to={"/Configuracion"}><AiOutlineSetting className="icon" /> Configuración</Link>
         </li>
         <li>
-          <AiOutlineLogout className="icon" /> Cerrar sesión
+          <Link to={"/Logout"}><AiOutlineLogout className="icon" /> Cerrar sesión</Link> 
         </li>
       </ul>
     </nav>

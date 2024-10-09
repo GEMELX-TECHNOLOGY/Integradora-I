@@ -17,6 +17,16 @@ export function App() {
         <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="*" element={<NotFound/>}/>
+
+        <Route path="/Inventario" element={<Inventario/>}/>
+        <Route path="/Agregar-Producto" element={<AddProduct/>}/>
+        <Route path="/Chat" element={<Chat/>}/>
+        <Route path="/Usuarios" element={<User/>}/>
+        <Route path="/Ayuda" element={<Help/>}/>
+
+        <Route path="/Configuracion" element={<Settings/>}/>
+        <Route path="/Logout" element={<Logout/>}/>
+
       </Routes>
     </BrowserRouter>
   );
