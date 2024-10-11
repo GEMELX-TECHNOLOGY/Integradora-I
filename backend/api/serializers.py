@@ -1,20 +1,24 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Producto, Categoria
+from .models import *
 
 
 #CREATE
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ["id", "username", "password"]
+        model = Users
+        fields = ["id_user", "username", "password","date_joined","role"]
         extra_kwargs = {"password": {"write_only": True}}
 
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        user = Users.objects.create_user(**validated_data)
         return user
-    
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: Role
+        field = ["id_role","nombre_rol"]
+
 class ProductoSerializer(serializers.ModelSerializer):
     categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())
     class Meta:

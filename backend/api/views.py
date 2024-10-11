@@ -1,15 +1,18 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
 from .models import *
 from rest_framework import generics
-from .serializers import UserSerializer
-from .serializers import ProductoSerializer,CategoriaSerializer
+from .serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-#CREATE VIEW OF API AUTHENTICATION
+################ - USUARIOS - ################
 class CreateUserView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = Users.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+class CreateRoleView(generics.CreateAPIView):
+    queryset = Role
+    serializer_class = RoleSerializer
     permission_classes = [AllowAny]
 
 ################ - PRODUCTOS - ################
