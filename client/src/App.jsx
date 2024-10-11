@@ -1,14 +1,20 @@
-import react from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Inventario from "./pages/Inventario"; // Importar componentes faltantes
+import AddProduct from "./pages/AddProduct"; 
+import Chat from "./pages/Chat";
+import User from "./pages/User";
+import Help from "./pages/Help";
+import Settings from "./pages/Settings";
 
 export function App() {
   function Logout() {
     localStorage.clear();
-    return <Navigate to="login" />;
+    return <Navigate to="/login" />;
   }
 
   return (

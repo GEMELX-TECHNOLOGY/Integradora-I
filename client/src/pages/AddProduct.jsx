@@ -1,9 +1,13 @@
 import React from 'react'
+import Dashboard from '../components/Dashboard';
+import '../Styles/Estilodash.css';
 
 function AddProduct() {
   return (
-    <div>AddProduct</div>
-  )
+      <>
+        <Dashboard/>
+      </> 
+  );
 }
 
 export default AddProduct

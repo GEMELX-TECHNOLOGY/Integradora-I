@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import Dashboard from '../components/Dashboard';
+import '../Styles/Estilodash.css';
 
 function Inventario() {
   return (
-    <div>Inventario</div>
-  )
+    <>
+      <Dashboard/>
+    </> 
+  );
+      
 }
 
-export default Inventario
+export default Inventario;

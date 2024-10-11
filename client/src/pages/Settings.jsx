@@ -1,8 +1,12 @@
 import React from 'react'
+import Dashboard from '../components/Dashboard'
+import '../Styles/Estilodash.css';
 
 function Settings() {
   return (
-    <div>Settings</div>
+    <>
+      <Dashboard/>
+    </>
   )
 }
 
