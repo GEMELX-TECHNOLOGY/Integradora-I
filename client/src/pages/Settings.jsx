@@ -1,12 +1,13 @@
 import React from 'react'
 import Dashboard from '../components/Dashboard'
+import '../Styles/Estilodash.css';
 
-function Stock() {
+function Settings() {
   return (
     <>
-    <Dashboard/>
+      <Dashboard/>
     </>
   )
 }
 
-export default Stock
+export default Settings
