@@ -5,19 +5,23 @@ from .models import *
 #CREATE
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
-        fields = ["id_user", "username", "password","date_joined","role"]
+        model = Usuarios
+        fields = ['id', "username", "password", "rol", "user_profile_image"]
         extra_kwargs = {"password": {"write_only": True}}
 
-
     def create(self, validated_data):
-        user = Users.objects.create_user(**validated_data)
+        rol = validated_data.pop('rol', None)
+        user = Usuarios(**validated_data)
+        user.set_password(validated_data['password'])
+        if rol:
+            user.rol = rol
+        user.save()
         return user
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Role
-        field = ["id_role","nombre_rol"]
+        model: Rol
+        field = ["id_rol","nombre_rol"]
 
 class ProductoSerializer(serializers.ModelSerializer):
     categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())

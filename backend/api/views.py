@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 from .models import *
 from rest_framework import generics
 from .serializers import *
@@ -6,12 +10,12 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 ################ - USUARIOS - ################
 class CreateUserView(generics.CreateAPIView):
-    queryset = Users.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
 class CreateRoleView(generics.CreateAPIView):
-    queryset = Role
+    queryset = Rol
     serializer_class = RoleSerializer
     permission_classes = [AllowAny]
 

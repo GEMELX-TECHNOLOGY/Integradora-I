@@ -1,14 +1,17 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+from .manager import UserManager
 
 ################ - PRODUCTOS - ################
 #Tabla Categoria
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)
-    nombre = models.TextField(max_length=100)
-    referencia = models.CharField(max_length=8)
+    nombre_categoria = models.TextField(max_length=100)
+    referencia_categoria = models.CharField(max_length=8)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre_categoria
     
 #Tabla Productos
 class Producto(models.Model):
@@ -26,28 +29,43 @@ class Producto(models.Model):
         return self.nombre
 
 ################ - USUARIOS - ################
-
-#Tabla usuarios
-class Role(models.Model):
-    id_role = models.AutoField(primary_key=True)
-    nombre_rol = models.TextField(max_length=60)
-    is_staff = models.BooleanField(default=False)
+class Rol(models.Model):
+    id_rol = models.AutoField(primary_key=True)
+    nombre_rol = models.CharField(max_length=60, unique=True)
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre_rol
 
-class Users(models.Model):
-    id_user = models.AutoField(primary_key=True)
-    username = models.TextField(max_length=20)
-    password = models.TextField( max_length=255)
-    date_joined = models.DateField()
-    last_sesion = models.DateField(default=True)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+class Usuarios(AbstractUser):
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=20, unique=True)
+    password = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    user_profile_image = models.ImageField(upload_to='Perfil/', blank=True, null=True)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, default=1)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['role','email']
+    objects = UserManager()
 
     def __str__(self):
         return self.username
+    
+    @property
+    def is_active(self):
+        return self.rol.is_active
+
+    @property
+    def is_staff(self):
+        return self.rol.is_staff
+
+    @property
+    def is_superuser(self):
+        return self.rol.is_superuser
+
 
 
 
