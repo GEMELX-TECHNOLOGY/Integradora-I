@@ -1,16 +1,18 @@
-import React from 'react'
-import Dashboard from '../components/Dashboard'
-import Card from '../components/Card'
-import '../Styles/Estilodash.css'; 
+import React from 'react';
+import Dashboard from '../components/Dashboard';
+import UserCard from '../components/UserCard';
+import Card from '../components/Card';
+
 function Home() {
   return (
     <>
-    <div classname="flex">
-    <Dashboard/>
+    
+    <Dashboard />
     <Card/>
-    </div>
+    <UserCard route='api/user' rol='api/rol' />
+    
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

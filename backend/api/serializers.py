@@ -6,7 +6,7 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        fields = ['id', "username", "password", "rol", "user_profile_image"]
+        fields = ['id', "username", "password", "rol", "user_profile_image","date_joined"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -18,10 +18,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-class RoleSerializer(serializers.ModelSerializer):
+class RolSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Rol
-        field = ["id_rol","nombre_rol"]
+        model = Rol
+        fields = ['id_rol', 'nombre_rol', 'is_staff', 'is_superuser']
 
 class ProductoSerializer(serializers.ModelSerializer):
     categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())

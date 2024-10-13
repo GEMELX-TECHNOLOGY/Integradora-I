@@ -10,13 +10,23 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 ################ - USUARIOS - ################
 class CreateUserView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = User
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
 class CreateRoleView(generics.CreateAPIView):
     queryset = Rol
-    serializer_class = RoleSerializer
+    serializer_class = RolSerializer
+    permission_classes = [AllowAny]
+
+class AllUsersView(generics.ListAPIView):
+    queryset = Usuarios.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+class AllRolView(generics.ListAPIView):
+    queryset = Rol.objects.all()
+    serializer_class = RolSerializer
     permission_classes = [AllowAny]
 
 ################ - PRODUCTOS - ################
