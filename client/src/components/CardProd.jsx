@@ -13,15 +13,18 @@ function CardProd() {
         <div className="producto-info">
           <div className="cantidad">
             <label htmlFor="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" min="1" defaultValue="1" />
+            <div class>
+              <p>10</p>
+            </div>
           </div>
           <div className="precio">
             <span>Precio: $1299</span>
           </div>
         </div>
-        
-        
-        <button>Añadir al carrito</button>
+        <div className="botones-container">
+          <button className='boton'>Editar</button>
+          <button className='boton'>Eliminar</button>
+        </div>
       </section>
     </div>
 
