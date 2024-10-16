@@ -12,8 +12,8 @@
     padding: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    width: 200px;
-    height: 320px; /* Aumenté la altura para acomodar cantidad y precio */
+    width: 250px;
+    height: 350px; /* Aumenté la altura para acomodar cantidad y precio */
 }
 
 .producto:hover {
@@ -52,7 +52,10 @@
     color: #0a0155;
 }
 
-.producto button {
+
+
+.boton {
+    width: 100px;
     background-color: #0a0155;
     color: white;
     border: none;
@@ -62,6 +65,14 @@
     cursor: pointer;
     margin-top: 10px; /* Añadí margen para separar el botón de la sección de cantidad/precio */
     transition: background-color 0.3s ease;
+    float: right;
+
+}
+
+.botones-container {
+    display: flex;
+    justify-content: center; /* Alinea los botones a la derecha */
+    gap: 10px; /* Espacio entre los botones */
 }
 
 .producto button:hover {
