@@ -1,32 +1,32 @@
-/* Styles for the Dashboard Navigation */
+
 nav {
   display: flex;
-  flex-direction: column; /* Alinear elementos verticalmente */
+  flex-direction: column; 
   background-color: #F8F9FA;
   width: 250px;
   height: 100vh;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  align-items: center; /* Centrar horizontalmente los elementos */
+  align-items: center; 
 }
 
 .logo {
-  width: 100px; /* Ajustar el tamaño de la imagen */
-  height: auto; /* Mantener proporción de la imagen */
-  margin-bottom: 20px; /* Espacio debajo del logo */
+  width: 100px; 
+  height: auto; 
+  margin-bottom: 20px;
   justify-content: center; 
 }
 
 nav ul {
   list-style-type: none;
   padding: 0;
-  width: 100%; /* Hacer que las listas ocupen el ancho completo */
+  width: 100%; 
 }
 
 nav li {
-  display: flex; /* Alinear ícono y texto */
-  align-items: center; /* Centrar verticalmente íconos y texto */
-  margin: 10px 0; /* Espaciado entre ítems */
+  display: flex; 
+  align-items: center; 
+  margin: 10px 0;
   font-size: 18px;
   color: #333;
   font-weight: 500;
@@ -45,11 +45,13 @@ nav li:first-child {
   border-radius: 5px;
 }
 
-/* Iconos */
+
 .icon {
-  margin-right: 5px; /* Espacio entre ícono y texto */
+  margin-right: 5px; 
 }
 
 ul:last-of-type {
-  margin-top: auto; /* Empujar la segunda lista hacia abajo */
+  margin-top: auto; 
 }
+
+
