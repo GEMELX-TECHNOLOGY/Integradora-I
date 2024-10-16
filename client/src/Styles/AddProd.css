@@ -1,79 +1,173 @@
+/* Estilos*/
+body {
+  font-family: 'Roboto', sans-serif; 
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+
+.page-container {
+  display: flex;
+}
+
+
+.dashboard {
+  flex: 1;
+  max-width: 240px;
+  background-color: #f5f5f5;
+  height: 100vh;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* agregar producto*/
 .add-product-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .form-section {
-    width: 60%;
-  }
-  
-  .product-preview {
-    width: 35%;
-    background-color: #f7f7f7;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input, 
-  .form-group select, 
-  .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  textarea {
-    height: 80px;
-  }
-  
-  .save-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .save-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .producto-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .producto-card img {
-    max-width: 100px;
-    margin-bottom: 10px;
-  }
-  
-  .producto-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
-  }
-  
-  .producto-card p {
-    margin: 5px 0;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  flex: 3;
+  padding: 20px;
+}
+
+/* formulario*/
+.form-section {
+  flex: 2;
+  margin-right: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #5E6368; 
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-row {
+  display: flex;
+  justify-content: space-between; 
+  margin-bottom: 20px; 
+}
+
+.form-group-row .form-group {
+  flex: 1; 
+  margin-right: 10px; 
+}
+
+.form-group-row .form-group:last-child {
+  margin-right: 0; 
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #5E6368; 
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 12px; 
+  color: #5E6368; 
+  flex: 1; 
+  min-width: 120px;
+}
+
+textarea {
+  height: 100px;
+}
+
+.save-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+/* vista previa*/
+.product-preview {
+  flex: 1;
+}
+
+.product-preview h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #5E6368; 
+}
+
+.producto-card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.producto-card img {
+  width: 100%;
+  max-width: 200px;
+  margin-bottom: 15px;
+}
+
+.producto-card h3 {
+  font-size: 18px;
+  color: #5E6368; 
+  margin-bottom: 10px;
+}
+
+.producto-card p {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  margin-top: 5px;
+}
+
+.input-icon input[type="file"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.form-group input[type="number"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.save-button {
+  margin-top: 10px;
+}  
