@@ -8,9 +8,12 @@ function AddProduct() {
   const [productQuantity, setProductQuantity] = useState(1);
   const [productCode, setProductCode] = useState('');
   const [productCategory, setProductCategory] = useState('');
+  const [customCategory, setCustomCategory] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState(null);
+  const [productModel, setProductModel] = useState(''); 
+  const [productBrand, setProductBrand] = useState(''); 
 
   console.log("Renderizando AddProduct");
 
@@ -54,7 +57,7 @@ function AddProduct() {
             </div>
             <div className="form-group-row">
               <div className="form-group">
-                <label>Código de Producto</label>
+                <label>Referencia</label>
                 <input 
                   type="text" 
                   placeholder="1234567890" 
@@ -71,7 +74,20 @@ function AddProduct() {
                   <option value="">Selecciona una categoría</option>
                   <option value="Cámaras">Cámaras</option>
                   <option value="Accesorios">Accesorios</option>
+                  <option value="otra">Otra (Especificar)</option> 
                 </select>
+
+                {productCategory === 'otra' && ( 
+                  <div>
+                    <label>Especifica tu categoría</label>
+                    <input
+                      type="text"
+                      value={customCategory}
+                      onChange={(e) => setCustomCategory(e.target.value)}
+                      placeholder="Escribe tu categoría"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="form-group">
@@ -101,15 +117,35 @@ function AddProduct() {
                 />
               </div>
             </div>
+            <div className="form-group-row">
+              <div className="form-group">
+                <label>Modelo</label>
+                <input 
+                  type="text" 
+                  placeholder="Modelo del producto" 
+                  value={productModel} 
+                  onChange={(e) => setProductModel(e.target.value)} 
+                />
+              </div>
+              <div className="form-group">
+                <label>Marca</label>
+                <input 
+                  type="text" 
+                  placeholder="Marca del producto" 
+                  value={productBrand} 
+                  onChange={(e) => setProductBrand(e.target.value)} 
+                />
+              </div>
+            </div>
             <button className="save-button">Guardar Producto</button>
           </div>
           <div className="product-preview">
             <h2>Vista previa</h2>
             <div className="producto-card">
-              <img src={productImage || Camara} alt="camseguridad" />
+            {productImage && <img src={productImage} alt="Imagen del producto" />}
               <h3>{productName || ""}</h3>
               <p>Cantidad: {productQuantity}</p>
-              <p>Precio: {productPrice ? `$${productPrice}` : "$XX.XX"}</p>
+              <p>Precio: {productPrice ? '$' + productPrice : "$xx.xx"}</p>
             </div>
           </div>
         </div>
