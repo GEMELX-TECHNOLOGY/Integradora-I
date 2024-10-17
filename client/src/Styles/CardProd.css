@@ -30,7 +30,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px; /* Espacio entre la imagen y la sección de cantidad/precio */
+    margin-top: 10px; 
 }
 
 .cantidad label {
@@ -63,7 +63,7 @@
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px; /* Añadí margen para separar el botón de la sección de cantidad/precio */
+    margin-top: 10px; 
     transition: background-color 0.3s ease;
     float: right;
 
@@ -71,7 +71,7 @@
 
 .botones-container {
     display: flex;
-    justify-content: center; /* Alinea los botones a la derecha */
+    justify-content: center; 
     gap: 10px; /* Espacio entre los botones */
 }
 
