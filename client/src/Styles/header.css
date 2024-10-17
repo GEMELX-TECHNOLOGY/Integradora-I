@@ -1,11 +1,16 @@
 .header {
     display: flex;
+    /*div movimiento*/
+    height: 100vh;
+    margin-left: 250px;
+    margin-top: -600px;
+    width: 75%;
+
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
     background-color: #f8f9fa;
     border-bottom: 1px solid #ddd;
-    position: fixed; 
     top: 0;
     left: 270px; 
     width: calc(100% - 200px); 
@@ -23,23 +28,34 @@
   .actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 150px;
     margin-top: 20px;
   }
+   
+  .actions select{
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
   
-  .actions select,
+
   .actions input {
     padding: 10px;
     border: 1px solid #ddd;
   }
   
-  .actions .add-employee {
-    background-color: #007bff;
+  .add-employee {
+    background-color: #0b4d93;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    border-radius: 10px;
+   
   }
+  
+  .add-employee:hover {
+    background-color: #4c94e1; 
+}
   
   .user-info {
     display: flex;
@@ -82,22 +98,8 @@
     margin-right: 5px;
   }
   
-  .edit-button {
-    background-color: blue;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin-right: 5px;
-    cursor: pointer;
-  }
   
-  .delete-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
+  
   
   .dashboard {
     width: 200px;
@@ -110,4 +112,7 @@
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
   }
   
-  
+  .entrada{
+    width: 350px;
+  }
+
