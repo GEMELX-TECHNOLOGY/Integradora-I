@@ -1,5 +1,5 @@
 import React from "react";
-import '../styles/Login.css';
+import '../Styles/login.css';
 import imagen1 from '../Assets/img/alpro-1.jpg';
 import imagenFondo from '../Assets/img/slide.jpeg';
 import Form from '../components/Form';
