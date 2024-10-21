@@ -4,7 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import Inventario from "./pages/Inventario"; // Importar componentes faltantes
+import Inventario from "./pages/Inventario"; 
 import AddProduct from "./pages/AddProduct"; 
 import Chat from "./pages/Chat";
 import User from "./pages/User";
