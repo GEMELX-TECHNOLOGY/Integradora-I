@@ -3,9 +3,9 @@ import axios from 'axios';
 import Dashboard from '../components/Dashboard';
 import '../Styles/AddProd.css';
 
-function AddProduct() {
-  const [categories, setCategories] = useState([]);
-  const [productName, setProductName] = useState('');
+function AddProduct() { //creacion de la funcion para añádir producto
+  const [categories, setCategories] = useState([]); //hook que maneja el estado de los componenetes
+  const [productName, setProductName] = useState(''); //Todos inician con una cadena vacia,1,null
   const [productQuantity, setProductQuantity] = useState(1);
   const [productCode, setProductCode] = useState('');
   const [productCategory, setProductCategory] = useState('');
@@ -15,37 +15,38 @@ function AddProduct() {
   const [productImage, setProductImage] = useState(null);
   const [productModel, setProductModel] = useState('');
   const [productBrand, setProductBrand] = useState('');
+//los useStates guardan informacion que luego puede cambiar manteniendo un valor inicial primero
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/categorias/');
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error al obtener las categorías:', error);
+  useEffect(() => { //hook que realiza efectos secundarios, se ejecuta cuando se actualize el estado del componente
+    const fetchCategories = async () => { //funcion que espera a que se realize un proceso
+      try {//Manejo de excepciones
+        const response = await axios.get('http://localhost:8000/api/categorias/'); //aqui se realiza la solicitud get, el await se usa pa esperar una peticion y luego dar una respuesta
+        setCategories(response.data);//Cuando se recibe respuesta se manda llamar al setcategories para que guarde la nueva categoria
+      } catch (error) {//se intenta ejecutar en el try primero, si ocurre un error cae aqui
+        console.error('Error al obtener las categorías:', error); //mensaje de error
       }
     };
 
-    fetchCategories();
+    fetchCategories(); //cargar datos iniciales
   }, []);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setProductImage(file);
+  const handleImageChange = (event) => { //cuando en nuestra cajita de texto "seleccione una imagen" cambia para hacer esa seleccion de imagen con su formato
+    const file = event.target.files[0];// elemento del DOM que desencadenó el evento y accede al primer elemento de una lista (imagen seleccionada)
+    if (file) {//aqui se comprueba si se selecciono una imagen
+      setProductImage(file); //esto actualiza en la bd el archivo seleccionado como imagen
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let categoriaId = productCategory; // Asumimos que es el ID de la categoría seleccionada
+  const handleSubmit = async (e) => { //funcion que se ejecuta cuando el formulario se envia
+    e.preventDefault(); //evita recargo de pagina al seleccionar crear otra categoria
+    let categoriaId = productCategory; 
 
     // Si se seleccionó "otra", crear una nueva categoría
     if (productCategory === 'otra' && customCategory) {
       try {
         const newCategoryResponse = await axios.post('http://localhost:8000/api/categorias/crear', {
           nombre_categoria: customCategory,
-          referencia_categoria: 'Ref1234', // Cambia esto según tu lógica
+          referencia_categoria: 'Ref1234', 
         });
         categoriaId = newCategoryResponse.data.id_categoria; // Obtener el ID de la nueva categoría
       } catch (error) {
@@ -59,7 +60,7 @@ function AddProduct() {
     formData.append('cod_producto', productCode);
     formData.append('nombre', productName);
     formData.append('descripcion', productDescription);
-    formData.append('referencia', productCode); // Asegúrate de usar el valor correcto
+    formData.append('referencia', productCode); 
     formData.append('modelo', productModel);
     formData.append('marca', productBrand);
     formData.append('precio', productPrice);
