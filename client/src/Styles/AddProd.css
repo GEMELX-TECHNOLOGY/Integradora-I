@@ -1,4 +1,4 @@
-/* Estilos*/
+/* Estilos */
 body {
   font-family: 'Roboto', sans-serif; 
   background-color: #f5f5f5;
@@ -6,11 +6,9 @@ body {
   padding: 0;
 }
 
-
 .page-container {
   display: flex;
 }
-
 
 .dashboard {
   flex: 1;
@@ -21,7 +19,7 @@ body {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/* agregar producto*/
+/* Agregar producto */
 .add-product-container {
   display: flex;
   justify-content: space-between;
@@ -29,7 +27,7 @@ body {
   padding: 20px;
 }
 
-/* formulario*/
+/* Formulario */
 .form-section {
   flex: 2;
   margin-right: 20px;
@@ -84,6 +82,8 @@ textarea {
   color: #5E6368; 
   flex: 1; 
   min-width: 120px;
+  /* Asegúrate de que los campos de entrada sean interactivos */
+  pointer-events: auto; /* Asegúrate de que los eventos de puntero estén habilitados */
 }
 
 textarea {
@@ -104,7 +104,7 @@ textarea {
   background-color: #0056b3;
 }
 
-/* vista previa*/
+/* Vista previa */
 .product-preview {
   flex: 1;
 }
@@ -144,6 +144,7 @@ textarea {
   margin-bottom: 5px;
 }
 
+/* Estilos para el input de archivos */
 .input-icon {
   position: relative;
 }
@@ -170,4 +171,4 @@ textarea {
 
 .save-button {
   margin-top: 10px;
-}  
+}

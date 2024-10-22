@@ -33,7 +33,7 @@ class AllRolView(generics.ListAPIView):
 
 #API CREATE CATEGORIES
 class CreateProductsView(generics.CreateAPIView):
-    queryset = Producto
+    queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
     permission_classes = [AllowAny]
 
