@@ -16,11 +16,12 @@ function AddProduct() { //creacion de la funcion para añádir producto
   const [productModel, setProductModel] = useState('');
   const [productBrand, setProductBrand] = useState('');
 //los useStates guardan informacion que luego puede cambiar manteniendo un valor inicial primero
+//los hooks son herramientas que permiten extender o personalizar el comportamiento de una aplicación de manera flexible y organizada.
 
   useEffect(() => { //hook que realiza efectos secundarios, se ejecuta cuando se actualize el estado del componente
     const fetchCategories = async () => { //funcion que espera a que se realize un proceso
       try {//Manejo de excepciones
-        const response = await axios.get('http://localhost:8000/api/categorias/'); //aqui se realiza la solicitud get, el await se usa pa esperar una peticion y luego dar una respuesta
+        const response = await api.get('api/categorias/'); //aqui se realiza la solicitud get, el await se usa pa esperar una peticion y luego dar una respuesta
         setCategories(response.data);//Cuando se recibe respuesta se manda llamar al setcategories para que guarde la nueva categoria
       } catch (error) {//se intenta ejecutar en el try primero, si ocurre un error cae aqui
         console.error('Error al obtener las categorías:', error); //mensaje de error
@@ -44,7 +45,7 @@ function AddProduct() { //creacion de la funcion para añádir producto
     // Si se seleccionó "otra", crear una nueva categoría
     if (productCategory === 'otra' && customCategory) {
       try {
-        const newCategoryResponse = await axios.post('http://localhost:8000/api/categorias/crear', {
+        const newCategoryResponse = await api.post('api/categorias/crear', {
           nombre_categoria: customCategory,
           referencia_categoria: 'Ref1234', 
         });
@@ -71,7 +72,7 @@ function AddProduct() { //creacion de la funcion para añádir producto
     }
 
     try {
-      await axios.post('http://localhost:8000/api/productos/crear', formData, {
+      await api.post('api/productos/crear', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
