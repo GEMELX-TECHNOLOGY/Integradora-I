@@ -15,15 +15,14 @@ class Categoria(models.Model):
     
 #Tabla Productos
 class Producto(models.Model):
-    cod_producto = models.AutoField(primary_key=True)
+    cod_producto = models.IntegerField(primary_key=True)
     nombre = models.TextField(max_length=40)
     descripcion = models.CharField(max_length=100)
     referencia = models.CharField(max_length=8)
     modelo = models.CharField(max_length=100)
     marca = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=10,decimal_places=2)
-    stock = models.IntegerField(max_length=100)
-    imagen = models.ImageField(upload_to='productos/',null=True, blank=True)
+    stock = models.CharField(max_length=100)
     #llave foranea
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     def __str__(self):
@@ -70,3 +69,28 @@ class Usuarios(AbstractUser):
 
 
 
+class ChatMessage(models.Model):
+    user = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="user")
+    sender = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="sender")
+    reciever = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="reciever")
+
+    message = models.TextField()
+
+    is_read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['date']
+        verbose_name_plural = "Message"
+
+    def __str__(self):
+        return f"{self.sender} - {self.reciever}"
+
+    @property
+    def sender_profile(self):
+        sender_profile = UserManager.objects.get(user=self.sender)
+        return sender_profile
+    @property
+    def reciever_profile(self):
+        reciever_profile = UserManager.objects.get(user=self.reciever)
+        return reciever_profile

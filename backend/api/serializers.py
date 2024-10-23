@@ -6,7 +6,7 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        fields = ['id', "username", "password", "rol", "user_profile_image","date_joined"]
+        fields = ['id', "first_name", "last_name", "email", "username", "password", "rol", "user_profile_image","date_joined"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -17,6 +17,21 @@ class UserSerializer(serializers.ModelSerializer):
             user.rol = rol
         user.save()
         return user
+    
+class UserEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuarios
+        fields = ['id', "first_name", "last_name", "email", "rol", "user_profile_image"]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+        #reciever_profile =  UserManager(read_only=True)
+
+        class Meta:
+            model = ChatMessage
+            fields = ['id', 'user', 'sender', 'reciever', 'message', 'is_read', 'date']
 
 class RolSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,7 +42,7 @@ class ProductoSerializer(serializers.ModelSerializer):
     categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())
     class Meta:
         model = Producto
-        fields = ['cod_producto','nombre','descripcion','referencia','modelo','marca','precio','stock','categoria','imagen']
+        fields = ['cod_producto','nombre','descripcion','referencia','modelo','marca','precio','stock','categoria']
 
 
 class CategoriaSerializer(serializers.ModelSerializer):
