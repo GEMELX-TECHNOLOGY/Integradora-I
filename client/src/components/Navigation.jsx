@@ -54,10 +54,10 @@ function Navigation() {
         {PageLink.map(({ item, icon, url }) => (
           <li
             key={item}
-            className={`text-black/70  w-[220px] h-14 flex items-center rounded-[10px] hover:text-[#045E9C] ${
+            className={`text-black/70  w-[220px] h-14 flex items-center rounded-[10px]  ${
               location.pathname === `/${url}`
                 ? "bg-[#045E9C] text-white transition-all"
-                : ""
+                : "hover:text-[#045E9C]"
             }`}
           >
             <Link
