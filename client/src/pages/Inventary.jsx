@@ -13,7 +13,13 @@ function Inventary() {
 
   useEffect(() => {
     const loadProducts = async () => {
-
+      try {
+        const res = await api.get("api/productos/")
+        setProducts(res.data);
+        console.log(res.data)
+      }catch (err) {
+        console.error(err);
+      }
     };
 
     loadProducts();
@@ -102,7 +108,9 @@ function Inventary() {
           </div>
         </div>
         <div className="flex flex-wrap gap-4 max-w-[1400px] ml-36 pt-3">
-            <CardProduct/>
+          {currentProducts.map((product) => (
+            <CardProduct title={product.nombre} price={product.precio} quantity={product.stock} image={product.product_image}/>
+          ))}
         </div>
       </div>
     </div>

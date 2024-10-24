@@ -1,6 +1,6 @@
 import React from "react";
 
-function CardProduct({title,image,price}) {
+function CardProduct({title,image,price, quantity}) {
 
 
   return (
@@ -10,7 +10,7 @@ function CardProduct({title,image,price}) {
             <span className="text-base font-medium">{title}</span>
             <hr className="my-4 w-full border-t border-gray-300" />
             <div className="flex justify-between w-full">
-              <span className="text-base font-medium">Cantidad: XX</span>
+              <span className="text-base font-medium">Cantidad: {quantity}</span>
               <span className="text-base font-medium">Precio: ${price}</span>
             </div>
           </button>
