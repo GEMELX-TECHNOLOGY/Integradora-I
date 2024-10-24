@@ -8,7 +8,7 @@ from .manager import UserManager
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)
     nombre_categoria = models.TextField(max_length=100)
-    referencia_categoria = models.CharField(max_length=8)
+    referencia_categoria = models.CharField(max_length=20)
 
     def __str__(self):
         return self.nombre_categoria
@@ -18,11 +18,12 @@ class Producto(models.Model):
     cod_producto = models.IntegerField(primary_key=True)
     nombre = models.TextField(max_length=40)
     descripcion = models.CharField(max_length=100)
-    referencia = models.CharField(max_length=8)
+    referencia = models.CharField(max_length=30)
     modelo = models.CharField(max_length=100)
     marca = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=10,decimal_places=2)
     stock = models.CharField(max_length=100)
+    product_image = models.ImageField(upload_to='productos/', blank=True)
     #llave foranea
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     def __str__(self):
