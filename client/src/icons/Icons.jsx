@@ -139,13 +139,13 @@ export const LogoutIcon = ({ className }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <g clip-path="url(#a)">
+      <g clipPath="url(#a)">
         <path
           d="M12.1625 12.995v1.8325c0 .486-.1609.9521-.4473 1.2958-.2864.3436-.6748.5367-1.0798.5367H4.52708c-.405 0-.79342-.1931-1.07981-.5367C3.16089 15.7796 3 15.3135 3 14.8275V3.8325c0-.48601.16089-.95211.44727-1.29577C3.73366 2.19307 4.12208 2 4.52708 2H10.33c.8433 0 1.8325.8205 1.8325 1.8325V5.665m2.4433 7.33L17.66 9.33l-3.0542-3.665M7.27583 9.33h9.77337"
           stroke="#849AA9"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>
