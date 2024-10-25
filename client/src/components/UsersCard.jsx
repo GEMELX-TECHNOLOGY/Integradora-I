@@ -14,7 +14,6 @@ function UsersCard() {
     const fetchUsuarios = async () => {
       try {
         const response = await api.get("api/users/");
-        console.log("Respuesta de la API:", response.data);
         setUsuarios(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         console.error("Error al obtener usuarios:", err);
@@ -27,7 +26,6 @@ function UsersCard() {
       try {
         const response = await api.get("api/roles/");
         setRoles(response.data);
-        console.log("Respuesta de roles:", response.data);
       } catch (err) {
         console.error("Error al obtener roles:", err);
         setError(err);
