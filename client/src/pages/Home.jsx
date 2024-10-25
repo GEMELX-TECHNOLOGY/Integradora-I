@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
 import Estadistic from "@/components/Estadistic";
 import UsersCard from "@/components/UsersCard";
-import Graphic from "@/components/Graphic";
 import BetterProduct from "@/components/BetterProduct";
 
 function Home() {
