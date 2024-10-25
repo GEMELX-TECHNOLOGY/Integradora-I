@@ -28,7 +28,16 @@ class Producto(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
+    
+class Ventas(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    referencia = models.TextField(max_length=40)
+    uv = models.IntegerField()
+    pv = models.DecimalField(max_digits=10, decimal_places=2)
+    amt = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def __str__(self):
+        return self.nombre
 ################ - USUARIOS - ################
 class Rol(models.Model):
     id_rol = models.AutoField(primary_key=True)

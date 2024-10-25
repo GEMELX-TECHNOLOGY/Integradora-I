@@ -74,6 +74,10 @@ class ListaProductosView(generics.ListAPIView):
     serializer_class = ProductoSerializer
     permission_classes = [AllowAny]
 
+class VentasView(generics.ListAPIView):
+        queryset = Ventas.objects.order_by('-uv')[:5]  
+        serializer_class = VentasSerializer
+        permission_classes = [AllowAny]
 
 
 # API PRODUCTS VIEW (en detalle)

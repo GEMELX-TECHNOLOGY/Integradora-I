@@ -49,3 +49,8 @@ class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
         fields = ['id_categoria', 'nombre_categoria','referencia_categoria']
+
+class VentasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ventas
+        fields = ['referencia', 'uv', 'pv', 'amt']
