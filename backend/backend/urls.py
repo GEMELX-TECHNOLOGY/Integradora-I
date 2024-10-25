@@ -33,6 +33,9 @@ urlpatterns = [
     path('api/categorias/', ListaCategoriasView.as_view(), name='lista_categorias_api'),
     path('api/categorias/crear', CreateCategoriesView.as_view(), name='crear-categorias' ),
     path('api/categorias/<int:id_categoria>/', DetalleCategoriaView.as_view(), name='detalle_categoria_api'),
+
+    #URLs Ventas
+    path('api/ventas/', VentasView.as_view(), name='productos-mas-vendidos'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
