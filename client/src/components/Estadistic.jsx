@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { AreaChart, Area, CartesianGrid, XAxis, YAxis,} from "recharts";
 import api from "@/lib/api"
 
 
@@ -36,17 +36,18 @@ function Estadistic() {
         Ventas
       </h5>
       <div className="flex items-center justify-center">
-        <LineChart
+        <AreaChart
+          fill="#000"
           width={1190}
           height={500}
           data={data}
           margin={{ top: 5, right: 2, bottom: 5, left: 0 }}
         >
-          <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+          <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#045E9C" />
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
           <XAxis dataKey="referencia" tickFormatter={(name) => shortenName(name)} />
           <YAxis />
-        </LineChart>
+        </AreaChart>
       </div>
     </section>
   );
