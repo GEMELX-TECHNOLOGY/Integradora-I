@@ -15,7 +15,6 @@ function Home() {
           <Header />
           <div className="flex items-center">
           <Estadistic/>
-          <Graphic/>
           <UsersCard/>
           </div>
           <footer className="pt-3">
