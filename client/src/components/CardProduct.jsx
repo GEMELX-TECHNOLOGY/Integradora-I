@@ -1,6 +1,6 @@
 import React from "react";
 
-function CardProduct({ index, title, category, image, price, quantity }) {
+function CardProduct({ index, title, category, image, price, quantity, onEdit, onDelete, onView }) {
   return (
     <div>
       <ul>
@@ -18,6 +18,11 @@ function CardProduct({ index, title, category, image, price, quantity }) {
                 Cantidad: {quantity}
               </span>
               <span className="text-base font-medium">Precio: ${price}</span>
+            </div>
+            <div className="flex justify-between w-full mt-4">
+              <button className="text-blue-500" onClick={onView}>Ver</button>
+              <button className="text-yellow-500" onClick={onEdit}>Actualizar</button>
+              <button className="text-red-500" onClick={onDelete}>Eliminar</button>
             </div>
           </button>
         </li>
