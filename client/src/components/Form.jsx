@@ -1,224 +1,316 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Dashboard from '../components/Dashboard';
-import '../Styles/AddProd.css';
+import React, { useState, useEffect } from "react";
+import api from "@/lib/api";
+import toast, { Toaster } from "react-hot-toast";
 
-function AddProduct() { //creacion de la funcion para añádir producto
-  const [categories, setCategories] = useState([]); //hook que maneja el estado de los componenetes
-  const [productName, setProductName] = useState(''); //Todos inician con una cadena vacia,1,null
-  const [productQuantity, setProductQuantity] = useState(1);
-  const [productCode, setProductCode] = useState('');
-  const [productCategory, setProductCategory] = useState('');
-  const [customCategory, setCustomCategory] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productPrice, setProductPrice] = useState('');
+function Form() {
+  // Creación de la función para añadir producto
+  const [productName, setProductName] = useState(""); // Hook que maneja el estado de los componentes
+  const [productQuantity, setProductQuantity] = useState(""); // Todos inician con una cadena vacía, 1, null
+  const [productCode, setProductCode] = useState("");
+  const [productCategory, setProductCategory] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [productPrice, setProductPrice] = useState("");
   const [productImage, setProductImage] = useState(null);
-  const [productModel, setProductModel] = useState('');
-  const [productBrand, setProductBrand] = useState('');
-//los useStates guardan informacion que luego puede cambiar manteniendo un valor inicial primero
-//los hooks son herramientas que permiten extender o personalizar el comportamiento de una aplicación de manera flexible y organizada.
+  const [productModel, setProductModel] = useState("");
+  const [productBrand, setProductBrand] = useState("");
+  const [category, setCategories] = useState([]);
+  
+  // Los useStates guardan información que luego puede cambiar manteniendo un valor inicial primero
+  // Los hooks son herramientas que permiten extender o personalizar el comportamiento de una aplicación de manera flexible y organizada.
 
-  useEffect(() => { //hook que realiza efectos secundarios, se ejecuta cuando se actualize el estado del componente
-    const fetchCategories = async () => { //funcion que espera a que se realize un proceso
-      try {//Manejo de excepciones
-        const response = await api.get('api/categorias/'); //aqui se realiza la solicitud get, el await se usa pa esperar una peticion y luego dar una respuesta
-        setCategories(response.data);//Cuando se recibe respuesta se manda llamar al setcategories para que guarde la nueva categoria
-      } catch (error) {//se intenta ejecutar en el try primero, si ocurre un error cae aqui
-        console.error('Error al obtener las categorías:', error); //mensaje de error
-      }
-    };
-
-    fetchCategories(); //cargar datos iniciales
-  }, []);
-
-  const handleImageChange = (event) => { //cuando en nuestra cajita de texto "seleccione una imagen" cambia para hacer esa seleccion de imagen con su formato
-    const file = event.target.files[0];// elemento del DOM que desencadenó el evento y accede al primer elemento de una lista (imagen seleccionada)
-    if (file) {//aqui se comprueba si se selecciono una imagen
-      setProductImage(file); //esto actualiza en la bd el archivo seleccionado como imagen
+  const handleImageChange = (event) => {
+    // Cuando en nuestra cajita de texto "seleccione una imagen" cambia para hacer esa selección de imagen con su formato
+    const file = event.target.files[0]; // Elemento del DOM que desencadenó el evento y accede al primer elemento de una lista (imagen seleccionada)
+    if (file) {
+      // Aquí se comprueba si se seleccionó una imagen
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProductImage(reader.result);
+      };
+      reader.readAsDataURL(file); // Esto actualiza en la bd el archivo seleccionado como imagen
     }
   };
 
-  const handleSubmit = async (e) => { //funcion que se ejecuta cuando el formulario se envia
-    e.preventDefault(); //evita recargo de pagina al seleccionar crear otra categoria
-    let categoriaId = productCategory; 
+  const succesAdd = () =>
+    toast.success("El registro se ha agregado correctamente");
+  
+  const errorAdd = () =>
+    toast.error("Ha ocurrido un error al agregar el registro", {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
+  const handleSubmit = async (e) => {
+    // Función que se ejecuta cuando el formulario se envía
+    e.preventDefault(); // Evita recargo de página al seleccionar crear otra categoría
+    let categoriaId = productCategory;
+    
     // Si se seleccionó "otra", crear una nueva categoría
-    if (productCategory === 'otra' && customCategory) {
+    if (productCategory === "otra" && customCategory) {
       try {
-        const newCategoryResponse = await api.post('api/categorias/crear', {
+        const newCategoryResponse = await api.post("api/categorias/crear", {
           nombre_categoria: customCategory,
-          referencia_categoria: 'Ref1234', 
+          referencia_categoria: "Ref1234",
         });
         categoriaId = newCategoryResponse.data.id_categoria; // Obtener el ID de la nueva categoría
       } catch (error) {
-        console.error('Error al crear la categoría:', error.response ? error.response.data : error.message);
-        alert('Hubo un error al crear la categoría: ' + (error.response ? JSON.stringify(error.response.data) : error.message));
+        console.error(
+          "Error al crear la categoría:",
+          error.response ? error.response.data : error.message
+        );
+        alert(
+          "Hubo un error al crear la categoría: " +
+            (error.response ? JSON.stringify(error.response.data) : error.message)
+        );
         return; // Detener la ejecución si hubo un error
       }
     }
 
     const formData = new FormData();
-    formData.append('cod_producto', productCode);
-    formData.append('nombre', productName);
-    formData.append('descripcion', productDescription);
-    formData.append('referencia', productCode); 
-    formData.append('modelo', productModel);
-    formData.append('marca', productBrand);
-    formData.append('precio', productPrice);
-    formData.append('stock', productQuantity);
-    formData.append('categoria', categoriaId); // Asigna el ID de la categoría
+    formData.append("cod_producto", productCode);
+    formData.append("nombre", productName);
+    formData.append("descripcion", productDescription);
+    formData.append("referencia", productCode);
+    formData.append("modelo", productModel);
+    formData.append("marca", productBrand);
+    formData.append("precio", productPrice);
+    formData.append("stock", productQuantity);
+    formData.append("categoria", categoriaId); // Asigna el ID de la categoría
     if (productImage) {
-      formData.append('imagen', productImage);
+      formData.append("imagen", productImage);
     }
 
     try {
-      await api.post('api/productos/crear', formData, {
+      await api.post("api/productos/crear", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       // Limpiar el formulario después de enviar
-      setProductName('');
-      setProductQuantity(1);
-      setProductCode('');
-      setProductCategory('');
-      setCustomCategory('');
-      setProductDescription('');
-      setProductPrice('');
+      setProductName("");
+      setProductQuantity("");
+      setProductCode("");
+      setProductCategory("");
+      setProductDescription("");
+      setProductPrice("");
       setProductImage(null);
-      setProductModel('');
-      setProductBrand('');
-      alert('Producto guardado exitosamente');
+      setProductModel("");
+      setProductBrand("");
+      succesAdd();
     } catch (error) {
-      console.error('Error al guardar el producto:', error.response ? error.response.data : error.message);
-      alert('Hubo un error al guardar el producto: ' + (error.response ? error.response.data : error.message));
+      console.error(
+        "Error al guardar el producto:",
+        error.response ? error.response.data : error.message
+      );
+      errorAdd();
     }
   };
 
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const res = await api.get("api/categorias/");
+        setCategories(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    loadCategories();
+  }, []);
+
   return (
-    <div className="page-container">
-      <Dashboard />
-      <div className="add-product-container">
-        <form onSubmit={handleSubmit} className="form-section">
-          <h2>Agregar Producto</h2>
-          <div className="form-group-row">
-            <div className="form-group">
-              <label>Nombre</label>
-              <input 
-                type="text" 
-                placeholder="Nombre del producto" 
-                value={productName} 
-                onChange={(e) => setProductName(e.target.value)} 
-              />
-            </div>
-            <div className="form-group">
-              <label>Cantidad</label>
-              <input 
-                type="number" 
-                placeholder="Cantidad" 
-                value={productQuantity} 
-                onChange={(e) => setProductQuantity(e.target.value)} 
-              />
-            </div>
-          </div>
-          <div className="form-group-row">
-            <div className="form-group">
-              <label>Referencia</label>
-              <input 
-                type="text" 
-                placeholder="Referencia" 
-                value={productCode} 
-                onChange={(e) => setProductCode(e.target.value)} 
-              />
-            </div>
-            <div className="form-group">
-              <label>Categoría</label>
-              <select 
-                value={productCategory} 
-                onChange={(e) => setProductCategory(e.target.value)}
-              >
-                <option value="">Selecciona una categoría</option>
-                {categories.map(category => (
-                  <option key={category.id_categoria} value={category.id_categoria}>
-                    {category.nombre_categoria}
-                  </option>
-                ))}
-                <option value="otra">Otra (Especificar)</option> 
-              </select>
-              {productCategory === 'otra' && ( 
-                <div>
-                  <label>Especifica tu categoría</label>
+    <form onSubmit={handleSubmit}>
+      <Toaster />
+      <div className="flex flex-row bg-gray-100 max-w-[1550px] mx-auto">
+        <div className="flex-3 p-5">
+          <div className="bg-white rounded-lg shadow-md p-5">
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Nombre
+                  </label>
                   <input
                     type="text"
-                    value={customCategory}
-                    onChange={(e) => setCustomCategory(e.target.value)}
-                    placeholder="Escribe tu categoría"
+                    placeholder="Nombre del producto"
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
                   />
                 </div>
-              )}
+              </div>
+
+              <div className="w-1/2 pl-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Cantidad
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Cantidad"
+                    value={productQuantity}
+                    min={1}
+                    onChange={(e) => setProductQuantity(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+                </div>
+              </div>
             </div>
+
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Referencia
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="1234567890"
+                    value={productCode}
+                    onChange={(e) => setProductCode(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="w-1/2 pl-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Categoría
+                  </label>
+                  <select
+                    value={productCategory}
+                    onChange={(e) => setProductCategory(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  >
+                    <option value="" disabled required>
+                      Seleccionar Categoria
+                    </option>
+                    {category.map((category) => (
+                      <option
+                        key={category.id_categoria}
+                        value={category.id_categoria}
+                      >
+                        {category.nombre_categoria}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <label className="block font-bold text-gray-700 mb-1">
+                Descripción
+              </label>
+              <textarea
+                placeholder="Descripción del producto..."
+                value={productDescription}
+                onChange={(e) => setProductDescription(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500 h-24"
+              ></textarea>
+            </div>
+
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Precio
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Precio"
+                    value={productPrice}
+                    min={1}
+                    onChange={(e) => setProductPrice(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="w-1/2 pl-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Imagen del Producto
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Modelo
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Modelo del producto"
+                    value={productModel}
+                    onChange={(e) => setProductModel(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="w-1/2 pl-2">
+                <div className="mb-5">
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Marca
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Marca del producto"
+                    value={productBrand}
+                    onChange={(e) => setProductBrand(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
+              type="submit"
+            >
+              Guardar Producto
+            </button>
           </div>
-          <div className="form-group">
-            <label>Descripción</label>
-            <textarea 
-              placeholder="Descripción del producto..." 
-              value={productDescription} 
-              onChange={(e) => setProductDescription(e.target.value)}
-            ></textarea>
-          </div>
-          <div className="form-group-row">
-            <div className="form-group">
-              <label>Precio</label>
-              <input 
-                type="number" 
-                placeholder="Precio" 
-                value={productPrice} 
-                onChange={(e) => setProductPrice(e.target.value)} 
+        </div>
+
+        <div className="flex-1 ml-5 p-5">
+          <h2 className="text-xl font-bold text-gray-700 mb-2">Vista previa</h2>
+          <div className="border border-gray-300 p-5 rounded-lg shadow-md text-center flex flex-col items-center">
+            {productImage && (
+              <img
+                src={productImage}
+                alt="Imagen del producto"
+                className="w-full max-w-xs mb-3"
               />
+            )}
+            <h3 className="text-lg text-gray-700 mb-2">{productName || ""}</h3>
+            <div className="flex flex-row w-full justify-center">
+              <p className="mr-10">
+                {productQuantity ? "Cantidad: " + productQuantity : ""}
+              </p>
+              <p>{productPrice ? "Precio: $" + productPrice : ""}</p>
             </div>
-            <div className="form-group">
-              <label>Imagen del Producto</label>
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleImageChange} 
-              />
-            </div>
-          </div>
-          <div className="form-group-row">
-            <div className="form-group">
-              <label>Modelo</label>
-              <input 
-                type="text" 
-                placeholder="Modelo del producto" 
-                value={productModel} 
-                onChange={(e) => setProductModel(e.target.value)} 
-              />
-            </div>
-            <div className="form-group">
-              <label>Marca</label>
-              <input 
-                type="text" 
-                placeholder="Marca del producto" 
-                value={productBrand} 
-                onChange={(e) => setProductBrand(e.target.value)} 
-              />
-            </div>
-          </div>
-          <button type="submit" className="save-button">Guardar Producto</button>
-        </form>
-        <div className="product-preview">
-          <h2>Vista previa</h2>
-          <div className="producto-card">
-            {productImage && <img src={URL.createObjectURL(productImage)} alt="Imagen del producto" />}
-            <h3>{productName || ""}</h3>
-            <p>Cantidad: {productQuantity}</p>
-            <p>Precio: {productPrice ? '$' + productPrice : "$xx.xx"}</p>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
-export default AddProduct;
+export default Form;
