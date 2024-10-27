@@ -6,7 +6,7 @@ import ProductModal from "@/components/ProductModal";
 import UpdateProductForm from "@/components/UpdateProductForm"; // Importar el nuevo formulario
 import api from "@/lib/api";
 import { SearchIcon } from "@/icons/Icons";
-import { toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 function Inventary() {
   const [search, setSearch] = useState(""); 
@@ -103,6 +103,27 @@ function Inventary() {
     loadProducts(); // Recargar productos después de la actualización
   };
   
+  const succesDelete = () =>
+    toast.success("El producto se ha eliminado correctamente", {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const errorDelete = () =>
+    toast.error("Ha ocurrido un error al eliminar el producto", {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  
 
   const handleView = (product) => {
     const categoryName = getCategoryName(product.categoria);
@@ -119,16 +140,13 @@ function Inventary() {
     if (confirmDelete) {
         try {
             const response = await api.delete(`api/productos/delete/${cod_producto}/`);
-            if (response.status === 204) {
-                toast.success("Producto eliminado exitosamente");
-                // Elimina el producto del estado sin recargar
-                setProducts(prevProducts => prevProducts.filter(product => product.cod_producto !== cod_producto));
-            } else {
-                toast.error("No se pudo eliminar el producto");
-            }
+              // Elimina el producto del estado sin recargar
+              setProducts(prevProducts => prevProducts.filter(product => product.cod_producto !== cod_producto));
+              succesDelete()
+                
         } catch (error) {
             console.error("Error al eliminar el producto:", error);
-            toast.error("Error al eliminar el producto");
+            errorDelete()
         }
     }
 };
@@ -139,6 +157,7 @@ function Inventary() {
 
   return (
     <div className="flex h-screen">
+       <Toaster />
       <Navigation />
       <div className="flex-1">
         <Header />

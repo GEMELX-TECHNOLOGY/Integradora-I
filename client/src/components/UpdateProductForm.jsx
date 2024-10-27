@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "@/lib/api";
-import { toast } from "react-hot-toast"; //toast muestra notificaciones
+import toast, { Toaster } from 'react-hot-toast'; //toast muestra notificaciones
 
 const UpdateProductForm = ({ product, onClose }) => { //crea un componente llamado UpdateP.F. y usa la clase producto y on close como props
   const [nombre, setNombre] = useState("");
@@ -41,6 +41,27 @@ const UpdateProductForm = ({ product, onClose }) => { //crea un componente llama
     }
   }, [product]);
 
+  const succesEdit = () =>
+    toast.success("El registro se ha editado correctamente", {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const errorEdit = () =>
+    toast.error("Ha ocurrido un error al editar el registro", {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -63,16 +84,17 @@ const UpdateProductForm = ({ product, onClose }) => { //crea un componente llama
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success("Producto actualizado exitosamente");
+      succesEdit()
       onClose(); // Cerrar el formulario después de la actualización
     } catch (error) {
       console.error("Error al actualizar el producto:", error.response.data);
-      toast.error("Error al actualizar el producto");
+      errorEdit()
     }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
+      <Toaster/>
       <div className="bg-white shadow-lg rounded-lg p-6 w-96">
         <h2 className="text-lg font-semibold mb-4">Actualizar Producto</h2>
         <form onSubmit={handleUpdate}>

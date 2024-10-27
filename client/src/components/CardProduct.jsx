@@ -2,19 +2,14 @@ import React from "react";
 
 function CardProduct({ index, title, category, image, price, quantity, onEdit, onDelete, onView }) {
   const handleDelete = (e) => {
-    e.stopPropagation(); // Detiene la propagación del clic
-    const confirmDelete = window.confirm("¿Desea eliminar el producto?");
-    if (confirmDelete) {
-      console.log("Eliminando producto:", title); // Log para depuración
-      onDelete(); // Solo llama a onDelete si el usuario confirma
-    }
+      onDelete();
   };
 
   return (
     <div>
       <ul>
         <li key={index}>
-          <button className="flex flex-col w-[291px] h-[341px] bg-white shadow-lg rounded-lg items-center justify-center px-6 py-4">
+          <div className="flex flex-col w-[291px] h-[341px] bg-white shadow-lg rounded-lg items-center justify-center px-6 py-4 text-center">
             <img src={image} alt={title} className="w-auto h-[146px]" />
             <div>
               <span className="text-base font-medium">{title}</span>
@@ -31,7 +26,7 @@ function CardProduct({ index, title, category, image, price, quantity, onEdit, o
               <button className="text-yellow-500" onClick={onEdit}>Actualizar</button>
               <button className="text-red-500" onClick={handleDelete}>Eliminar</button>
             </div>
-          </button>
+          </div>
         </li>
       </ul>
     </div>
