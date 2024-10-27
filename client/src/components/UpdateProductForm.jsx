@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "@/lib/api";
-import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast"; //toast muestra notificaciones
 
-const UpdateProductForm = ({ product, onClose }) => {
+const UpdateProductForm = ({ product, onClose }) => { //crea un componente llamado UpdateP.F. y usa la clase producto y on close como props
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [referencia, setReferencia] = useState("");
@@ -13,6 +13,7 @@ const UpdateProductForm = ({ product, onClose }) => {
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
   const [imagen, setImagen] = useState(null);
+//un props es una propiedad que pasa datos de un componenete a otro
 
   // Obtener las categorías y prellenar el formulario
   useEffect(() => {
