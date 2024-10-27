@@ -114,6 +114,29 @@ function Inventary() {
     setIsModalOpen(true);
   };
 
+  const handleDelete = async (cod_producto) => {
+    const confirmDelete = window.confirm("¿Desea eliminar el producto?");
+    if (confirmDelete) {
+        try {
+            const response = await api.delete(`api/productos/delete/${cod_producto}/`);
+            if (response.status === 204) {
+                toast.success("Producto eliminado exitosamente");
+                // Elimina el producto del estado sin recargar
+                setProducts(prevProducts => prevProducts.filter(product => product.cod_producto !== cod_producto));
+            } else {
+                toast.error("No se pudo eliminar el producto");
+            }
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+            toast.error("Error al eliminar el producto");
+        }
+    }
+};
+
+  
+  
+  
+
   return (
     <div className="flex h-screen">
       <Navigation />

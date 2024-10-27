@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/productos/', ListaProductosView.as_view(), name='lista_productos_api'),
     path('api/productos/crear', CreateProductsView.as_view(), name='crear-productos'),
     path('api/productos/actualizar/<int:cod_producto>/', UpdateProductView.as_view(), name='actualizar_producto'),
-    path('api/productos/delete/<int:pk>/', DeleteProductView.as_view(), name='eliminar_producto'),
+    path('api/productos/delete/<int:cod_producto>/', DeleteProductView.as_view(), name='eliminar_producto'),
     path('api/productos/<int:cod_producto>/', DetalleProductosView.as_view(), name='detalle_producto_api'),
 
     

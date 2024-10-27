@@ -101,6 +101,11 @@ class DeleteProductView(generics.DestroyAPIView):
     queryset = Producto.objects.all()
     lookup_field = 'cod_producto'
     serializer_class = ProductoSerializer
+    def perform_destroy(self, instance):
+        print(f'Eliminando producto: {instance}')
+        instance.delete()
+
+
 
 
 ################ - CATEGORIAS - ################
