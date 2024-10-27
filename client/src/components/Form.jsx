@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
+import { useParams } from "react-router-dom"; // Asegúrate de que este hook esté disponible
 
-function Form() {
+function UpdateProductForm() {
+  const { cod_producto } = useParams(); // Obtiene el código del producto de la URL
   const [productName, setProductName] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
   const [productCode, setProductCode] = useState("");
   const [productCategory, setProductCategory] = useState("");
-  const [customCategory, setCustomCategory] = useState(""); // Para nueva categoría
+  const [customCategory, setCustomCategory] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productImage, setProductImage] = useState(null);
@@ -26,8 +28,8 @@ function Form() {
     }
   };
 
-  const succesAdd = () => toast.success("El registro se ha agregado correctamente");
-  const errorAdd = () => toast.error("Ha ocurrido un error al agregar el registro");
+  const successUpdate = () => toast.success("El producto se ha actualizado correctamente");
+  const errorUpdate = () => toast.error("Ha ocurrido un error al actualizar el producto");
 
   const loadCategories = async () => {
     try {
@@ -35,6 +37,24 @@ function Form() {
       setCategories(res.data);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const loadProductData = async () => {
+    try {
+      const res = await api.get(`api/productos/${cod_producto}/`);
+      const product = res.data;
+      setProductName(product.nombre);
+      setProductQuantity(product.stock);
+      setProductCode(product.cod_producto);
+      setProductCategory(product.categoria);
+      setProductDescription(product.descripcion);
+      setProductPrice(product.precio);
+      setProductModel(product.modelo);
+      setProductBrand(product.marca);
+      // Si hay imagen, manejarla si es necesario
+    } catch (error) {
+      console.error("Error al cargar los datos del producto:", error);
     }
   };
 
@@ -49,22 +69,19 @@ function Form() {
           nombre_categoria: customCategory,
           referencia_categoria: "Ref1234",
         });
-        categoriaId = newCategoryResponse.data.id_categoria; // Obtener el ID de la nueva categoría
-        
-        // Agregar la nueva categoría a la lista de categorías
+        categoriaId = newCategoryResponse.data.id_categoria;
         setCategories((prevCategories) => [
           ...prevCategories,
           { id_categoria: categoriaId, nombre_categoria: customCategory },
         ]);
       } catch (error) {
-        console.error("Error al crear la categoría:", error.response ? error.response.data : error.message);
-        alert("Hubo un error al crear la categoría: " + (error.response ? JSON.stringify(error.response.data) : error.message));
+        console.error("Error al crear la categoría:", error);
+        alert("Hubo un error al crear la categoría: " + error.message);
         return;
       }
     }
 
     const formData = new FormData();
-    formData.append("cod_producto", productCode);
     formData.append("nombre", productName);
     formData.append("descripcion", productDescription);
     formData.append("referencia", productCode);
@@ -78,7 +95,7 @@ function Form() {
     }
 
     try {
-      await api.post("api/productos/crear", formData, {
+      await api.put(`api/productos/${cod_producto}/actualizar/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -88,29 +105,31 @@ function Form() {
       setProductQuantity("");
       setProductCode("");
       setProductCategory("");
-      setCustomCategory(""); // Limpiar el campo de nueva categoría
+      setCustomCategory("");
       setProductDescription("");
       setProductPrice("");
       setProductImage(null);
       setProductModel("");
       setProductBrand("");
-      succesAdd();
+      successUpdate();
     } catch (error) {
-      console.error("Error al guardar el producto:", error.response ? error.response.data : error.message);
-      errorAdd();
+      console.error("Error al actualizar el producto:", error.response ? error.response.data : error.message);
+      errorUpdate();
     }
   };
 
   useEffect(() => {
     loadCategories(); // Cargar categorías al montar el componente
+    loadProductData(); // Cargar datos del producto
   }, []);
 
   return (
-    <form action="">
+    <form onSubmit={handleSubmit}>
       <Toaster />
       <div className="flex flex-row bg-gray-100 max-w-[1550px] mx-auto">
         <div className="flex-3 p-5">
           <div className="bg-white rounded-lg shadow-md p-5">
+            <h2 className="text-xl font-bold text-gray-700 mb-2">Actualizar Producto</h2>
             <div className="flex flex-wrap mb-5">
               <div className="w-1/2 pr-2">
                 <div className="mb-5">
@@ -165,12 +184,12 @@ function Form() {
                     <option value="" disabled required>
                       Seleccionar Categoria
                     </option>
-                    {category.map((category) => (
-                      <option key={category.id_categoria} value={category.id_categoria}>
-                        {category.nombre_categoria}
+                    {category.map((cat) => (
+                      <option key={cat.id_categoria} value={cat.id_categoria}>
+                        {cat.nombre_categoria}
                       </option>
                     ))}
-                  </select>        
+                  </select>
                 </div>
               </div>
             </div>
@@ -254,9 +273,9 @@ function Form() {
 
             <button
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
-              onClick={handleSubmit}
+              type="submit"
             >
-              Guardar Producto
+              Actualizar Producto
             </button>
           </div>
         </div>
@@ -285,4 +304,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default UpdateProductForm;

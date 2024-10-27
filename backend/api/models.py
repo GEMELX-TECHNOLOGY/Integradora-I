@@ -22,7 +22,7 @@ class Producto(models.Model):
     modelo = models.CharField(max_length=100)
     marca = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=10,decimal_places=2)
-    stock = models.CharField(max_length=100)
+    stock = models.IntegerField()
     product_image = models.ImageField(upload_to='productos/', blank=True)
     #llave foranea
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)

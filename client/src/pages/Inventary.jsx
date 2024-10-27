@@ -2,20 +2,22 @@ import React, { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
 import CardProduct from "@/components/CardProduct";
-import ProductModal from "@/components/ProductModal"; // Asegúrate de importar el modal
+import ProductModal from "@/components/ProductModal"; 
+import UpdateProductForm from "@/components/UpdateProductForm"; // Importar el nuevo formulario
 import api from "@/lib/api";
 import { SearchIcon } from "@/icons/Icons";
 import { toast } from "react-hot-toast";
 
 function Inventary() {
-  const [search, setSearch] = useState(""); // Estado para búsqueda
-  const [products, setProducts] = useState([]); // Estado para productos
-  const [category, setCategory] = useState([]); // Estado para categorías
-  const [selectedCategory, setSelectedCategory] = useState(""); // Estado para categoría seleccionada
-  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-  const productsPerPage = 8; // Productos por página
-  const [selectedProduct, setSelectedProduct] = useState(null); // Estado para el producto seleccionado
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar el modal
+  const [search, setSearch] = useState(""); 
+  const [products, setProducts] = useState([]); 
+  const [category, setCategory] = useState([]); 
+  const [selectedCategory, setSelectedCategory] = useState(""); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const productsPerPage = 8; 
+  const [selectedProduct, setSelectedProduct] = useState(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false); // Estado para controlar el formulario de actualización
 
   // Cargar productos al iniciar
   useEffect(() => {
@@ -44,17 +46,14 @@ function Inventary() {
     loadCategories();
   }, []);
 
-  // Obtener el nombre de la categoría por ID
   const getCategoryName = (categoryId) => {
     const categoryItem = category.find((c) => c.id_categoria === categoryId);
     return categoryItem ? categoryItem.nombre_categoria : "Sin categoria";
   };
 
-  // Filtrar productos según búsqueda y categoría
   const filteredProducts = products.filter((product) => {
     const searchCategory =
       selectedCategory === "" || product.categoria === parseInt(selectedCategory);
-
     const searchProduct = product.nombre
       .toLowerCase()
       .includes(search.toLowerCase());
@@ -62,62 +61,49 @@ function Inventary() {
     return searchCategory && searchProduct;
   });
 
-  // Calcular total de páginas
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  // Obtener productos de la página actual
   const currentProducts = filteredProducts.slice(
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
   );
 
-  // Manejar cambio de categoría
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
     setCurrentPage(1);
   };
 
-  // Manejar cambio de búsqueda
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
     setCurrentPage(1);
   };
 
-  // Cambiar a la página anterior
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // Cambiar a la siguiente página
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  // Manejar eliminación de producto
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Desea eliminar el producto?")) {
-      try {
-        await api.delete(`api/productos/${id}/`);
-        toast.success("Producto eliminado");
-        // Recargar productos después de eliminar
-        setProducts(products.filter(product => product.cod_producto !== id));
-      } catch (err) {
-        toast.error("Error al eliminar el producto");
-      }
-    }
+  
+
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setIsUpdateFormOpen(true); // Abre el formulario de actualización
   };
 
-  // Manejar edición de producto
-  const handleEdit = (id) => {
-    console.log("Editar producto:", id);
-    // Aquí puedes redirigir a un nuevo formulario de edición
+  const handleUpdateClose = () => {
+    setIsUpdateFormOpen(false);
+    setSelectedProduct(null);
+    loadProducts(); // Recargar productos después de la actualización
   };
+  
 
-  // Manejar visualización de producto
   const handleView = (product) => {
     const categoryName = getCategoryName(product.categoria);
     const productWithDetails = {
@@ -126,8 +112,7 @@ function Inventary() {
     };
     setSelectedProduct(productWithDetails);
     setIsModalOpen(true);
-};
-
+  };
 
   return (
     <div className="flex h-screen">
@@ -198,13 +183,21 @@ function Inventary() {
               quantity={product.stock}
               image={product.product_image}
               category={getCategoryName(product.categoria)}
-              onEdit={() => handleEdit(product.cod_producto)} // Editar
+              onEdit={() => handleEdit(product)} // Editar
               onDelete={() => handleDelete(product.cod_producto)} // Eliminar
               onView={() => handleView(product)} // Ver
             />
           ))}
         </div>
       </div>
+      
+      {isUpdateFormOpen && (
+        <UpdateProductForm 
+          product={selectedProduct} 
+          onClose={handleUpdateClose} 
+        />
+      )}
+
       {isModalOpen && (
         <ProductModal 
           product={selectedProduct} 

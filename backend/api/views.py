@@ -6,6 +6,7 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 
 User = get_user_model()
 
@@ -57,18 +58,18 @@ class UsuarioDeleteView(generics.DestroyAPIView):
 class UserUpdateView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
-    lookup_field = 'id'
+    lookup_field = 'cod_producto'
     permission_classes = [AllowAny]
 
 ################ - PRODUCTOS - ################
 
-#API CREATE CATEGORIES
+
 class CreateProductsView(generics.CreateAPIView):
     queryset = Producto
     serializer_class = ProductoSerializer
     permission_classes = [AllowAny]
 
-# API PRODUCTS VIEW (en lista)
+
 class ListaProductosView(generics.ListAPIView):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
@@ -80,12 +81,27 @@ class VentasView(generics.ListAPIView):
         permission_classes = [AllowAny]
 
 
-# API PRODUCTS VIEW (en detalle)
+
 class DetalleProductosView(generics.RetrieveAPIView):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
     lookup_field = 'cod_producto'
     permission_classes = [AllowAny]
+
+class UpdateProductView(generics.UpdateAPIView):
+    queryset = Producto.objects.all()
+    lookup_field = 'cod_producto'
+    serializer_class = UpdateProductoSerializer
+
+
+
+
+
+class DeleteProductView(generics.DestroyAPIView):
+    queryset = Producto.objects.all()
+    lookup_field = 'cod_producto'
+    serializer_class = ProductoSerializer
+
 
 ################ - CATEGORIAS - ################
 
