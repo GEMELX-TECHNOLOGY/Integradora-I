@@ -15,7 +15,7 @@ class Categoria(models.Model):
     
 #Tabla Productos
 class Producto(models.Model):
-    cod_producto = models.IntegerField(primary_key=True)
+    cod_producto = models.CharField(max_length=10, primary_key=True)
     nombre = models.TextField(max_length=40)
     descripcion = models.CharField(max_length=100)
     referencia = models.CharField(max_length=30)
