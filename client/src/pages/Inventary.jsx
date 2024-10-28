@@ -48,7 +48,7 @@ function Inventary() {
 
   const getCategoryName = (categoryId) => {
     const categoryItem = category.find((c) => c.id_categoria === categoryId);
-    return categoryItem ? categoryItem.nombre_categoria : "Sin categoria";
+    return categoryItem ? categoryItem.nombre_categoria : "Sin categoría";
   };
 
   const filteredProducts = products.filter((product) => {
@@ -90,11 +90,10 @@ function Inventary() {
     }
   };
 
-  
-
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setIsUpdateFormOpen(true); // Abre el formulario de actualización
+    setIsModalOpen(false); // Cierra el modal
   };
 
   const handleUpdateClose = () => {
@@ -113,6 +112,7 @@ function Inventary() {
       progress: undefined,
       theme: "light",
     });
+
   const errorDelete = () =>
     toast.error("Ha ocurrido un error al eliminar el producto", {
       autoClose: 5000,
@@ -124,7 +124,6 @@ function Inventary() {
       theme: "light",
     });
   
-
   const handleView = (product) => {
     const categoryName = getCategoryName(product.categoria);
     const productWithDetails = {
@@ -139,21 +138,16 @@ function Inventary() {
     const confirmDelete = window.confirm("¿Desea eliminar el producto?");
     if (confirmDelete) {
         try {
-            const response = await api.delete(`api/productos/delete/${cod_producto}/`);
-              // Elimina el producto del estado sin recargar
-              setProducts(prevProducts => prevProducts.filter(product => product.cod_producto !== cod_producto));
-              succesDelete()
-                
+            await api.delete(`api/productos/delete/${cod_producto}/`);
+            // Elimina el producto del estado sin recargar
+            setProducts(prevProducts => prevProducts.filter(product => product.cod_producto !== cod_producto));
+            succesDelete();
         } catch (error) {
             console.error("Error al eliminar el producto:", error);
-            errorDelete()
+            errorDelete();
         }
     }
 };
-
-  
-  
-  
 
   return (
     <div className="flex h-screen">
@@ -244,6 +238,8 @@ function Inventary() {
         <ProductModal 
           product={selectedProduct} 
           onClose={() => setIsModalOpen(false)} 
+          onEdit={() => handleEdit(selectedProduct)} // Pasar la función de editar
+          onDelete={handleDelete} // Pasar la función de eliminar
         />
       )}
     </div>
