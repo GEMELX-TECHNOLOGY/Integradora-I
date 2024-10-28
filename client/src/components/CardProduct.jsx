@@ -1,8 +1,9 @@
 import React from "react";
+import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 
 function CardProduct({ index, title, category, image, price, quantity, onEdit, onDelete, onView }) {
   const handleDelete = (e) => {
-      onDelete();
+    onDelete();
   };
 
   return (
@@ -22,9 +23,15 @@ function CardProduct({ index, title, category, image, price, quantity, onEdit, o
               <span className="text-base font-medium">Precio: ${price}</span>
             </div>
             <div className="flex justify-between w-full mt-4">
-              <button className="text-blue-500" onClick={onView}>Ver</button>
-              <button className="text-yellow-500" onClick={onEdit}>Actualizar</button>
-              <button className="text-red-500" onClick={handleDelete}>Eliminar</button>
+              <button className="text-blue-500" onClick={onView}>
+                <FaEye />
+              </button>
+              <button className="text-yellow-500" onClick={onEdit}>
+                <FaEdit />
+              </button>
+              <button className="text-red-500" onClick={handleDelete}>
+                <FaTrash />
+              </button>
             </div>
           </div>
         </li>
@@ -34,4 +41,3 @@ function CardProduct({ index, title, category, image, price, quantity, onEdit, o
 }
 
 export default CardProduct;
-
