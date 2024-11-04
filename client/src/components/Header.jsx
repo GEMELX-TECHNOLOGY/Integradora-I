@@ -23,7 +23,7 @@ function Header() {
 
   const getUserDetails = async (token) => {
       try {
-          const response = await api.get('/api/user/', {
+          const response = await api.get('/api/v1/user/', {
               headers: {
                   Authorization: `Token ${token}`,
               },

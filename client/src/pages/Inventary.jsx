@@ -23,7 +23,7 @@ function Inventary() {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await api.get("api/productos/");
+        const res = await api.get("api/v1/productos/");
         setProducts(res.data);
       } catch (err) {
         console.error(err);
@@ -37,7 +37,7 @@ function Inventary() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const res = await api.get("api/categorias/");
+        const res = await api.get("api/v1/categorias/");
         setCategory(res.data);
       } catch (err) {
         console.error(err);
@@ -138,7 +138,7 @@ function Inventary() {
     const confirmDelete = window.confirm("¿Desea eliminar el producto?");
     if (confirmDelete) {
         try {
-            await api.delete(`api/productos/delete/${cod_producto}/`);
+            await api.delete(`api/v1/productos/delete/${cod_producto}/`);
             // Elimina el producto del estado sin recargar
             setProducts(prevProducts => prevProducts.filter(product => product.cod_producto !== cod_producto));
             succesDelete();

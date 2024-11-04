@@ -19,7 +19,7 @@ const UpdateProductForm = ({ product, onClose }) => { //crea un componente llama
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const res = await api.get("api/categorias/");
+        const res = await api.get("api/v1/categorias/");
         setCategorias(res.data);
       } catch (err) {
         console.error(err);
@@ -79,7 +79,7 @@ const UpdateProductForm = ({ product, onClose }) => { //crea un componente llama
 
     try {
       const cod_producto = product.cod_producto; // Asegúrate de que esto esté definido
-      await api.put(`api/productos/actualizar/${cod_producto}/`, formData, {
+      await api.put(`api/v1/productos/actualizar/${cod_producto}/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

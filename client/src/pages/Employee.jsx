@@ -39,7 +39,7 @@ function Employee() {
   useEffect(() => {
     const loadEmployees = async () => {
       try {
-        const res = await api.get("api/users/");
+        const res = await api.get("api/v1/users/");
         setEmployees(res.data);
       } catch (error) {
         console.error("Error: ", error);
@@ -52,7 +52,7 @@ function Employee() {
   useEffect(() => {
     const loadRoles = async () => {
       try {
-        const res = await api.get("api/roles/");
+        const res = await api.get("api/v1/roles/");
         setRoles(res.data);
       } catch (err) {
         console.error(err);
@@ -228,7 +228,7 @@ function Employee() {
     }
 
     try {
-      const res = await api.post("/api/user/register/", formData, {
+      const res = await api.post("api/v1/user/register/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -257,7 +257,7 @@ function Employee() {
 
     try {
       const res = await api.put(
-        `/api/user/edit/${currentEmployee.id}/`,
+        `api/v1/user/edit/${currentEmployee.id}/`,
         formData,
         {
           headers: {
@@ -282,7 +282,7 @@ function Employee() {
 
   const deleteEmployee = async (id) => {
     try {
-      const res = await api.delete(`/api/user/delete/${id}/`);
+      const res = await api.delete(`/api/v1/user/delete/${id}/`);
       setEmployees(employees.filter((employee) => employee.id !== id));
       succesDelete();
       closeDeleteModal();

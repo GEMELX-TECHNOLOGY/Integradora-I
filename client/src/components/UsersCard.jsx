@@ -13,7 +13,7 @@ function UsersCard() {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await api.get("api/users/");
+        const response = await api.get("api/v1/users/");
         setUsuarios(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         console.error("Error al obtener usuarios:", err);
@@ -24,7 +24,7 @@ function UsersCard() {
     };
     const fetchRoles = async () => {
       try {
-        const response = await api.get("api/roles/");
+        const response = await api.get("api/v1/roles/");
         setRoles(response.data);
       } catch (err) {
         console.error("Error al obtener roles:", err);

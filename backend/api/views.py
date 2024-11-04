@@ -18,7 +18,7 @@ def user_details(request):
         'first_name': user.first_name,
         'last_name': user.last_name,
         'rol': role_name,
-        'profile_image': user.user_profile_image.url if user.user_profile_image else None,  # Ajusta esto según tu modelo
+        'profile_image': user.user_profile_image.url if user.user_profile_image else None,
     })
 
 ################ - USUARIOS - ################
@@ -58,7 +58,7 @@ class UsuarioDeleteView(generics.DestroyAPIView):
 class UserUpdateView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
-    lookup_field = 'cod_producto'
+    lookup_field = 'id'
     permission_classes = [AllowAny]
 
 ################ - PRODUCTOS - ################

@@ -9,14 +9,13 @@ function Estadistic() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const query = await api.get("api/ventas/");
+        const query = await api.get("api/v1/ventas/");
         const res = await query.data
 
         const shuffled = res.sort(() => 0.5 - Math.random());
 
         const randomMasVendidos = shuffled.slice(0, 5);
         setData(randomMasVendidos);
-        console.log(randomMasVendidos)
       } catch (error) {
         console.error("Error fetching data:", error);
       }

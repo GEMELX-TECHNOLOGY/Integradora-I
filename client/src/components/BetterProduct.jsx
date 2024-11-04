@@ -9,7 +9,7 @@ function BetterProduct() {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await api.get("api/productos/");
+        const res = await api.get("api/v1/productos/");
         setProducts(res.data);
       } catch (err) {
         console.error(`Error: ${err}`);
@@ -18,7 +18,7 @@ function BetterProduct() {
 
     const loadCategories = async () => {
       try {
-        const res = await api.get("api/categorias/");
+        const res = await api.get("api/v1/categorias/");
         setCategories(res.data);
       } catch (err) {
         console.error(`Error: ${err}`);

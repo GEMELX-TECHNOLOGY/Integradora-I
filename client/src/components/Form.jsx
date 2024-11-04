@@ -46,7 +46,7 @@ function Form() {
     }
 
     try {
-      await api.post("api/productos/crear", formData, {
+      await api.post("api/v1/productos/crear", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -71,7 +71,7 @@ function Form() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const res = await api.get("api/categorias/");
+        const res = await api.get("api/v1/categorias/");
         setCategories(res.data);
       } catch (err) {
         console.error(err);
