@@ -58,7 +58,7 @@ class UsuarioDeleteView(generics.DestroyAPIView):
 class UserUpdateView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
-    lookup_field = 'cod_producto'
+    lookup_field = 'id'
     permission_classes = [AllowAny]
 
 ################ - PRODUCTOS - ################
