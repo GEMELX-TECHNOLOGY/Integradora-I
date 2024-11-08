@@ -142,6 +142,7 @@ class Nomina(models.Model):
     salario_base = models.DecimalField(max_digits=10,decimal_places=2)
     bonos = models.DecimalField(max_digits=10,decimal_places=2)
     salario_nto = models.DecimalField(max_digits=10,decimal_places=2)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
 
 #Tabla Horario
 class Horario(models.Model):
@@ -150,6 +151,7 @@ class Horario(models.Model):
   hora_entrada = models.TimeField()
   hora_salida = models.TimeField()
   turno = models.CharField(max_length=100, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')])
+  usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
 
 ###########################################
 class ChatMessage(models.Model):

@@ -76,6 +76,9 @@ class ProveedorSerializer(serializers.ModelSerializer):
         model = Proveedor
         fields = ['id_prov', 'nombre', 'telefono', 'direccion']
 
+class UpdateProveedorSerializer(serializers.ModelSerializer):
+      model = Proveedor
+      fields =  ['nombre', 'telefono', 'direccion']
 
 #Clientes
 class ClienteSerializer(serializers.ModelSerializer):

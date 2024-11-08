@@ -17,7 +17,6 @@ urlpatterns = [
     
     #URLs Roles
     path("api/v1/roles/", AllRolView.as_view(), name='roles'),
-    path("api/v1/v1/obtener_rol/", get_user_role, name="rol-usuaio"),
     path("api/v1/rol/registrar", CreateRoleView.as_view(), name="crear-rol"),
     
     #URLs Token

@@ -123,9 +123,17 @@ class DetalleCategoriaView(generics.RetrieveAPIView):
 
 ############### - PROVEEDORES - ################
 class CreateProveedorView(generics.CreateAPIView):
-    queryset = Proveedor.objects.all()
+    queryset = Proveedor
     serializer_class = ProveedorSerializer
     permission_classes = [AllowAny]
+
+class UpdateProveedorView(generics.CreateAPIView):
+    queryset = Proveedor.objects.all()
+    lookup_field = 'id_prov'
+    serializer_class = UpdateProveedorSerializer
+
+
+
 
 class ListaProveedoresView(generics.ListAPIView):
     queryset = Proveedor.objects.all()
@@ -173,7 +181,7 @@ class DetalleClienteView(generics.RetrieveAPIView):
 
 ################ - VENTAS - ################
 class CreateVentaView(generics.CreateAPIView):
-    queryset = Ventas.objects.all()
+    queryset = Ventas
     serializer_class = VentasSerializer
     permission_classes = [AllowAny]
 
@@ -189,10 +197,7 @@ class DetalleVentaView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
 ################ - DETALLE VENTAS - ################
-class CreateDetalleVentaView(generics.CreateAPIView):
-    queryset = DetalleVenta.objects.all()
-    serializer_class = DetalleVentaSerializer
-    permission_classes = [AllowAny]
+
 
 class ListaDetalleVentasView(generics.ListAPIView):
     queryset = DetalleVenta.objects.all()
@@ -201,7 +206,7 @@ class ListaDetalleVentasView(generics.ListAPIView):
 
 ################ - COTIZACIONES - ################
 class CreateCotizacionView(generics.CreateAPIView):
-    queryset = Cotizaciones.objects.all()
+    queryset = Cotizaciones
     serializer_class = CotizacionSerializer
     permission_classes = [AllowAny]
 
@@ -217,10 +222,7 @@ class DetalleCotizacionView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
 ################ - DETALLE COTIZACIONES - ################
-class CreateDetalleCotizacionView(generics.CreateAPIView):
-    queryset = DetalleCotizaciones.objects.all()
-    serializer_class = DetalleCotizacionSerializer
-    permission_classes = [AllowAny]
+
 
 class ListaDetalleCotizacionesView(generics.ListAPIView):
     queryset = DetalleCotizaciones.objects.all()
@@ -229,7 +231,7 @@ class ListaDetalleCotizacionesView(generics.ListAPIView):
 
 ################ - DEVOLUCIONES - ################
 class CreateDevolucionView(generics.CreateAPIView):
-    queryset = Devoluciones.objects.all()
+    queryset = Devoluciones
     serializer_class = DevolucionesSerializer
     permission_classes = [AllowAny]
 
@@ -240,7 +242,7 @@ class ListaDevolucionesView(generics.ListAPIView):
 
 ################ - NOMINA - ################
 class CreateNominaView(generics.CreateAPIView):
-    queryset = Nomina.objects.all()
+    queryset = Nomina
     serializer_class = NominaSerializer
     permission_classes = [AllowAny]
 
@@ -251,7 +253,7 @@ class ListaNominasView(generics.ListAPIView):
 
 ################ - HORARIO - ################
 class CreateHorarioView(generics.CreateAPIView):
-    queryset = Horario.objects.all()
+    queryset = Horario
     serializer_class = HorarioSerializer
     permission_classes = [AllowAny]
 
