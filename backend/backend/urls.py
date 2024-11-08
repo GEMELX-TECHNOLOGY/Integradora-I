@@ -41,6 +41,46 @@ urlpatterns = [
 
     #URLs Ventas
     path('api/v1/ventas/', VentasView.as_view(), name='productos-mas-vendidos'),
+
+    #URLs Proveedores
+    path('api/v1/proveedores/', ListaProveedoresView.as_view(), name='lista_proveedores_api'),
+    path('api/v1/proveedores/crear/', CreateProveedorView.as_view(), name='crear_proveedor'),
+    path('api/v1/proveedores/<int:id_prov>/', DetalleProveedorView.as_view(), name='detalle_proveedor_api'),
+
+    #URLs Clientes
+    path('api/v1/clientes/', ListaClientesView.as_view(), name='lista_clientes_api'),
+    path('api/v1/clientes/crear/', CreateClienteView.as_view(), name='crear_cliente'),
+    path('api/v1/clientes/<int:id_cliente>/', DetalleClienteView.as_view(), name='detalle_cliente_api'),
+
+    #URLs Ventas
+    path('api/v1/ventas/', ListaVentasView.as_view(), name='lista_ventas_api'),
+    path('api/v1/ventas/crear/', CreateVentaView.as_view(), name='crear_venta'),
+    path('api/v1/ventas/<int:id>/', DetalleVentaView.as_view(), name='detalle_venta_api'),
+
+    #urls DetalleVentas
+    path('api/v1/detalle_ventas/', ListaDetalleVentasView.as_view(), name='lista_detalle_ventas_api'),
+    path('api/v1/detalle_ventas/crear/', CreateDetalleVentaView.as_view(), name='crear_detalle_venta'),
+
+    #urls Cotizaciones
+    path('api/v1/cotizaciones/', ListaCotizacionesView.as_view(), name='lista_cotizaciones_api'),
+    path('api/v1/cotizaciones/crear/', CreateCotizacionView.as_view(), name='crear_cotizacion'),
+    path('api/v1/cotizaciones/<int:id_cotizacion>/', DetalleCotizacionView.as_view(), name='detalle_cotizacion_api'),
+
+    #urls DetalleCotizaciones
+    path('api/v1/detalle_cotizaciones/', ListaDetalleCotizacionesView.as_view(), name='lista_detalle_cotizaciones_api'),
+    path('api/v1/detalle_cotizaciones/crear/', CreateDetalleCotizacionView.as_view(), name='crear_detalle_cotizacion'),
+
+    #urls Devoluciones
+    path('api/v1/devoluciones/', ListaDevolucionesView.as_view(), name='lista_devoluciones_api'),
+    path('api/v1/devoluciones/crear/', CreateDevolucionView.as_view(), name='crear_devolucion'),
+
+    #urls Nomina
+    path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),
+    path('api/v1/nominas/crear/', CreateNominaView.as_view(), name='crear_nomina'),
+
+    #urls Horario
+    path('api/v1/horarios/', ListaHorariosView.as_view(), name='lista_horarios_api'),
+    path('api/v1/horarios/crear/', CreateHorarioView.as_view(), name='crear_horario'),
 ]
 
 if settings.DEBUG:

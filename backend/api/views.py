@@ -80,8 +80,6 @@ class VentasView(generics.ListAPIView):
         serializer_class = VentasSerializer
         permission_classes = [AllowAny]
 
-
-
 class DetalleProductosView(generics.RetrieveAPIView):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
@@ -93,10 +91,6 @@ class UpdateProductView(generics.UpdateAPIView):
     lookup_field = 'cod_producto'
     serializer_class = UpdateProductoSerializer
 
-
-
-
-
 class DeleteProductView(generics.DestroyAPIView):
     queryset = Producto.objects.all()
     lookup_field = 'cod_producto'
@@ -104,9 +98,6 @@ class DeleteProductView(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         print(f'Eliminando producto: {instance}')
         instance.delete()
-
-
-
 
 ################ - CATEGORIAS - ################
 
@@ -127,5 +118,145 @@ class DetalleCategoriaView(generics.RetrieveAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
     lookup_field = 'id_categoria'
+    permission_classes = [AllowAny]
+
+
+############### - PROVEEDORES - ################
+class CreateProveedorView(generics.CreateAPIView):
+    queryset = Proveedor.objects.all()
+    serializer_class = ProveedorSerializer
+    permission_classes = [AllowAny]
+
+class ListaProveedoresView(generics.ListAPIView):
+    queryset = Proveedor.objects.all()
+    serializer_class = ProveedorSerializer
+    permission_classes = [AllowAny]
+
+class DetalleProveedorView(generics.RetrieveAPIView):
+    queryset = Proveedor.objects.all()
+    serializer_class = ProveedorSerializer
+    lookup_field = 'id_prov'
+    permission_classes = [AllowAny]
+
+
+################ - CLIENTES - ################
+class CreateClienteView(generics.CreateAPIView):
+    queryset = Clientes
+    serializer_class = ClienteSerializer
+    permission_classes = [AllowAny]
+
+class ListaClientesView(generics.ListAPIView):
+    queryset = Clientes.objects.all()
+    serializer_class = ClienteSerializer
+    permission_classes = [AllowAny]
+
+class UpdateClientesView(generics.UpdateAPIView):
+    queryset = Clientes.objects.all()
+    lookup_field = 'id_cliente'
+    serializer_class = UpdateClienteSerializer
+
+class DeleteClientesView(generics.DestroyAPIView):
+    queryset = Clientes.objects.all()
+    lookup_field = 'id_cliente'
+    serializer_class = ClienteSerializer
+    def perform_destroy(self, instance):
+        print(f'Eliminando producto: {instance}')
+        instance.delete()
+
+
+class DetalleClienteView(generics.RetrieveAPIView):
+    queryset = Clientes.objects.all()
+    serializer_class = ClienteSerializer
+    lookup_field = 'id_cliente'
+    permission_classes = [AllowAny]
+
+
+################ - VENTAS - ################
+class CreateVentaView(generics.CreateAPIView):
+    queryset = Ventas.objects.all()
+    serializer_class = VentasSerializer
+    permission_classes = [AllowAny]
+
+class ListaVentasView(generics.ListAPIView):
+    queryset = Ventas.objects.all()
+    serializer_class = VentasSerializer
+    permission_classes = [AllowAny]
+
+class DetalleVentaView(generics.RetrieveAPIView):
+    queryset = Ventas.objects.all()
+    serializer_class = VentasSerializer
+    lookup_field = 'id'
+    permission_classes = [AllowAny]
+
+################ - DETALLE VENTAS - ################
+class CreateDetalleVentaView(generics.CreateAPIView):
+    queryset = DetalleVenta.objects.all()
+    serializer_class = DetalleVentaSerializer
+    permission_classes = [AllowAny]
+
+class ListaDetalleVentasView(generics.ListAPIView):
+    queryset = DetalleVenta.objects.all()
+    serializer_class = DetalleVentaSerializer
+    permission_classes = [AllowAny]
+
+################ - COTIZACIONES - ################
+class CreateCotizacionView(generics.CreateAPIView):
+    queryset = Cotizaciones.objects.all()
+    serializer_class = CotizacionSerializer
+    permission_classes = [AllowAny]
+
+class ListaCotizacionesView(generics.ListAPIView):
+    queryset = Cotizaciones.objects.all()
+    serializer_class = CotizacionSerializer
+    permission_classes = [AllowAny]
+
+class DetalleCotizacionView(generics.RetrieveAPIView):
+    queryset = Cotizaciones.objects.all()
+    serializer_class = CotizacionSerializer
+    lookup_field = 'id_cotizacion'
+    permission_classes = [AllowAny]
+
+################ - DETALLE COTIZACIONES - ################
+class CreateDetalleCotizacionView(generics.CreateAPIView):
+    queryset = DetalleCotizaciones.objects.all()
+    serializer_class = DetalleCotizacionSerializer
+    permission_classes = [AllowAny]
+
+class ListaDetalleCotizacionesView(generics.ListAPIView):
+    queryset = DetalleCotizaciones.objects.all()
+    serializer_class = DetalleCotizacionSerializer
+    permission_classes = [AllowAny]
+
+################ - DEVOLUCIONES - ################
+class CreateDevolucionView(generics.CreateAPIView):
+    queryset = Devoluciones.objects.all()
+    serializer_class = DevolucionesSerializer
+    permission_classes = [AllowAny]
+
+class ListaDevolucionesView(generics.ListAPIView):
+    queryset = Devoluciones.objects.all()
+    serializer_class = DevolucionesSerializer
+    permission_classes = [AllowAny]
+
+################ - NOMINA - ################
+class CreateNominaView(generics.CreateAPIView):
+    queryset = Nomina.objects.all()
+    serializer_class = NominaSerializer
+    permission_classes = [AllowAny]
+
+class ListaNominasView(generics.ListAPIView):
+    queryset = Nomina.objects.all()
+    serializer_class = NominaSerializer
+    permission_classes = [AllowAny]
+
+################ - HORARIO - ################
+class CreateHorarioView(generics.CreateAPIView):
+    queryset = Horario.objects.all()
+    serializer_class = HorarioSerializer
+    permission_classes = [AllowAny]
+
+class ListaHorariosView(generics.ListAPIView):
+    queryset = Horario.objects.all()
+    serializer_class = HorarioSerializer
     permission_classes = [AllowAny]
 
