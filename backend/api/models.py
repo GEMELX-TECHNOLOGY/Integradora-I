@@ -75,7 +75,13 @@ class Usuarios(AbstractUser):
         return self.rol.is_superuser
 
 
-
+#Tabla Ventas
+class Ventas(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    referencia = models.TextField(max_length=40)
+    uv = models.IntegerField()
+    pv = models.DecimalField(max_digits=10, decimal_places=2)
+    amt = models.DecimalField(max_digits=10, decimal_places=2)
     
 
 ###########################################
