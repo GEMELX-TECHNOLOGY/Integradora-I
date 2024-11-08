@@ -58,7 +58,7 @@ urlpatterns = [
 
     #urls DetalleVentas
     path('api/v1/detalle_ventas/', ListaDetalleVentasView.as_view(), name='lista_detalle_ventas_api'),
-    path('api/v1/detalle_ventas/crear/', CreateDetalleVentaView.as_view(), name='crear_detalle_venta'),
+    
 
     #urls Cotizaciones
     path('api/v1/cotizaciones/', ListaCotizacionesView.as_view(), name='lista_cotizaciones_api'),
@@ -67,7 +67,7 @@ urlpatterns = [
 
     #urls DetalleCotizaciones
     path('api/v1/detalle_cotizaciones/', ListaDetalleCotizacionesView.as_view(), name='lista_detalle_cotizaciones_api'),
-    path('api/v1/detalle_cotizaciones/crear/', CreateDetalleCotizacionView.as_view(), name='crear_detalle_cotizacion'),
+   
 
     #urls Devoluciones
     path('api/v1/devoluciones/', ListaDevolucionesView.as_view(), name='lista_devoluciones_api'),
