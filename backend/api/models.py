@@ -24,20 +24,13 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=10,decimal_places=2)
     stock = models.IntegerField()
     product_image = models.ImageField(upload_to='productos/', blank=True)
-    #llave foranea
+    #llaves foraneas
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    proveedor= models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
     
-class Ventas(models.Model):
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    referencia = models.TextField(max_length=40)
-    uv = models.IntegerField()
-    pv = models.DecimalField(max_digits=10, decimal_places=2)
-    amt = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self):
-        return self.nombre
 ################ - USUARIOS - ################
 class Rol(models.Model):
     id_rol = models.AutoField(primary_key=True)
@@ -78,7 +71,38 @@ class Usuarios(AbstractUser):
 
 
 
+    
 
+################## VENTAS #################
+class Clientes(models.Model):
+    id_cliente = models.AutoField(primary_key=True)
+    nombre = models.TextField()
+    telefono = models.IntegerField()
+    direcccion = models.CharField(max_length=100)
+    correo = models.CharField(max_length=100)
+
+
+class Ventas(models.Model):
+    id_venta = models.AutoField(primary_key=True)
+    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
+    fecha_venta = models.DateTimeField(auto_now_add=True)
+    total_venta = models.DecimalField(max_digits=10,decimal_places=2)
+
+
+class Cotizaciones(models.Model):
+    id_cotizacion = models.AutoField(primary_key=True)
+    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(max_length=50, choices=[('Pendiente', 'Pendiente'), ('Aprobada', 'Aprobada'), ('Rechazada', 'Rechazada')], default='Pendiente')
+
+################## INVENTARIO ###################
+class Proveedor(models.Model):
+    id_prov = models.AutoField(primary_key=True)
+    nombre = models.TextField()
+    telefono = models.IntegerField()
+    direccion = models.CharField(max_length=100)
+    
+###########################################
 class ChatMessage(models.Model):
     user = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="user")
     sender = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="sender")
@@ -104,3 +128,5 @@ class ChatMessage(models.Model):
     def reciever_profile(self):
         reciever_profile = UserManager.objects.get(user=self.reciever)
         return reciever_profile
+
+    
