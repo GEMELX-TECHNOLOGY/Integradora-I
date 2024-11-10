@@ -1,15 +1,15 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import api from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/lib/constants";
-import { UserContext } from "@/context/UserContext";
+import { useUser } from "@/context/UserContext"; // Asegúrate de importar el hook
 
 function FormLogin({ route, method }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { loginUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { loginUser } = useUser(); // Accede a loginUser desde el contexto
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -20,8 +20,14 @@ function FormLogin({ route, method }) {
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+
+        const userResponse = await api.get("/api/v1/user/", {
+          headers: { Authorization: `Bearer ${res.data.access}` },
+        });
+
+        loginUser(res.data.access, userResponse.data); // Usa loginUser aquí
+
         navigate("/");
-        console.log(res.data)
       } else {
         navigate("/login");
       }
