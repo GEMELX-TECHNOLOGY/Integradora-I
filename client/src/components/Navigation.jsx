@@ -4,10 +4,14 @@ import { Link } from "react-router-dom";
 import {
   HomeIcon,
   InventoryIcon,
+  ClientIcon,
   AddProductIcon,
   ChatIcon,
   EmployeesIcon,
   LogoutIcon,
+  CotizacionIcon,
+  DevolucionIcon,
+  ReportVenIcon,
 } from "@/icons/Icons";
 import { useLocation } from "react-router-dom";
 
@@ -48,12 +52,12 @@ const PageLinkVentas = [
   {
     item: "Clientes",
     icon: <ClientIcon className="mr-4" />,
-    url: "",
+    url: "Clientes",
   },
   {
-    item: "Reportes-Ventas",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
+    item: "Reportes Ventas",
+    icon: <ReportVenIcon className="mr-4" />,
+    url: "Reportes-Ventas",
   },
   {
     item: "Mensajería",
@@ -62,8 +66,8 @@ const PageLinkVentas = [
   },
   {
     item: "Devoluciones",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
+    icon: <DevolucionIcon className="mr-4" />,
+    url: "Devoluciones",
   },
   {
     item: "Inventario",
@@ -72,8 +76,8 @@ const PageLinkVentas = [
   },
   {
     item: "Cotizaciones",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
+    icon: <CotizacionIcon className="mr-4" />,
+    url: "Cotizaciones",
   },
 ];
 
@@ -144,7 +148,7 @@ function Navigation() {
           </li>
         ))}
       </ul>
-      <ul className="justify-center items-center pt-96">
+      <ul className="justify-center items-center pt-[300px]">
         <li className="text-black/70  w-[220px] h-14 flex items-center rounded-[10px] hover:text-[#045E9C]">
           <Link
             to={"/Logout"}
