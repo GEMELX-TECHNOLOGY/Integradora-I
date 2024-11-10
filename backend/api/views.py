@@ -127,12 +127,18 @@ class CreateProveedorView(generics.CreateAPIView):
     serializer_class = ProveedorSerializer
     permission_classes = [AllowAny]
 
-class UpdateProveedorView(generics.CreateAPIView):
+class UpdateProveedorView(generics.UpdateAPIView):
     queryset = Proveedor.objects.all()
     lookup_field = 'id_prov'
     serializer_class = UpdateProveedorSerializer
 
-
+class DeleteProveedorView(generics.DestroyAPIView):
+    queryset = Proveedor.objects.all()
+    lookup_field = 'id_prov'
+    serializer_class = ProveedorSerializer
+    def perform_destroy(self, instance):
+        print(f'Eliminando producto: {instance}')
+        instance.delete()
 
 
 class ListaProveedoresView(generics.ListAPIView):
@@ -195,6 +201,11 @@ class DetalleVentaView(generics.RetrieveAPIView):
     serializer_class = VentasSerializer
     lookup_field = 'id'
     permission_classes = [AllowAny]
+
+class UpdateVentaView(generics.UpdateAPIView):
+    queryset = Ventas.objects.all()
+    lookup_field = 'id'
+    serializer_class = UpdateVentasSerializer
 
 ################ - DETALLE VENTAS - ################
 

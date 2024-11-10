@@ -38,22 +38,26 @@ urlpatterns = [
     path('api/v1/categorias/crear/', CreateCategoriesView.as_view(), name='crear-categorias'),
     path('api/v1/categorias/<int:id_categoria>/', DetalleCategoriaView.as_view(), name='detalle_categoria_api'),
 
-    #URLs Ventas
-    path('api/v1/ventas/', VentasView.as_view(), name='productos-mas-vendidos'),
+   
 
     #URLs Proveedores
     path('api/v1/proveedores/', ListaProveedoresView.as_view(), name='lista_proveedores_api'),
     path('api/v1/proveedores/crear/', CreateProveedorView.as_view(), name='crear_proveedor'),
     path('api/v1/proveedores/<int:id_prov>/', DetalleProveedorView.as_view(), name='detalle_proveedor_api'),
+    path('api/v1/proveedores/actualizar/<int:id_prov>/', UpdateProveedorView.as_view(), name='actualizar_proveedor'),
+    path('api/v1/proveedores/delete/<int:id_prov>/', DeleteProveedorView.as_view(), name='eliminar_proveedor'),
 
     #URLs Clientes
     path('api/v1/clientes/', ListaClientesView.as_view(), name='lista_clientes_api'),
     path('api/v1/clientes/crear/', CreateClienteView.as_view(), name='crear_cliente'),
     path('api/v1/clientes/<int:id_cliente>/', DetalleClienteView.as_view(), name='detalle_cliente_api'),
+    path('api/v1/clientes/actualizar/<int:id_cliente>/', UpdateClientesView.as_view(), name='actualizar_clientes'),
+    path('api/v1/clientes/delete/<int:id_cliente>/', DeleteClientesView.as_view(), name='eliminar_clientes'),
 
     #URLs Ventas
     path('api/v1/ventas/', ListaVentasView.as_view(), name='lista_ventas_api'),
     path('api/v1/ventas/crear/', CreateVentaView.as_view(), name='crear_venta'),
+    path('api/v1/ventas/actualizar/<int:id>/', UpdateVentaView.as_view(), name='actualizar_ventas'),
     path('api/v1/ventas/<int:id>/', DetalleVentaView.as_view(), name='detalle_venta_api'),
 
     #urls DetalleVentas
@@ -81,6 +85,8 @@ urlpatterns = [
     path('api/v1/horarios/', ListaHorariosView.as_view(), name='lista_horarios_api'),
     path('api/v1/horarios/crear/', CreateHorarioView.as_view(), name='crear_horario'),
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+#URLs Ventas
+   # path('api/v1/ventas/', VentasView.as_view(), name='productos-mas-vendidos'), #CHECA ESTA GERA QUE NO INTERFIERA CON TUS GRAFICAS

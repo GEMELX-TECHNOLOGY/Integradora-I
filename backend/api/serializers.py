@@ -70,6 +70,10 @@ class VentasSerializer(serializers.ModelSerializer):
         fields = ['referencia', 'uv', 'pv', 'amt']
 
 
+class UpdateVentasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ventas
+        fields=  ['uv', 'pv', 'amt']
 #Proveedor
 class ProveedorSerializer(serializers.ModelSerializer):
     class Meta:
