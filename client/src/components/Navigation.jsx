@@ -46,14 +46,34 @@ const PageLinkVentas = [
     url: "",
   },
   {
-    item: "Inventario",
-    icon: <InventoryIcon className="mr-4" />,
-    url: "Inventario",
+    item: "Clientes",
+    icon: <ClientIcon className="mr-4" />,
+    url: "",
+  },
+  {
+    item: "Reportes-Ventas",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
   },
   {
     item: "Mensajería",
     icon: <ChatIcon className="mr-4" />,
     url: "Chat",
+  },
+  {
+    item: "Devoluciones",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
+  },
+  {
+    item: "Inventario",
+    icon: <InventoryIcon className="mr-4" />,
+    url: "Inventario",
+  },
+  {
+    item: "Cotizaciones",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
   },
 ];
 
