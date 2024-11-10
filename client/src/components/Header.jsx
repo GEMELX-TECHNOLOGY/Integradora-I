@@ -9,6 +9,10 @@ const NamePage = {
   "/Chat": "Mensajería",
   "/Empleados": "Empleados",
   "/Ayuda": "Ayuda",
+  "/Clientes": "Clientes",
+  "/Cotizaciones": "Cotizaciones",
+  "/Devoluciones": "Devoluciones",
+  "/Reportes-Ventas": "Reporte Ventas"
 };
 
 function Header() {
