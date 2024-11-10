@@ -18,7 +18,7 @@ import AddProduct from "@/pages/Inventario/AddProduct";
 import Employee from "@/pages/RH/Employee";
 
 // VENTAS
-import Clients from "@/pages/Ventas/Clients";
+import Clientes from "@/pages/Ventas/Clientes";
 import Cotizaciones from "@/pages/Ventas/Cotizaciones";
 import Devoluciones from "@/pages/Ventas/Devoluciones";
 import ReportesVentas from "@/pages/Ventas/Reporte_ventas";
@@ -48,7 +48,7 @@ function Rutas() {
                 <Route path="/Empleados" element={<ProtectedRoute allowedRoles={['Administrador', 'Recursos Humanos']}><Employee /></ProtectedRoute>} />
                 
                 {/* SALES USER */}
-                <Route paht="/Clientes" element={<ProtectedRoute><Clients/></ProtectedRoute>}/>
+                <Route path="/Clientes" element={<ProtectedRoute><Clientes/></ProtectedRoute>}/>
                 <Route path="/Cotizaciones" element={<ProtectedRoute><Cotizaciones/></ProtectedRoute>}/>
                 <Route path="/Devoluciones" element={<ProtectedRoute><Devoluciones/></ProtectedRoute>}/>
                 <Route path="/Reportes-Ventas" element={<ProtectedRoute><ReportesVentas/></ProtectedRoute>}/>
