@@ -1,0 +1,65 @@
+import React from 'react';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useUser } from "@/context/UserContext";
+
+// GENERAL
+import Login from "@/pages/Login";
+import Home from "@/pages/Home";
+import Chat from "@/pages/Chat";
+import NotFound from "@/pages/NotFound";
+import NoAuthorized from "@/context/NoAuthorized";
+
+// INVENTARIO
+import Inventary from "@/pages/Inventario/Inventary";
+import AddProduct from "@/pages/Inventario/AddProduct";
+
+// RECURSOS HUMANOS
+import Employee from "@/pages/RH/Employee";
+
+// VENTAS
+import Clients from "@/pages/Ventas/Clients";
+import Cotizaciones from "@/pages/Ventas/Cotizaciones";
+import Devoluciones from "@/pages/Ventas/Devoluciones";
+import ReportesVentas from "@/pages/Ventas/Reporte_ventas";
+
+function Rutas() {
+    const { resetUser } = useUser();
+
+    function Logout() {
+        localStorage.clear();
+        resetUser();
+        return <Navigate to="/login" />;
+    }
+
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* ANY USER */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><Home /></ProtectedRoute>} />
+                <Route path="/Chat" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><Chat /></ProtectedRoute>} />
+                
+                {/* INVETARY USER */}
+                <Route path="/Inventario" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Inventario']}><Inventary /></ProtectedRoute>} />
+                <Route path="/Agregar-Producto" element={<ProtectedRoute allowedRoles={['Administrador', 'Inventario']}><AddProduct /></ProtectedRoute>} />
+                
+                {/* HUMAN RESOURCES  USER*/}
+                <Route path="/Empleados" element={<ProtectedRoute allowedRoles={['Administrador', 'Recursos Humanos']}><Employee /></ProtectedRoute>} />
+                
+                {/* SALES USER */}
+                <Route paht="/Clientes" element={<ProtectedRoute><Clients/></ProtectedRoute>}/>
+                <Route path="/Cotizaciones" element={<ProtectedRoute><Cotizaciones/></ProtectedRoute>}/>
+                <Route path="/Devoluciones" element={<ProtectedRoute><Devoluciones/></ProtectedRoute>}/>
+                <Route path="/Reportes-Ventas" element={<ProtectedRoute><ReportesVentas/></ProtectedRoute>}/>
+
+                {/* SYSTEM */}
+                <Route path="*" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><NotFound /></ProtectedRoute>} />
+                <Route path="/unauthorized" element={<NoAuthorized />} />
+                <Route path="/Logout" element={<Logout />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
+
+export default Rutas;
