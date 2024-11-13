@@ -16,6 +16,9 @@ import AddProduct from "@/pages/Inventario/AddProduct";
 
 // RECURSOS HUMANOS
 import Employee from "@/pages/RH/Employee";
+import Horarios from '@/pages/RH/Horarios';
+import Nominas from '@/pages/RH/Nominas';
+import Capacitacion from '@/pages/RH/Capacitacion';
 
 // VENTAS
 import Clientes from "@/pages/Ventas/Clientes";
@@ -46,7 +49,10 @@ function Rutas() {
                 
                 {/* HUMAN RESOURCES  USER*/}
                 <Route path="/Empleados" element={<ProtectedRoute allowedRoles={['Administrador', 'Recursos Humanos']}><Employee /></ProtectedRoute>} />
-                
+                <Route path="/Horarios" element={<ProtectedRoute><Horarios/></ProtectedRoute>}/>
+                <Route path="/Nominas" element={<ProtectedRoute><Nominas/></ProtectedRoute>}/>
+                <Route path="/Capacitacion" element={<ProtectedRoute><Capacitacion/></ProtectedRoute>}/>
+
                 {/* SALES USER */}
                 <Route path="/Clientes" element={<ProtectedRoute><Clientes/></ProtectedRoute>}/>
                 <Route path="/Cotizaciones" element={<ProtectedRoute><Cotizaciones/></ProtectedRoute>}/>

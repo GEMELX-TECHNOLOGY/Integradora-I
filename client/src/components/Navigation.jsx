@@ -12,6 +12,9 @@ import {
   CotizacionIcon,
   DevolucionIcon,
   ReportVenIcon,
+  CapacitacionIcon,
+  HorarioIcon,
+  NominaIcon,
 } from "@/icons/Icons";
 import { useLocation } from "react-router-dom";
 
@@ -22,24 +25,54 @@ const PageLinkAdministrador = [
     url: "",
   },
   {
-    item: "Inventario",
-    icon: <InventoryIcon className="mr-4" />,
-    url: "Inventario",
-  },
-  {
-    item: "Agregar Producto",
-    icon: <AddProductIcon />,
-    url: "Agregar-Producto",
-  },
-  {
     item: "Mensajería",
     icon: <ChatIcon className="mr-4" />,
     url: "Chat",
   },
   {
+    item: "Horarios",
+    icon: <HorarioIcon className="mr-4" />,
+    url: "Horarios",
+  },
+  {
+    item: "Nóminas",
+    icon: <NominaIcon className="mr-4" />,
+    url: "Nominas",
+  },
+  {
+    item: "Capacitación",
+    icon: <CapacitacionIcon className="mr-4" />,
+    url: "Capacitacion",
+  },
+  {
     item: "Empleados",
     icon: <EmployeesIcon className="mr-4" />,
     url: "Empleados",
+  },
+  {
+    item: "Devoluciones",
+    icon: <DevolucionIcon className="mr-4" />,
+    url: "Devoluciones",
+  },
+  {
+    item: "Inventario",
+    icon: <InventoryIcon className="mr-4" />,
+    url: "Inventario",
+  },
+  {
+    item: "Cotizaciones",
+    icon: <CotizacionIcon className="mr-4" />,
+    url: "Cotizaciones",
+  },
+  {
+    item: "Clientes",
+    icon: <ClientIcon className="mr-4" />,
+    url: "Clientes",
+  },
+  {
+    item: "Reportes Ventas",
+    icon: <ReportVenIcon className="mr-4" />,
+    url: "Reportes-Ventas",
   },
 ];
 
@@ -81,6 +114,39 @@ const PageLinkVentas = [
   },
 ];
 
+const PageLinkRH = [
+  {
+    item: "Inicio",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
+  },
+  {
+    item: "Empleados",
+    icon: <EmployeesIcon className="mr-4" />,
+    url: "Empleados",
+  },
+  {
+    item: "Mensajería",
+    icon: <ChatIcon className="mr-4" />,
+    url: "Chat",
+  },
+  {
+    item: "Horarios",
+    icon: <HorarioIcon className="mr-4" />,
+    url: "Horarios",
+  },
+  {
+    item: "Nóminas",
+    icon: <NominaIcon className="mr-4" />,
+    url: "Nominas",
+  },
+  {
+    item: "Capacitación",
+    icon: <CapacitacionIcon className="mr-4" />,
+    url: "Capacitacion",
+  },
+];
+
 function Navigation() {
   const location = useLocation();
   const [rol, setRol] = useState("");
@@ -112,6 +178,8 @@ function Navigation() {
         return PageLinkAdministrador;
       case "Ventas":
         return PageLinkVentas;
+      case "Recursos Humanos":
+        return PageLinkRH;
       default:
         return [];
     }
@@ -128,7 +196,7 @@ function Navigation() {
           className="flex justify-center items-center py-14"
         />
       </Link>
-      <ul className="justify-center items-center pt-12">
+      <ul className="justify-center items-center">
         {PageLink.map(({ item, icon, url }) => (
           <li
             key={item}
@@ -148,8 +216,7 @@ function Navigation() {
           </li>
         ))}
       </ul>
-      <ul className="justify-center items-center pt-[300px]">
-        <li className="text-black/70  w-[220px] h-14 flex items-center rounded-[10px] hover:text-[#045E9C]">
+      <div className="justify-start mt-auto text-black/70  w-[220px] flex items-start rounded-[10px] hover:text-[#045E9C]">
           <Link
             to={"/Logout"}
             className="flex items-center pl-7 text-16 font-bold"
@@ -157,8 +224,7 @@ function Navigation() {
             <LogoutIcon className="mr-4" />
             Cerrar sesión
           </Link>
-        </li>
-      </ul>
+      </div>
     </nav>
   );
 }
