@@ -15,6 +15,7 @@ def user_details(request):
     user = request.user
     role_name = user.rol.nombre_rol if user.rol else 'No role'
     return Response({
+        'id': user.id,
         'first_name': user.first_name,
         'last_name': user.last_name,
         'rol': role_name,

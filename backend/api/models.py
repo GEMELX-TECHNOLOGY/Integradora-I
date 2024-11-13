@@ -62,7 +62,6 @@ class Usuarios(AbstractUser):
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE, default=1)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['role','email']
     objects = UserManager()
 
     def __str__(self):
