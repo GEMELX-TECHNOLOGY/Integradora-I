@@ -8,8 +8,14 @@ from .manager import UserManager
 class Proveedor(models.Model):
     id_prov = models.AutoField(primary_key=True)
     nombre = models.TextField()
+    apellido_paterno = models.CharField(max_length=50)
+    apellido_materno = models.CharField(max_length=50)
     telefono = models.IntegerField()
-    direccion = models.CharField(max_length=100)
+    calle = models.CharField(max_length=100)
+    numero = models.CharField(max_length=20)
+    ciudad = models.CharField(max_length=50)
+    estado = models.CharField(max_length=50)
+    codigo_postal = models.CharField(max_length=10)
 
 ################ - PRODUCTOS - ################
 #Tabla Categoria
@@ -88,8 +94,14 @@ class Usuarios(AbstractUser):
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     nombre = models.TextField()
+    apellido_paterno = models.CharField(max_length=50)
+    apellido_materno = models.CharField(max_length=50)
     telefono = models.IntegerField()
-    direcccion = models.CharField(max_length=100)
+    calle = models.CharField(max_length=100)
+    numero = models.CharField(max_length=20)
+    ciudad = models.CharField(max_length=50)
+    estado = models.CharField(max_length=50)
+    codigo_postal = models.CharField(max_length=10)
     correo = models.CharField(max_length=100)
 
 #Tabla Ventas
