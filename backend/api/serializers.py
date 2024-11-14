@@ -44,9 +44,10 @@ class RolSerializer(serializers.ModelSerializer):
 #Productos 
 class ProductoSerializer(serializers.ModelSerializer):
     categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())
+    proveedor = serializers.PrimaryKeyRelatedField(queryset=Proveedor.objects.all())
     class Meta:
         model = Producto
-        fields = ['cod_producto','nombre','descripcion','referencia','modelo','marca','precio','stock','product_image','categoria']
+        fields = ['cod_producto','nombre','descripcion','referencia','modelo','marca','precio','stock','product_image','categoria','proveedor']
 
 class UpdateProductoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,7 +68,7 @@ class CategoriaSerializer(serializers.ModelSerializer):
 class VentasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ventas
-        fields = ['referencia', 'uv', 'pv', 'amt']
+        fields = ['producto','referencia', 'uv', 'pv', 'amt']
 
 
 class UpdateVentasSerializer(serializers.ModelSerializer):
@@ -120,7 +121,8 @@ class DetalleCotizacionSerializer(serializers.ModelSerializer):
 class DevolucionesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Devoluciones
-        fields = ['id_dev', 'motivo', 'fecha', 'venta', 'producto']
+        fields = ['motivo', 'fecha', 'venta', 'producto']
+    
 
 
 #Nomina
