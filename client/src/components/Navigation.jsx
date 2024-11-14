@@ -30,6 +30,11 @@ const PageLinkAdministrador = [
     url: "Chat",
   },
   {
+    item: "Agregar Producto",
+    icon: <AddProductIcon />,
+    url: "Agregar-Producto",
+  },
+  {
     item: "Horarios",
     icon: <HorarioIcon className="mr-4" />,
     url: "Horarios",
