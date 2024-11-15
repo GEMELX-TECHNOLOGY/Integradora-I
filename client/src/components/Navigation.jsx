@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import api from "@/lib/api";
-import { Link } from "react-router-dom";
 import {
   HomeIcon,
   InventoryIcon,
@@ -12,218 +12,229 @@ import {
   CotizacionIcon,
   DevolucionIcon,
   ReportVenIcon,
-  CapacitacionIcon,
   HorarioIcon,
   NominaIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ProveedoresIcon,
 } from "@/icons/Icons";
-import { useLocation } from "react-router-dom";
 
-const PageLinkAdministrador = [
-  {
-    item: "Inicio",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
-  },
-  {
-    item: "Mensajería",
-    icon: <ChatIcon className="mr-4" />,
-    url: "Chat",
-  },
-  {
-    item: "Horarios",
-    icon: <HorarioIcon className="mr-4" />,
-    url: "Horarios",
-  },
-  {
-    item: "Nóminas",
-    icon: <NominaIcon className="mr-4" />,
-    url: "Nominas",
-  },
-  {
-    item: "Capacitación",
-    icon: <CapacitacionIcon className="mr-4" />,
-    url: "Capacitacion",
-  },
-  {
-    item: "Empleados",
-    icon: <EmployeesIcon className="mr-4" />,
-    url: "Empleados",
-  },
-  {
-    item: "Devoluciones",
-    icon: <DevolucionIcon className="mr-4" />,
-    url: "Devoluciones",
-  },
-  {
-    item: "Inventario",
-    icon: <InventoryIcon className="mr-4" />,
-    url: "Inventario",
-  },
-  {
-    item: "Cotizaciones",
-    icon: <CotizacionIcon className="mr-4" />,
-    url: "Cotizaciones",
-  },
-  {
-    item: "Clientes",
-    icon: <ClientIcon className="mr-4" />,
-    url: "Clientes",
-  },
-  {
-    item: "Reportes Ventas",
-    icon: <ReportVenIcon className="mr-4" />,
-    url: "Reportes-Ventas",
-  },
-];
+// Configuración de navegación
+const navigationConfig = {
+  Administrador: [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "/",
+    },
+    {
+      item: "Empleados",
+      icon: <EmployeesIcon className="mr-4" />,
+      subItems: [
+        {
+          item: "Empleados",
+          icon: <EmployeesIcon className="mr-4" />,
+          url: "Empleados",
+        },
+        {
+          item: "Horarios",
+          icon: <HorarioIcon className="mr-4" />,
+          url: "Horarios",
+        },
+        {
+          item: "Nóminas",
+          icon: <NominaIcon className="mr-4" />,
+          url: "Nominas",
+        },
+      ],
+    },
+    {
+      item: "Mensajería",
+      icon: <ChatIcon className="mr-4" />,
+      url: "/Chat",
+    },
+    {
+      item: "Ventas",
+      icon: <ReportVenIcon className="mr-4" />,
+      subItems: [
+        {
+          item: "Reportes Ventas",
+          icon: <ReportVenIcon className="mr-4" />,
+          url: "Reportes-Ventas",
+        },
+        {
+          item: "Clientes",
+          icon: <ClientIcon className="mr-4" />,
+          url: "Clientes",
+        },
 
-const PageLinkVentas = [
-  {
-    item: "Inicio",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
-  },
-  {
-    item: "Clientes",
-    icon: <ClientIcon className="mr-4" />,
-    url: "Clientes",
-  },
-  {
-    item: "Reportes Ventas",
-    icon: <ReportVenIcon className="mr-4" />,
-    url: "Reportes-Ventas",
-  },
-  {
-    item: "Mensajería",
-    icon: <ChatIcon className="mr-4" />,
-    url: "Chat",
-  },
-  {
-    item: "Devoluciones",
-    icon: <DevolucionIcon className="mr-4" />,
-    url: "Devoluciones",
-  },
-  {
-    item: "Inventario",
-    icon: <InventoryIcon className="mr-4" />,
-    url: "Inventario",
-  },
-  {
-    item: "Cotizaciones",
-    icon: <CotizacionIcon className="mr-4" />,
-    url: "Cotizaciones",
-  },
-];
+      ],
+    },
+    {
+      item: "Cotizaciones",
+      icon: <CotizacionIcon className="mr-4" />,
+      url: "/Cotizaciones",
+    },
 
-const PageLinkRH = [
-  {
-    item: "Inicio",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
-  },
-  {
-    item: "Empleados",
-    icon: <EmployeesIcon className="mr-4" />,
-    url: "Empleados",
-  },
-  {
-    item: "Mensajería",
-    icon: <ChatIcon className="mr-4" />,
-    url: "Chat",
-  },
-  {
-    item: "Horarios",
-    icon: <HorarioIcon className="mr-4" />,
-    url: "Horarios",
-  },
-  {
-    item: "Nóminas",
-    icon: <NominaIcon className="mr-4" />,
-    url: "Nominas",
-  },
-  {
-    item: "Capacitación",
-    icon: <CapacitacionIcon className="mr-4" />,
-    url: "Capacitacion",
-  },
-];
+    {
+      item: "Inventario",
+      icon: <InventoryIcon className="mr-4" />,
+      subItems: [
+        {
+          item: "Inventario",
+          icon: <InventoryIcon className="mr-4" />,
+          url: "Inventario",
+        },
+        {
+          item: "Proveedores",
+          icon: <ProveedoresIcon className="mr-4"/>,
+          url: "Proveedores"
+        },
+        {
+          item: "Agregar Producto",
+          icon: <AddProductIcon className="mr-4" />,
+          url: "Agregar-Producto",
+        },
+        {
+          item: "Devoluciones",
+          icon: <DevolucionIcon className="mr-4" />,
+          url: "Devoluciones",
+        },
+      ],
+    },
+  ],
+  Ventas: [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "/",
+    },
+    {
+      item: "Clientes",
+      icon: <ClientIcon className="mr-4" />,
+      url: "/Clientes",
+    },
+    {
+      item: "Reportes Ventas",
+      icon: <ReportVenIcon className="mr-4" />,
+      url: "/Reportes-Ventas",
+    },
+  ],
+  "Recursos Humanos": [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "/",
+    },
+    {
+      item: "Empleados",
+      icon: <EmployeesIcon className="mr-4" />,
+      url: "/Empleados",
+    },
+  ],
+};
 
+// Componente de navegación
 function Navigation() {
   const location = useLocation();
   const [rol, setRol] = useState("");
+  const [expandedItem, setExpandedItem] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("access");
-    if (token) {
-      getUserDetails(token);
-    }
+    if (token) fetchUserRole(token);
   }, []);
 
-  const getUserDetails = async (token) => {
+  const fetchUserRole = async (token) => {
     try {
       const response = await api.get("/api/v1/user/", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
+        headers: { Authorization: `Token ${token}` },
       });
       const { rol } = response.data;
-      setRol({ rol });
+      setRol(rol);
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      console.error("Error fetching user role:", error);
     }
   };
 
-  const getMenu = () => {
-    switch (rol.rol) {
-      case "Administrador":
-        return PageLinkAdministrador;
-      case "Ventas":
-        return PageLinkVentas;
-      case "Recursos Humanos":
-        return PageLinkRH;
-      default:
-        return [];
-    }
+  const toggleExpand = (item) => {
+    setExpandedItem((prev) => (prev === item ? null : item));
   };
 
-  const PageLink = getMenu();
+  const getMenu = () => navigationConfig[rol] || [];
 
   return (
     <nav className="flex flex-col bg-white w-[280px] h-full p-4 shadow-lg items-center">
-      <Link to={"/"}>
+      {/* Logo */}
+      <Link to="/">
         <img
           src="/logo.svg"
           alt="Logo-ALPRO"
           className="flex justify-center items-center py-14"
         />
       </Link>
+
+      {/* Navegación */}
       <ul className="justify-center items-center">
-        {PageLink.map(({ item, icon, url }) => (
-          <li
-            key={item}
-            className={`text-black/70  w-[220px] h-14 flex items-center rounded-[10px]  ${
-              location.pathname === `/${url}`
-                ? "bg-[#045E9C] text-white transition-all"
-                : "hover:text-[#045E9C]"
-            }`}
-          >
-            <Link
-              to={`/${url}`}
-              className="flex items-center pl-7 text-16 font-bold"
+        {getMenu().map(({ item, icon, url, subItems }) => (
+          <li key={item} className="w-[220px]">
+            <div
+              className={`text-black/70 flex items-center justify-between h-14 rounded-[10px] ${
+                location.pathname === `/${url}`
+                  ? "bg-[#045E9C] text-white"
+                  : "hover:text-[#045E9C]"
+              }`}
             >
-              {icon}
-              {item}
-            </Link>
+              <Link
+                to={url || "#"}
+                className="flex items-center pl-7 text-16 font-bold"
+                onClick={() => subItems && toggleExpand(item)}
+              >
+                {icon}
+                {item}
+              </Link>
+              {subItems && (
+                <button onClick={() => toggleExpand(item)} className="pr-4">
+                  {expandedItem === item ? (
+                    <ChevronUpIcon className="ml-4" />
+                  ) : (
+                    <ChevronDownIcon className="ml-4" />
+                  )}
+                </button>
+              )}
+            </div>
+
+            {/* Subenlaces */}
+            {subItems && expandedItem === item && (
+              <ul className="pl-10">
+                {subItems.map(({ item, icon, url }) => (
+                  <li
+                    key={item}
+                    className={`text-black/70 h-12 flex items-center rounded-[10px] text-white" ${
+                      location.pathname === `/${url}`
+                    }`}
+                  >
+                    <Link
+                      to={`/${url}`}
+                      className="flex items-center text-14 font-bold"
+                    >
+                      {icon}
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
-      <div className="justify-start mt-auto text-black/70  w-[220px] flex items-start rounded-[10px] hover:text-[#045E9C]">
-          <Link
-            to={"/Logout"}
-            className="flex items-center pl-7 text-16 font-bold"
-          >
-            <LogoutIcon className="mr-4" />
-            Cerrar sesión
-          </Link>
+
+      {/* Cerrar sesión */}
+      <div className="justify-start mt-auto text-black/70 w-[220px] flex items-start rounded-[10px] hover:text-[#045E9C]">
+        <Link to="/Logout" className="flex items-center pl-7 text-16 font-bold">
+          <LogoutIcon className="mr-4" />
+          Cerrar sesión
+        </Link>
       </div>
     </nav>
   );

@@ -14,6 +14,9 @@ const NamePage = {
   "/Cotizaciones": "Cotizaciones",
   "/Devoluciones": "Devoluciones",
   "/Reportes-Ventas": "Reporte Ventas",
+  "/Horarios": "Horarios",
+  "/Nominas": "Nominas",
+  "/Proveedores": "Proveedores",
 };
 
 function Header() {
