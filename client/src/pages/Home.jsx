@@ -12,7 +12,6 @@ function Home() {
   const { user } = useUser();
 
   useEffect(() => {
-    console.log("Usuario o rol cambiado:", user);
   }, [user]);
 
   return (
