@@ -19,122 +19,135 @@ import {
   ProveedoresIcon,
 } from "@/icons/Icons";
 
-// Configuración de navegación
-const navigationConfig = {
-  Administrador: [
-    {
-      item: "Inicio",
-      icon: <HomeIcon className="mr-4" />,
-      url: "/",
-    },
-    {
-      item: "Empleados",
-      icon: <EmployeesIcon className="mr-4" />,
-      subItems: [
-        {
-          item: "Empleados",
-          icon: <EmployeesIcon className="mr-4" />,
-          url: "Empleados",
-        },
-        {
-          item: "Horarios",
-          icon: <HorarioIcon className="mr-4" />,
-          url: "Horarios",
-        },
-        {
-          item: "Nóminas",
-          icon: <NominaIcon className="mr-4" />,
-          url: "Nominas",
-        },
-      ],
-    },
-    {
-      item: "Mensajería",
-      icon: <ChatIcon className="mr-4" />,
-      url: "/Chat",
-    },
-    {
-      item: "Ventas",
-      icon: <ReportVenIcon className="mr-4" />,
-      subItems: [
-        {
-          item: "Reportes Ventas",
-          icon: <ReportVenIcon className="mr-4" />,
-          url: "Reportes-Ventas",
-        },
-        {
-          item: "Clientes",
-          icon: <ClientIcon className="mr-4" />,
-          url: "Clientes",
-        },
+const PageLinkAdministrador = [
+  {
+    item: "Inicio",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
+  },
+  {
+    item: "Mensajería",
+    icon: <ChatIcon className="mr-4" />,
+    url: "Chat",
+  },
+  {
+    item: "Horarios",
+    icon: <HorarioIcon className="mr-4" />,
+    url: "Horarios",
+  },
+  {
+    item: "Nóminas",
+    icon: <NominaIcon className="mr-4" />,
+    url: "Nominas",
+  },
+  {
+    item: "Capacitación",
+    icon: <CapacitacionIcon className="mr-4" />,
+    url: "Capacitacion",
+  },
+  {
+    item: "Empleados",
+    icon: <EmployeesIcon className="mr-4" />,
+    url: "Empleados",
+  },
+  {
+    item: "Devoluciones",
+    icon: <DevolucionIcon className="mr-4" />,
+    url: "Devoluciones",
+  },
+  {
+    item: "Inventario",
+    icon: <InventoryIcon className="mr-4" />,
+    url: "Inventario",
+  },
+  {
+    item: "Cotizaciones",
+    icon: <CotizacionIcon className="mr-4" />,
+    url: "Cotizaciones",
+  },
+  {
+    item: "Clientes",
+    icon: <ClientIcon className="mr-4" />,
+    url: "Clientes",
+  },
+  {
+    item: "Reportes Ventas",
+    icon: <ReportVenIcon className="mr-4" />,
+    url: "Reportes-Ventas",
+  },
+];
 
-      ],
-    },
-    {
-      item: "Cotizaciones",
-      icon: <CotizacionIcon className="mr-4" />,
-      url: "/Cotizaciones",
-    },
+const PageLinkVentas = [
+  {
+    item: "Inicio",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
+  },
+  {
+    item: "Clientes",
+    icon: <ClientIcon className="mr-4" />,
+    url: "Clientes",
+  },
+  {
+    item: "Reportes Ventas",
+    icon: <ReportVenIcon className="mr-4" />,
+    url: "Reportes-Ventas",
+  },
+  {
+    item: "Mensajería",
+    icon: <ChatIcon className="mr-4" />,
+    url: "Chat",
+  },
+  {
+    item: "Devoluciones",
+    icon: <DevolucionIcon className="mr-4" />,
+    url: "Devoluciones",
+  },
+  {
+    item: "Inventario",
+    icon: <InventoryIcon className="mr-4" />,
+    url: "Inventario",
+  },
+  {
+    item: "Cotizaciones",
+    icon: <CotizacionIcon className="mr-4" />,
+    url: "Cotizaciones",
+  },
+];
 
-    {
-      item: "Inventario",
-      icon: <InventoryIcon className="mr-4" />,
-      subItems: [
-        {
-          item: "Inventario",
-          icon: <InventoryIcon className="mr-4" />,
-          url: "Inventario",
-        },
-        {
-          item: "Proveedores",
-          icon: <ProveedoresIcon className="mr-4"/>,
-          url: "Proveedores"
-        },
-        {
-          item: "Agregar Producto",
-          icon: <AddProductIcon className="mr-4" />,
-          url: "Agregar-Producto",
-        },
-        {
-          item: "Devoluciones",
-          icon: <DevolucionIcon className="mr-4" />,
-          url: "Devoluciones",
-        },
-      ],
-    },
-  ],
-  Ventas: [
-    {
-      item: "Inicio",
-      icon: <HomeIcon className="mr-4" />,
-      url: "/",
-    },
-    {
-      item: "Clientes",
-      icon: <ClientIcon className="mr-4" />,
-      url: "/Clientes",
-    },
-    {
-      item: "Reportes Ventas",
-      icon: <ReportVenIcon className="mr-4" />,
-      url: "/Reportes-Ventas",
-    },
-  ],
-  "Recursos Humanos": [
-    {
-      item: "Inicio",
-      icon: <HomeIcon className="mr-4" />,
-      url: "/",
-    },
-    {
-      item: "Empleados",
-      icon: <EmployeesIcon className="mr-4" />,
-      url: "/Empleados",
-    },
-  ],
-};
+const PageLinkRH = [
+  {
+    item: "Inicio",
+    icon: <HomeIcon className="mr-4" />,
+    url: "",
+  },
+  {
+    item: "Empleados",
+    icon: <EmployeesIcon className="mr-4" />,
+    url: "Empleados",
+  },
+  {
+    item: "Mensajería",
+    icon: <ChatIcon className="mr-4" />,
+    url: "Chat",
+  },
+  {
+    item: "Horarios",
+    icon: <HorarioIcon className="mr-4" />,
+    url: "Horarios",
+  },
+  {
+    item: "Nóminas",
+    icon: <NominaIcon className="mr-4" />,
+    url: "Nominas",
+  },
+  {
+    item: "Capacitación",
+    icon: <CapacitacionIcon className="mr-4" />,
+    url: "Capacitacion",
+  },
+];
 
-// Componente de navegación
 function Navigation() {
   const location = useLocation();
   const [rol, setRol] = useState("");

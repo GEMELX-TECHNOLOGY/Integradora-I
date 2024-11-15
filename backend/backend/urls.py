@@ -76,6 +76,7 @@ urlpatterns = [
     #urls Devoluciones
     path('api/v1/devoluciones/', ListaDevolucionesView.as_view(), name='lista_devoluciones_api'),
     path('api/v1/devoluciones/crear/', CreateDevolucionView.as_view(), name='crear_devolucion'),
+    path('api/v1/devoluciones/<int:id_dev>/', DetalleDevolucionesView.as_view(), name='detalle_devoluciones'),
 
     #urls Nomina
     path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),

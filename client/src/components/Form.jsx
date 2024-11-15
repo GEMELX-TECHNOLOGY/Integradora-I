@@ -3,9 +3,8 @@ import api from "@/lib/api";
 import toast, { Toaster } from "react-hot-toast";
 
 function Form() {
-  // Creación de la función para añadir producto
-  const [productName, setProductName] = useState(""); // Hook que maneja el estado de los componentes
-  const [productQuantity, setProductQuantity] = useState(""); // Todos inician con una cadena vacía
+  const [productName, setProductName] = useState("");
+  const [productQuantity, setProductQuantity] = useState("");
   const [productCode, setProductCode] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -14,22 +13,23 @@ function Form() {
   const [productModel, setProductModel] = useState("");
   const [productBrand, setProductBrand] = useState("");
   const [category, setCategories] = useState([]);
+  const [providers, setProviders] = useState([]); // Estado para los proveedores
+  const [productProvider, setProductProvider] = useState(""); // Estado para el proveedor seleccionado
 
-  // Cuando en nuestra cajita de texto "seleccione una imagen" cambia para hacer esa selección de imagen con su formato
   const handleImageChange = (event) => {
-    const file = event.target.files[0]; // Accede al primer elemento de la lista (imagen seleccionada)
+    const file = event.target.files[0];
     if (file) {
-      setProductImage(file); // Guardar el archivo en lugar de la URL
+      setProductImage(file);
     }
   };
 
   const succesAdd = () => toast.success("El registro se ha agregado correctamente");
   const errorAdd = () => toast.error("Ha ocurrido un error al agregar el registro");
 
-  // Función que se ejecuta cuando el formulario se envía
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita recargo de página al seleccionar crear otra categoría
+    e.preventDefault();
     let categoriaId = productCategory;
+    let proveedorId = productProvider; 
 
     const formData = new FormData();
     formData.append("cod_producto", productCode);
@@ -40,9 +40,10 @@ function Form() {
     formData.append("marca", productBrand);
     formData.append("precio", productPrice);
     formData.append("stock", productQuantity);
-    formData.append("categoria", categoriaId); // Asigna el ID de la categoría
+    formData.append("categoria", categoriaId);
+    formData.append("proveedor", proveedorId); 
     if (productImage) {
-      formData.append("product_image", productImage); // Cambiado aquí
+      formData.append("product_image", productImage);
     }
 
     try {
@@ -51,7 +52,6 @@ function Form() {
           "Content-Type": "multipart/form-data",
         },
       });
-      // Limpiar el formulario después de enviar
       setProductName("");
       setProductQuantity("");
       setProductCode("");
@@ -61,6 +61,7 @@ function Form() {
       setProductImage(null);
       setProductModel("");
       setProductBrand("");
+      setProductProvider(""); 
       succesAdd();
     } catch (error) {
       console.error("Error al guardar el producto:", error.response ? error.response.data : error.message);
@@ -78,6 +79,17 @@ function Form() {
       }
     };
     loadCategories();
+
+    const loadProviders = async () => {
+      try {
+        const res = await api.get("api/v1/proveedores/");
+        setProviders(res.data);  // Aseguramos que los datos de proveedores se carguen correctamente
+        console.log("Proveedores cargados:", res.data);  // Verificar los datos de proveedores
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    loadProviders();
   }, []);
 
   return (
@@ -138,6 +150,25 @@ function Form() {
                 </select>        
               </div>
             </div>
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <label className="block font-bold text-gray-700 mb-1">Proveedor</label>
+                <select
+                  value={productProvider}
+                  onChange={(e) => setProductProvider(e.target.value)} // Actualizar el estado del proveedor
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                >
+                  <option value="" disabled required>
+                    Seleccionar Proveedor
+                  </option>
+                  {providers.map((provider) => (
+                    <option key={provider.id_prov} value={provider.id_prov}>
+                      {provider.nombre} 
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
             <div className="mb-5">
               <label className="block font-bold text-gray-700 mb-1">Descripción</label>
               <textarea
@@ -193,7 +224,7 @@ function Form() {
             </div>
             <button
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
-              type="submit" // Cambiado a type="submit"
+              type="submit"
             >
               Guardar Producto
             </button>
@@ -204,7 +235,7 @@ function Form() {
           <div className="border border-gray-300 p-5 rounded-lg shadow-md text-center flex flex-col items-center">
             {productImage && (
               <img
-                src={URL.createObjectURL(productImage)} // Mostrar la imagen seleccionada
+                src={URL.createObjectURL(productImage)} 
                 alt="Imagen del producto"
                 className="w-full max-w-xs mb-3"
               />

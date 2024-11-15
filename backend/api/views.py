@@ -252,6 +252,11 @@ class ListaDevolucionesView(generics.ListAPIView):
     serializer_class = DevolucionesSerializer
     permission_classes = [AllowAny]
 
+class DetalleDevolucionesView(generics.RetrieveAPIView):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
+    lookup_field = 'id_dev'
+    permission_classes = [AllowAny]
 ################ - NOMINA - ################
 class CreateNominaView(generics.CreateAPIView):
     queryset = Nomina
