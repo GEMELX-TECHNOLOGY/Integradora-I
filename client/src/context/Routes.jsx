@@ -13,12 +13,12 @@ import NoAuthorized from "@/context/NoAuthorized";
 // INVENTARIO
 import Inventary from "@/pages/Inventario/Inventary";
 import AddProduct from "@/pages/Inventario/AddProduct";
+import Proveedores from '@/pages/Inventario/Proveedores';
 
 // RECURSOS HUMANOS
 import Employee from "@/pages/RH/Employee";
 import Horarios from '@/pages/RH/Horarios';
 import Nominas from '@/pages/RH/Nominas';
-import Capacitacion from '@/pages/RH/Capacitacion';
 
 // VENTAS
 import Clientes from "@/pages/Ventas/Clientes";
@@ -46,12 +46,12 @@ function Rutas() {
                 {/* INVETARY USER */}
                 <Route path="/Inventario" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Inventario']}><Inventary /></ProtectedRoute>} />
                 <Route path="/Agregar-Producto" element={<ProtectedRoute allowedRoles={['Administrador', 'Inventario']}><AddProduct /></ProtectedRoute>} />
+                <Route path='/Proveedores' element={<ProtectedRoute><Proveedores/></ProtectedRoute>}/>
                 
                 {/* HUMAN RESOURCES  USER*/}
                 <Route path="/Empleados" element={<ProtectedRoute allowedRoles={['Administrador', 'Recursos Humanos']}><Employee /></ProtectedRoute>} />
                 <Route path="/Horarios" element={<ProtectedRoute><Horarios/></ProtectedRoute>}/>
                 <Route path="/Nominas" element={<ProtectedRoute><Nominas/></ProtectedRoute>}/>
-                <Route path="/Capacitacion" element={<ProtectedRoute><Capacitacion/></ProtectedRoute>}/>
 
                 {/* SALES USER */}
                 <Route path="/Clientes" element={<ProtectedRoute><Clientes/></ProtectedRoute>}/>
