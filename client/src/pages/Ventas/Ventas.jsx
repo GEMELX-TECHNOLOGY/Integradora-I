@@ -1,42 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "@/lib/api";
+import toast, { Toaster } from "react-hot-toast";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
+import { ViewIcon, DeleteIcon, EditIcon } from "@/icons/Icons";
 
 function Ventas() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalViewOpen, setIsModalViewOpen] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("Información básica");
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [ventas, setVentas] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [currentVenta, setCurrentVenta] = useState(null);
+  const [newVenta, setNewVenta] = useState({
+    producto: "",
+    referencia: "",
+    uv: "",
+    pv: "",
+    amt: "",
+  });
 
-  const totalPages = 1;
+  const totalPages = Math.ceil(ventas.length / 10);
 
-  const openModal = () => {
-    setModalContent("Informacion de la Venta");
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    fetchVentas();
+    fetchProductos();
+  }, []);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const openAddModal = () => {
-    setModalContent("Agregar Venta");
-    setIsModalAddOpen(true);
-  };
-  const closeAddModal = () => {
-    setIsModalAddOpen(false);
-  };
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+  const fetchVentas = async () => {
+    try {
+      const response = await api.get("api/v1/ventas/");
+      setVentas(response.data);
+    } catch (error) {
+      console.error("Error al obtener las ventas:", error);
     }
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+  const fetchProductos = async () => {
+    try {
+      const response = await api.get("api/v1/productos/"); // Suponiendo que hay una endpoint para productos
+      setProductos(response.data);
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+    }
+  };
+
+  const handleView = (venta) => {
+    setCurrentVenta(venta);
+    setIsModalViewOpen(true);
+  };
+
+  const handleEdit = (venta) => {
+    setCurrentVenta(venta);
+    setIsModalEditOpen(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.put(
+        `api/v1/ventas/actualizar/${currentVenta.id}/`,
+        currentVenta
+      );
+      setVentas(
+        ventas.map((venta) =>
+          venta.id === response.data.id ? response.data : venta
+        )
+      );
+      setIsModalEditOpen(false);
+      toast.success("Venta actualizada correctamente.");
+    } catch (error) {
+      toast.error("Error al actualizar la venta.");
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async (ventaId) => {
+    try {
+      await api.delete(`api/v1/ventas/eliminar/${ventaId}/`);
+      setVentas(ventas.filter((venta) => venta.id !== ventaId));
+      toast.success("Venta eliminada correctamente.");
+    } catch (error) {
+      toast.error("Error al eliminar la venta.");
+      console.error(error);
+    }
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("api/v1/ventas/crear/", newVenta);
+      setVentas([...ventas, response.data]);
+      setIsModalAddOpen(false);
+      toast.success("Venta agregada correctamente.");
+    } catch (error) {
+      toast.error("Error al agregar la venta.");
+      console.error(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (isModalEditOpen) {
+      setCurrentVenta({ ...currentVenta, [name]: value });
+    } else {
+      setNewVenta({ ...newVenta, [name]: value });
     }
   };
 
@@ -48,172 +118,244 @@ function Ventas() {
         <div className="flex justify-end mr-28">
           <button
             className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
-            onClick={openAddModal}
+            onClick={() => setIsModalAddOpen(true)}
           >
             Agregar Venta
           </button>
         </div>
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
-        <div className="flex flex-col ml-11 underline-offset-1">
-          <div className="flex justify-between max-w-[1500px]">
-            <span className="pt-2 font-400 text-[#849AA9]">
-              Página {currentPage} de {totalPages}
-            </span>
-            <div className="pr-8">
-              <button
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-                className="mx-1 px-4 py-2 rounded"
-              >
-                Anterior
-              </button>
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className="mx-1 px-4 py-2 rounded"
-              >
-                Siguiente
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div className="container mx-auto p-4">
           <table className="min-w-[1450px] bg-white shadow-md rounded-lg text-center">
-            <thead className=" bg-[#045E9C] text-white">
+            <thead className="bg-[#045E9C] text-white">
               <tr>
-                <th className="p-2 text-center">NUMERO DE VENTA</th>
-                <th className="p-2 text-center">PRODUCTOS VENDIDOS</th>
-                <th className="p-2 text-center">MONTO TOTAL</th>
-                <th className="p-2 text-center">FECHA DE COMPRA</th>
+                <th className="p-2 text-center">PRODUCTO</th>
+                <th className="p-2 text-center">REFERENCIA</th>
+                <th className="p-2 text-center">UV</th>
+                <th className="p-2 text-center">PV</th>
+                <th className="p-2 text-center">AMT</th>
                 <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b hover:gb-gray-100 text-gray-800">
-                <td className="p-2">
-                  <div className="font-bold">0000001</div>
-                </td>
-                <td className="p-2">
-                  <div className="font-bold">12</div>
-                </td>
-                <td className="p-2">
-                  <div className="font-bold">$20,000.00</div>
-                </td>
-                <td className="p-2">
-                  <div className="font-bold">2024-11-5</div>
-                </td>
-                <td className="p-2 flex space-x-2 justify-center items-center">
-                  <button
-                    onClick={() => openModal()}
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
+              {ventas
+                .slice((currentPage - 1) * 10, currentPage * 10)
+                .map((venta) => (
+                  <tr
+                    key={venta.id}
+                    className="border-b hover:bg-gray-100 text-gray-800"
                   >
-                    Ver más
-                  </button>
-                </td>
-              </tr>
+                    <td className="p-2">{venta.producto}</td>
+                    <td className="p-2">{venta.referencia}</td>
+                    <td className="p-2">{venta.uv}</td>
+                    <td className="p-2">{venta.pv}</td>
+                    <td className="p-2">{venta.amt}</td>
+                    <td className="p-2 flex justify-center space-x-2">
+                      <button onClick={() => handleView(venta)}>
+                        <ViewIcon className="h-6 w-6 text-blue-500 hover:text-blue-700" />
+                      </button>
+                      <button onClick={() => handleEdit(venta)}>
+                        <EditIcon className="h-6 w-6 text-green-500 hover:text-green-700" />
+                      </button>
+                      <button onClick={() => handleDelete(venta.id)}>
+                        <DeleteIcon className="h-6 w-6 text-red-500 hover:text-red-700" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
       </div>
-      <Modal
-        isOpen={isModalAddOpen}
-        onClose={closeAddModal}
-        title={modalContent}
-      >
-        <form>
-          <div className="flex flex-row bg-white max-w-[1550px] mx-auto">
-            <div className="flex-3 p-5">
-              <div className="bg-white rounded-lg shadow-md p-5">
-                <div className="flex flex-wrap mb-5">
-                  <div className="w-1/2 pr-2">
-                    <label className="block font-bold text-gray-700 mb-1">
-                      Numero de venta
-                    </label>
-                    <input
-                      type="number"
-                      placeholder=""
-                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                    />
-                  </div>
-                  <div className="w-1/2 pl-2">
-                    <label className="block font-bold text-gray-700 mb-1">
-                      Productos totales
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="0000012"
-                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-wrap mb-5">
-                  <div className="w-1/2 pr-2">
-                    <label className="block font-bold text-gray-700 mb-1">
-                        Monto total
-                    </label>
-                    <input
-                      type="number"
-                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                    />
-                  </div>
-                  <div className="w-1/2 pr-2">
-                    <label className="block font-bold text-gray-700 mb-1">
-                      Fecha de compra
-                    </label>
-                    <input
-                      type="date"
-                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                </div>
-                <div className="mb-5">
-              <label className="block font-bold text-gray-700 mb-1">Descripción</label>
-              <textarea
-                placeholder="Descripción de la venta..."
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500 h-24"
-              ></textarea>
-            </div>
-                <button
-                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
-                  type="submit"
-                >
-                  Guardar Venta
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </Modal>
-      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalContent}>
-        <div className="bg-white rounded-lg w-full">
-          <div className="mt-4 flex border-b">
-            <button
-              onClick={() => setActiveTab("Información básica")}
-              className={`px-4 py-2 ${
-                activeTab === "Información básica"
-                  ? "text-white bg-blue-700"
-                  : "text-gray-600"
-              } rounded-t-lg`}
-            >
-              Detalle de compra
-            </button>
-          </div>
 
-          <div className="mt-6">
-            {activeTab === "Información básica" && (
-              <div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Detalle de compra:
-                  </label>
-                </div>
-              </div>
-            )}
+      {/* Modal Ver */}
+      {isModalViewOpen && currentVenta && (
+        <Modal isOpen={isModalViewOpen} closeModal={() => setIsModalViewOpen(false)}>
+          <div className="relative">
+            <button
+              onClick={() => setIsModalViewOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              <span className="text-2xl">&times;</span> {/* "x" icon */}
+            </button>
+            <h2 className="text-xl font-semibold">Detalles de Venta</h2>
+            <p><strong>Producto:</strong> {currentVenta.producto}</p>
+            <p><strong>Referencia:</strong> {currentVenta.referencia}</p>
+            <p><strong>UV:</strong> {currentVenta.uv}</p>
+            <p><strong>PV:</strong> {currentVenta.pv}</p>
+            <p><strong>AMT:</strong> {currentVenta.amt}</p>
           </div>
-        </div>
-      </Modal>
+        </Modal>
+      )}
+
+      {/* Modal Editar */}
+      {isModalEditOpen && currentVenta && (
+        <Modal isOpen={isModalEditOpen} closeModal={() => setIsModalEditOpen(false)}>
+          <div className="relative">
+            <button
+              onClick={() => setIsModalEditOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              <span className="text-2xl">&times;</span> {/* "x" icon */}
+            </button>
+            <h2 className="text-xl font-semibold">Editar Venta</h2>
+            <form onSubmit={handleEditSubmit} className="grid grid-cols-1 gap-4 mt-4">
+              <label>
+                Producto
+                <select
+                  name="producto"
+                  value={currentVenta.producto}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
+                  <option value="">Seleccionar Producto</option>
+                  {productos.map((producto) => (
+                    <option key={producto.id} value={producto.id}>
+                      {producto.nombre}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Referencia
+                <input
+                  type="text"
+                  name="referencia"
+                  value={currentVenta.referencia}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <label>
+                UV
+                <input
+                  type="number"
+                  name="uv"
+                  value={currentVenta.uv}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <label>
+                PV
+                <input
+                  type="number"
+                  name="pv"
+                  value={currentVenta.pv}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <label>
+                AMT
+                <input
+                  type="number"
+                  name="amt"
+                  value={currentVenta.amt}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Guardar Cambios
+              </button>
+            </form>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal Agregar Venta */}
+      {isModalAddOpen && (
+        <Modal isOpen={isModalAddOpen} closeModal={() => setIsModalAddOpen(false)}>
+          <div className="relative">
+            <button
+              onClick={() => setIsModalAddOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              <span className="text-2xl">&times;</span> {/* "x" icon */}
+            </button>
+            <h2 className="text-xl font-semibold">Agregar Venta</h2>
+            <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">
+              <label>
+                Producto
+                <select
+                  name="producto"
+                  value={newVenta.producto}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
+                  <option value="">Seleccionar Producto</option>
+                  {productos.map((producto) => (
+                    <option key={producto.id} value={producto.id}>
+                      {producto.nombre}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Referencia
+                <input
+                  type="text"
+                  name="referencia"
+                  value={newVenta.referencia}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <label>
+                UV
+                <input
+                  type="number"
+                  name="uv"
+                  value={newVenta.uv}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <label>
+                PV
+                <input
+                  type="number"
+                  name="pv"
+                  value={newVenta.pv}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <label>
+                AMT
+                <input
+                  type="number"
+                  name="amt"
+                  value={newVenta.amt}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </label>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Guardar Venta
+              </button>
+            </form>
+          </div>
+        </Modal>
+      )}
+
+      <Toaster />
     </div>
   );
 }

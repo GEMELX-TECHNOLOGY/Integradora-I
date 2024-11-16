@@ -12,19 +12,19 @@ function BetterProduct() {
         const res = await api.get("api/v1/productos/");
         setProducts(res.data);
       } catch (err) {
-        console.error(`Error: ${err}`);
+        console.error(`Error: ${err}`);  
       }
     };
-
+  
     const loadCategories = async () => {
       try {
         const res = await api.get("api/v1/categorias/");
         setCategories(res.data);
       } catch (err) {
-        console.error(`Error: ${err}`);
+        console.error(`Error: ${err}`);  
       }
     };
-
+  
     loadCategories();
     loadProducts();
   }, []);
@@ -35,22 +35,27 @@ function BetterProduct() {
   }, {});
 
   const sortedProducts = products
-  .sort((a, b) => a.stock - b.stock)
-  .slice(0, 3);
-
-
+    .sort((a, b) => a.stock - b.stock)
+    .slice(0, 3);
 
   return (
-    <section className="bg-white max-w-[1515px] h-[250px] rounded-xl shadow-lg ml-11 px-6 py-4">
-      <div className="flex flex-row justify-between items-center">        
-      <h5 className="text-center text-[18px] font-bold text-black/70  ml-5">
-        Inventario
-      </h5>
-      <Link to="/Inventario" className="text-[14px] mr-6 text-black/70 font-semibold hover:text-[#045E9C]">Ver mas</Link>
+    <section className="bg-white max-w-full h-auto rounded-xl shadow-lg ml-11 px-6 py-4">
+      <div className="flex flex-row justify-between items-center">
+        <h5 className="text-center text-[18px] font-bold text-black/70 ml-5">
+          Inventario
+        </h5>
+        <Link
+          to="/Inventario"
+          className="text-[14px] mr-6 text-black/70 font-semibold hover:text-[#045E9C]"
+        >
+          Ver mas
+        </Link>
       </div>
-      <div className="container mx-auto p-4">
-        <table className="min-w-[1450px] rounded-lg text-center">
-          <thead className=" bg-[#045E9C] text-white">
+
+      {/* Contenedor para la tabla con desplazamiento horizontal si es necesario */}
+      <div className="overflow-x-auto mt-4 max-h-[calc(100vh-200px)]"> {/* Limita la altura del contenedor */}
+        <table className="min-w-full table-auto rounded-lg text-center">
+          <thead className="bg-[#045E9C] text-white">
             <tr>
               <th className="p-2 text-center">Codigo de Producto</th>
               <th className="p-2 text-center">Nombre</th>
@@ -76,9 +81,14 @@ function BetterProduct() {
                   <div className="font-bold">{product.modelo}</div>
                 </td>
                 <td className="p-2">
-                  <div className="font-bold">{categoriesMap[product.categoria]}</div></td>
-                <td className="p-2"><div className="font-bold">${product.precio}</div></td>
-                <td className="p-2"><div className="font-bold">{product.stock}</div></td>
+                  <div className="font-bold">{categoriesMap[product.categoria]}</div>
+                </td>
+                <td className="p-2">
+                  <div className="font-bold">${product.precio}</div>
+                </td>
+                <td className="p-2">
+                  <div className="font-bold">{product.stock}</div>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -55,6 +55,9 @@ class Proveedor(models.Model):
     estado = models.CharField(max_length=50)
     codigo_postal = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.nombre
+
 ################ - PRODUCTOS - ################
 #Tabla Categoria
 class Categoria(models.Model):
@@ -85,14 +88,6 @@ class Producto(models.Model):
     
 
 ############## RH ##################
-#Tabla Nomina
-class Nomina(models.Model):
-    id_nom = models.AutoField(primary_key=True)
-    fecha_pago = models.DateField()
-    salario_base = models.DecimalField(max_digits=10,decimal_places=2)
-    bonos = models.DecimalField(max_digits=10,decimal_places=2)
-    salario_nto = models.DecimalField(max_digits=10,decimal_places=2)
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
 
 #Tabla Horario
 class Horario(models.Model):
@@ -101,7 +96,8 @@ class Horario(models.Model):
   hora_entrada = models.TimeField()
   hora_salida = models.TimeField()
   turno = models.CharField(max_length=100, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')])
-
+  def __str__(self):
+        return self.id_horario
 
 class Empleados(models.Model):
     nombre = models.CharField(max_length=255)
@@ -116,6 +112,21 @@ class Empleados(models.Model):
     pais = models.CharField(max_length=60, default="")
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
     horario = models.ForeignKey(Horario, on_delete=models.CASCADE, default="")
+    def __str__(self):
+        return self.nombre
+    
+
+#Tabla Nomina
+class Nomina(models.Model):
+    id_nom = models.AutoField(primary_key=True)
+    fecha_pago = models.DateField()
+    salario_base = models.DecimalField(max_digits=10,decimal_places=2)
+    bonos = models.DecimalField(max_digits=10,decimal_places=2)
+    salario_nto = models.DecimalField(max_digits=10,decimal_places=2)
+    empleado = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.empleado
+#Tabla Horario
 
 ################## VENTAS #################
 #Tabla Clientes
@@ -132,13 +143,18 @@ class Clientes(models.Model):
     codigo_postal = models.CharField(max_length=10)
     correo = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.nombre
 #Tabla Ventas
 class Ventas(models.Model):
+    id = models.AutoField(primary_key=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     referencia = models.TextField(max_length=40)
     uv = models.IntegerField()
     pv = models.DecimalField(max_digits=10, decimal_places=2)
     amt = models.DecimalField(max_digits=10, decimal_places=2)
+    def __str__(self):
+        return self.referencia
 
 #Tabla Detalle de Venta
 class DetalleVenta(models.Model):
@@ -148,6 +164,9 @@ class DetalleVenta(models.Model):
     venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.venta
+
 #Tabla Cotizaciones
 class Cotizaciones(models.Model):
     id_cotizacion = models.AutoField(primary_key=True)
@@ -155,6 +174,9 @@ class Cotizaciones(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=50, choices=[('Pendiente', 'Pendiente'), ('Aprobada', 'Aprobada'), ('Rechazada', 'Rechazada')], default='Pendiente')
     total = models.DecimalField(max_digits=10,decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.cliente
 
 #Tabla Detalle de Cotizaciones
 class DetalleCotizaciones(models.Model):
@@ -164,6 +186,8 @@ class DetalleCotizaciones(models.Model):
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     cotizacion = models.ForeignKey(Cotizaciones, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.cotizacion
 
 #Tabla Devoluciones
 class Devoluciones(models.Model):
@@ -172,6 +196,9 @@ class Devoluciones(models.Model):
     fecha = models.DateField()
     venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.venta
 
 
 ###########################################

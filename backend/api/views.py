@@ -91,11 +91,13 @@ class UpdateProductView(generics.UpdateAPIView):
     queryset = Producto.objects.all()
     lookup_field = 'cod_producto'
     serializer_class = UpdateProductoSerializer
+    permission_classes = [AllowAny]
 
 class DeleteProductView(generics.DestroyAPIView):
     queryset = Producto.objects.all()
     lookup_field = 'cod_producto'
     serializer_class = ProductoSerializer
+    permission_classes = [AllowAny]
     def perform_destroy(self, instance):
         print(f'Eliminando producto: {instance}')
         instance.delete()
@@ -121,6 +123,16 @@ class DetalleCategoriaView(generics.RetrieveAPIView):
     lookup_field = 'id_categoria'
     permission_classes = [AllowAny]
 
+class DeleteCategoriaView(generics.DestroyAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+    lookup_field = 'id_categoria'
+    permission_classes = [AllowAny]
+    def perform_destroy(self, instance):
+        print(f'Eliminando producto: {instance}')
+        instance.delete()
+
+
 
 ############### - PROVEEDORES - ################
 class CreateProveedorView(generics.CreateAPIView):
@@ -131,12 +143,14 @@ class CreateProveedorView(generics.CreateAPIView):
 class UpdateProveedorView(generics.UpdateAPIView):
     queryset = Proveedor.objects.all()
     lookup_field = 'id_prov'
-    serializer_class = UpdateProveedorSerializer
+    serializer_class = ProveedorSerializer
+    permission_classes = [AllowAny]
 
 class DeleteProveedorView(generics.DestroyAPIView):
     queryset = Proveedor.objects.all()
     lookup_field = 'id_prov'
     serializer_class = ProveedorSerializer
+    permission_classes = [AllowAny]
     def perform_destroy(self, instance):
         print(f'Eliminando producto: {instance}')
         instance.delete()
@@ -164,19 +178,23 @@ class ListaClientesView(generics.ListAPIView):
     queryset = Clientes.objects.all()
     serializer_class = ClienteSerializer
     permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
 
 class UpdateClientesView(generics.UpdateAPIView):
     queryset = Clientes.objects.all()
     lookup_field = 'id_cliente'
     serializer_class = UpdateClienteSerializer
+    permission_classes = [AllowAny]
 
 class DeleteClientesView(generics.DestroyAPIView):
     queryset = Clientes.objects.all()
     lookup_field = 'id_cliente'
     serializer_class = ClienteSerializer
+    permission_classes = [AllowAny]
     def perform_destroy(self, instance):
         print(f'Eliminando producto: {instance}')
         instance.delete()
+        
 
 
 class DetalleClienteView(generics.RetrieveAPIView):
@@ -207,6 +225,12 @@ class UpdateVentaView(generics.UpdateAPIView):
     queryset = Ventas.objects.all()
     lookup_field = 'id'
     serializer_class = UpdateVentasSerializer
+    permission_classes = [AllowAny]
+
+class DeleteVentaView(generics.DestroyAPIView):
+    queryset = Ventas.objects.all()
+    serializer_class= VentasSerializer
+    permission_classes = [AllowAny]
 
 ################ - DETALLE VENTAS - ################
 
@@ -233,6 +257,17 @@ class DetalleCotizacionView(generics.RetrieveAPIView):
     lookup_field = 'id_cotizacion'
     permission_classes = [AllowAny]
 
+class UpdateCotizacionesView(generics.UpdateAPIView):
+    queryset = Cotizaciones.objects.all()
+    lookup_field = 'id_cotizacion'
+    serializer_class = CotizacionSerializer
+    permission_classes = [AllowAny]
+
+class DeleteCotizacionView(generics.DestroyAPIView):
+    queryset = Cotizaciones.objects.all()
+    serializer_class= CotizacionSerializer
+    permission_classes = [AllowAny]
+
 ################ - DETALLE COTIZACIONES - ################
 
 
@@ -253,9 +288,20 @@ class ListaDevolucionesView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
 class DetalleDevolucionesView(generics.RetrieveAPIView):
-    queryset = Producto.objects.all()
-    serializer_class = ProductoSerializer
+    queryset = Devoluciones.objects.all()
+    serializer_class = DevolucionesSerializer
     lookup_field = 'id_dev'
+    permission_classes = [AllowAny]
+
+class UpdateDevolucionesView(generics.UpdateAPIView):
+    queryset = Devoluciones.objects.all()
+    lookup_field = 'id_dev'
+    serializer_class = DevolucionesSerializer
+    permission_classes = [AllowAny]
+
+class DeleteDevolucionView(generics.DestroyAPIView):
+    queryset = Devoluciones.objects.all()
+    serializer_class= DevolucionesSerializer
     permission_classes = [AllowAny]
 ################ - NOMINA - ################
 class CreateNominaView(generics.CreateAPIView):
@@ -268,6 +314,16 @@ class ListaNominasView(generics.ListAPIView):
     serializer_class = NominaSerializer
     permission_classes = [AllowAny]
 
+class EditNominaView(generics.UpdateAPIView):
+    queryset = Nomina.objects.all()
+    serializer_class = NominaSerializer
+    permission_classes = [AllowAny]
+
+class DeleteNominaView(generics.DestroyAPIView):
+    queryset = Nomina.objects.all()
+    serializer_class= NominaSerializer
+    permission_classes = [AllowAny]
+
 ################ - HORARIO - ################
 class CreateHorarioView(generics.CreateAPIView):
     queryset = Horario
@@ -275,6 +331,16 @@ class CreateHorarioView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 class ListaHorariosView(generics.ListAPIView):
+    queryset = Horario.objects.all()
+    serializer_class = HorarioSerializer
+    permission_classes = [AllowAny]
+
+class EditHorarioView(generics.UpdateAPIView):
+    queryset = Horario.objects.all()
+    serializer_class = HorarioSerializer
+    permission_classes = [AllowAny]
+
+class DeleteHorarioView(generics.DestroyAPIView):
     queryset = Horario.objects.all()
     serializer_class = HorarioSerializer
     permission_classes = [AllowAny]

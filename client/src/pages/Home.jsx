@@ -11,8 +11,7 @@ import { ClientsIcon, NewOrders, PendingOrderIcon, SalesIcon, EstadisticIcon, Es
 function Home() {
   const { user } = useUser();
 
-  useEffect(() => {
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <div className="flex h-screen">

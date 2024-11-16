@@ -79,11 +79,8 @@ class UpdateVentasSerializer(serializers.ModelSerializer):
 class ProveedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proveedor
-        fields = ['id_prov', 'nombre', 'telefono', 'direccion']
+        fields = ['id_prov', 'nombre','apellido_paterno','apellido_materno','telefono','calle','numero','ciudad','estado','codigo_postal']
 
-class UpdateProveedorSerializer(serializers.ModelSerializer):
-      model = Proveedor
-      fields =  ['nombre', 'telefono', 'direccion']
 
 #Clientes
 class ClienteSerializer(serializers.ModelSerializer):
@@ -129,7 +126,7 @@ class DevolucionesSerializer(serializers.ModelSerializer):
 class NominaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Nomina
-        fields = ['id_nom', 'fecha_pago', 'salario_base', 'bonos', 'salario_nto']
+        fields = ['id_nom', 'fecha_pago', 'salario_base', 'bonos', 'salario_nto', 'empleado']
 
 
 #Horarios

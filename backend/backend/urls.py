@@ -36,6 +36,7 @@ urlpatterns = [
     #URLs categorias
     path('api/v1/categorias/', ListaCategoriasView.as_view(), name='lista_categorias_api'),
     path('api/v1/categorias/crear/', CreateCategoriesView.as_view(), name='crear-categorias'),
+    path('api/v1/categorias/eliminar/', DeleteCategoriaView.as_view(), name='eliminar-categorias'),
     path('api/v1/categorias/<int:id_categoria>/', DetalleCategoriaView.as_view(), name='detalle_categoria_api'),
 
    
@@ -57,8 +58,9 @@ urlpatterns = [
     #URLs Ventas
     path('api/v1/ventas/', ListaVentasView.as_view(), name='lista_ventas_api'),
     path('api/v1/ventas/crear/', CreateVentaView.as_view(), name='crear_venta'),
-    path('api/v1/ventas/actualizar/<int:id>/', UpdateVentaView.as_view(), name='actualizar_ventas'),
-    path('api/v1/ventas/<int:id>/', DetalleVentaView.as_view(), name='detalle_venta_api'),
+    path('api/v1/ventas/actualizar/<int:pk>/', UpdateVentaView.as_view(), name='actualizar_ventas'),
+    path('api/v1/ventas/eliminar/', DeleteVentaView.as_view(), name='eliminar_venta'),
+    path('api/v1/ventas/<int:pk>/', DetalleVentaView.as_view(), name='detalle_venta_api'),
 
     #urls DetalleVentas
     path('api/v1/detalle_ventas/', ListaDetalleVentasView.as_view(), name='lista_detalle_ventas_api'),
@@ -81,13 +83,15 @@ urlpatterns = [
     #urls Nomina
     path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),
     path('api/v1/nominas/crear/', CreateNominaView.as_view(), name='crear_nomina'),
+    path('api/v1/nominas/editar/<int:pk>/', EditNominaView.as_view(), name='editar_nomina'),
+    path('api/v1/nominas/eliminar/<int:pk>/', DeleteNominaView.as_view(), name='eliminar_nomina'),
 
     #urls Horario
     path('api/v1/horarios/', ListaHorariosView.as_view(), name='lista_horarios_api'),
     path('api/v1/horarios/crear/', CreateHorarioView.as_view(), name='crear_horario'),
+    path('api/v1/horarios/editar/<int:pk>/', EditHorarioView.as_view(), name='editar_horario'),
+    path('api/v1/horarios/eliminar/<int:pk>/', DeleteHorarioView.as_view(), name='eliminar_horario'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-#URLs Ventas
-   # path('api/v1/ventas/', VentasView.as_view(), name='productos-mas-vendidos'), #CHECA ESTA GERA QUE NO INTERFIERA CON TUS GRAFICAS
