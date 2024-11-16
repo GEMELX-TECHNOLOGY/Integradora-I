@@ -25,6 +25,7 @@ import Clientes from "@/pages/Ventas/Clientes";
 import Cotizaciones from "@/pages/Ventas/Cotizaciones";
 import Devoluciones from "@/pages/Ventas/Devoluciones";
 import ReportesVentas from "@/pages/Ventas/Reporte_ventas";
+import Ventas from '@/pages/Ventas/Ventas';
 
 function Rutas() {
     const { resetUser } = useUser();
@@ -55,6 +56,7 @@ function Rutas() {
 
                 {/* SALES USER */}
                 <Route path="/Clientes" element={<ProtectedRoute><Clientes/></ProtectedRoute>}/>
+                <Route path="/Ventas" element={<ProtectedRoute><Ventas/></ProtectedRoute>}/>
                 <Route path="/Cotizaciones" element={<ProtectedRoute><Cotizaciones/></ProtectedRoute>}/>
                 <Route path="/Devoluciones" element={<ProtectedRoute><Devoluciones/></ProtectedRoute>}/>
                 <Route path="/Reportes-Ventas" element={<ProtectedRoute><ReportesVentas/></ProtectedRoute>}/>

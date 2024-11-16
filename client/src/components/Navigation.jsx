@@ -12,142 +12,132 @@ import {
   CotizacionIcon,
   DevolucionIcon,
   ReportVenIcon,
+  ProveedoresIcon,
   HorarioIcon,
   NominaIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  ProveedoresIcon,
 } from "@/icons/Icons";
 
-const PageLinkAdministrador = [
-  {
-    item: "Inicio",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
-  },
-  {
-    item: "Mensajería",
-    icon: <ChatIcon className="mr-4" />,
-    url: "Chat",
-  },
-  {
-    item: "Horarios",
-    icon: <HorarioIcon className="mr-4" />,
-    url: "Horarios",
-  },
-  {
-    item: "Nóminas",
-    icon: <NominaIcon className="mr-4" />,
-    url: "Nominas",
-  },
-  {
-    item: "Capacitación",
-    icon: <CapacitacionIcon className="mr-4" />,
-    url: "Capacitacion",
-  },
-  {
-    item: "Empleados",
-    icon: <EmployeesIcon className="mr-4" />,
-    url: "Empleados",
-  },
-  {
-    item: "Devoluciones",
-    icon: <DevolucionIcon className="mr-4" />,
-    url: "Devoluciones",
-  },
-  {
-    item: "Inventario",
-    icon: <InventoryIcon className="mr-4" />,
-    url: "Inventario",
-  },
-  {
-    item: "Cotizaciones",
-    icon: <CotizacionIcon className="mr-4" />,
-    url: "Cotizaciones",
-  },
-  {
-    item: "Clientes",
-    icon: <ClientIcon className="mr-4" />,
-    url: "Clientes",
-  },
-  {
-    item: "Reportes Ventas",
-    icon: <ReportVenIcon className="mr-4" />,
-    url: "Reportes-Ventas",
-  },
-];
+// Configuración de navegación
+const navigationConfig = {
+  Administrador: [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "/",
+    },
+    {
+      item: "Empleados",
+      icon: <EmployeesIcon className="mr-4" />,
+      subItems: [
+        {
+          item: "Empleados",
+          icon: <EmployeesIcon className="mr-4" />,
+          url: "Empleados",
+        },
+        {
+          item: "Horarios",
+          icon: <HorarioIcon className="mr-4" />,
+          url: "Horarios",
+        },
+        {
+          item: "Nóminas",
+          icon: <NominaIcon className="mr-4" />,
+          url: "Nominas",
+        },
+      ],
+    },
+    {
+      item: "Mensajería",
+      icon: <ChatIcon className="mr-4" />,
+      url: "/Chat",
+    },
+    {
+      item: "Productos",
+      icon: <InventoryIcon className="mr-4" />,
+      subItems: [
+        {
+          item: "Agregar Producto",
+          icon: <AddProductIcon className="mr-4"/>,
+          url: "Agregar-Producto",
+        },
+        {
+          item: "Invetario",
+          icon: <InventoryIcon className="mr-4"/>,
+          url: "Inventario",
+        },
+        {
+          item: "Proveedores",
+          icon: <ProveedoresIcon className="mr-4"/>,
+          url: "Proveedores"
+        }
+      ]
+    },
+    {
+      item: "Ventas",
+      icon: <ReportVenIcon className="mr-4"/>,
+      subItems: [
+        {
+          item: "Devoluciones",
+          icon: <DevolucionIcon className="mr-4"/>,
+          url: "Devoluciones",
+        },
+        {
+          item: "Cotizaciones",
+          icon: <CotizacionIcon className="mr-4"/>,
+          url: "Cotizaciones",
+        },
+        {
+          item: "Ventas",
+          icon: <ReportVenIcon className="mr-4"/>,
+          url: "Ventas",
+        },
+        {
+          item: "Clientes",
+          icon: <ClientIcon className="mr-4"/>,
+          url: "Clientes"
+        },
+        {
+          item: "Reporte de ventas",
+          icon: <ReportVenIcon className="mr-4"/>,
+          url: "Reportes-Ventas",
+        }
+      ]
+    },
+  ],
+  Ventas: [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "",
+    },
+    {
+      item: "Clientes",
+      icon: <ClientIcon className="mr-4" />,
+      url: "Clientes",
+    },
+    {
+      item: "Reportes Ventas",
+      icon: <ReportVenIcon className="mr-4" />,
+      url: "Reportes-Ventas",
+    },
+  ],
+  "Recursos Humanos": [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "",
+    },
+    {
+      item: "Empleados",
+      icon: <EmployeesIcon className="mr-4" />,
+      url: "Empleados",
+    },
+  ],
+};
 
-const PageLinkVentas = [
-  {
-    item: "Inicio",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
-  },
-  {
-    item: "Clientes",
-    icon: <ClientIcon className="mr-4" />,
-    url: "Clientes",
-  },
-  {
-    item: "Reportes Ventas",
-    icon: <ReportVenIcon className="mr-4" />,
-    url: "Reportes-Ventas",
-  },
-  {
-    item: "Mensajería",
-    icon: <ChatIcon className="mr-4" />,
-    url: "Chat",
-  },
-  {
-    item: "Devoluciones",
-    icon: <DevolucionIcon className="mr-4" />,
-    url: "Devoluciones",
-  },
-  {
-    item: "Inventario",
-    icon: <InventoryIcon className="mr-4" />,
-    url: "Inventario",
-  },
-  {
-    item: "Cotizaciones",
-    icon: <CotizacionIcon className="mr-4" />,
-    url: "Cotizaciones",
-  },
-];
-
-const PageLinkRH = [
-  {
-    item: "Inicio",
-    icon: <HomeIcon className="mr-4" />,
-    url: "",
-  },
-  {
-    item: "Empleados",
-    icon: <EmployeesIcon className="mr-4" />,
-    url: "Empleados",
-  },
-  {
-    item: "Mensajería",
-    icon: <ChatIcon className="mr-4" />,
-    url: "Chat",
-  },
-  {
-    item: "Horarios",
-    icon: <HorarioIcon className="mr-4" />,
-    url: "Horarios",
-  },
-  {
-    item: "Nóminas",
-    icon: <NominaIcon className="mr-4" />,
-    url: "Nominas",
-  },
-  {
-    item: "Capacitación",
-    icon: <CapacitacionIcon className="mr-4" />,
-    url: "Capacitacion",
-  },
-];
-
+// Componente de navegación
 function Navigation() {
   const location = useLocation();
   const [rol, setRol] = useState("");
@@ -209,9 +199,9 @@ function Navigation() {
               {subItems && (
                 <button onClick={() => toggleExpand(item)} className="pr-4">
                   {expandedItem === item ? (
-                    <ChevronUpIcon className="ml-4" />
+                    <ChevronUpIcon />
                   ) : (
-                    <ChevronDownIcon className="ml-4" />
+                    <ChevronDownIcon />
                   )}
                 </button>
               )}
@@ -223,7 +213,7 @@ function Navigation() {
                 {subItems.map(({ item, icon, url }) => (
                   <li
                     key={item}
-                    className={`text-black/70 h-12 flex items-center rounded-[10px] text-white" ${
+                    className={`text-black/70 h-12 flex items-center rounded-[10px] hover:text-[#045E9C] ${
                       location.pathname === `/${url}`
                     }`}
                   >
