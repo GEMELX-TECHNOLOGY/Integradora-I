@@ -1,25 +1,22 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
-import Modal from "@/components/Modal";
+import Modal from "@/components/Modal"
 
 function Horarios() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [activeTab, setActiveTab] = useState("Información básica");
 
   const totalPages = 1;
 
-  const openModal = () => {
-    setModalContent("Informacion del Cliente");
-    setIsModalOpen(true);
+  const openAddModal = () => {
+    setModalContent("Agregar Horario");
+    setIsModalAddOpen(true);
   };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeAddModal = () => {
+    setIsModalAddOpen(false);
   };
-
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -31,11 +28,20 @@ function Horarios() {
       setCurrentPage(currentPage + 1);
     }
   };
+
   return (
     <div className="flex h-screen">
       <Navigation />
       <div className="flex-1">
         <Header />
+        <div className="flex justify-end mr-28">
+          <button
+            className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
+            onClick={openAddModal}
+          >
+            Agregar Horario
+          </button>
+        </div>
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
         <div className="flex flex-col ml-11 underline-offset-1">
           <div className="flex justify-between max-w-[1500px]">
@@ -66,15 +72,14 @@ function Horarios() {
             <thead className=" bg-[#045E9C] text-white">
               <tr>
                 <th className="p-2 text-center">NUMERO DE HORARIO</th>
-                <th className="p-2 text-center">DIAS A LA SEMANA</th>
-                <th className="p-2 text-center">HORA ENTRADA</th>
-                <th className="p-2 text-center">HORA SALIDA</th>
+                <th className="p-2 text-center">DIAS TRABAJADOS A LA SEMANA</th>
+                <th className="p-2 text-center">HORA DE ENTRADA</th>
+                <th className="p-2 text-center">HORA DE SALIDA</th>
                 <th className="p-2 text-center">TURNO</th>
-                <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b hover:gb-gray-100 text-gray-800">
+            <tr className="border-b hover:gb-gray-100 text-gray-800">
                 <td className="p-2">
                   <div className="font-bold">0000001</div>
                 </td>
@@ -82,7 +87,7 @@ function Horarios() {
                   <div className="font-bold">5</div>
                 </td>
                 <td className="p-2">
-                  <div className="font-bold">8:00</div>
+                  <div className="font-bold">7:00</div>
                 </td>
                 <td className="p-2">
                   <div className="font-bold">16:00</div>
@@ -90,127 +95,74 @@ function Horarios() {
                 <td className="p-2">
                   <div className="font-bold">Matutino</div>
                 </td>
-                <td className="p-2 flex space-x-2 justify-center items-center">
-                  <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
-                    onClick={() => openEditModal(user)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => openDeleteModal(user)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalContent}>
-        <div className="bg-white rounded-lg w-full max-w-lg">
-          <div className="mt-4 flex border-b">
-            <button
-              onClick={() => setActiveTab("Información básica")}
-              className={`px-4 py-2 ${
-                activeTab === "Información básica"
-                  ? "text-white bg-blue-700"
-                  : "text-gray-600"
-              } rounded-t-lg`}
-            >
-              Información básica
-            </button>
-            <button
-              onClick={() => setActiveTab("Contacto")}
-              className={`px-4 py-2 ${
-                activeTab === "Contacto"
-                  ? "text-white bg-blue-700"
-                  : "text-gray-600"
-              } rounded-t-lg`}
-            >
-              Contacto
-            </button>
-            <button
-              onClick={() => setActiveTab("Información adicional")}
-              className={`px-4 py-2 ${
-                activeTab === "Información adicional"
-                  ? "text-white bg-blue-700"
-                  : "text-gray-600"
-              } rounded-t-lg`}
-            >
-              Información adicional
-            </button>
-          </div>
-
-          <div className="mt-6">
-            {activeTab === "Información básica" && (
-              <div>
-                <div className="mb-4">
-                  <label className="block font-semibold">Nombre(s):</label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Apellido paterno:
-                  </label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Apellido materno:
-                  </label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">Empresa:</label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Fecha de registro:
-                  </label>
-                </div>
+      <Modal
+        isOpen={isModalAddOpen}
+        onClose={closeAddModal}
+        title={modalContent}
+      >
+    <form>
+      <div className="flex flex-row bg-white max-w-[1550px] mx-auto">
+        <div className="flex-3 p-5">
+          <div className="bg-white rounded-lg shadow-md p-5">
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <label className="block font-bold text-gray-700 mb-1">Dias Trabajados</label>
+                <input
+                  type="number"
+                  placeholder=""
+                  min={1}
+                  max={8}
+                  onChange=""
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                />
               </div>
-            )}
-
-            {activeTab === "Contacto" && (
-              <div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Numero Telefonico:
-                  </label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Correo Electronico:
-                  </label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Direccion Domiciliaria:
-                  </label>
-                </div>
+              <div className="w-1/2 pl-2">
+                <label className="block font-bold text-gray-700 mb-1">Hora entrada</label>
+                <input
+                  type="time"
+                  placeholder="0000012"
+                  value=""
+                  onChange=""
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                />
               </div>
-            )}
-
-            {activeTab === "Información adicional" && (
-              <div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Preferencia de contacto:
-                  </label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">Genero:</label>
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold">
-                    Fecha de nacimiento:
-                  </label>
-                </div>
+            </div>
+            <div className="flex flex-wrap mb-5">
+              <div className="w-1/2 pr-2">
+                <label className="block font-bold text-gray-700 mb-1">Hora salida</label>
+                <input
+                  type="time"
+                  value=""
+                  onChange=""
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                />
               </div>
-            )}
+              <div className="w-1/2 pr-2">
+                <label className="block font-bold text-gray-700 mb-1">Turno</label>
+                <input
+                  type="text"
+                  value=""
+                  onChange=""
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
+              type="submit"
+            >
+              Guardar Cotización
+            </button>
           </div>
         </div>
+      </div>
+    </form>
       </Modal>
     </div>
   );

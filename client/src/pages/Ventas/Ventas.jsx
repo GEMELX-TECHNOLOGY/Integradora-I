@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
-import Modal from "@/components/Modal"
+import Modal from "@/components/Modal";
 
-function Devoluciones() {
+function Ventas() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -13,7 +13,7 @@ function Devoluciones() {
   const totalPages = 1;
 
   const openModal = () => {
-    setModalContent("Informacion del Devolución");
+    setModalContent("Informacion de la Venta");
     setIsModalOpen(true);
   };
 
@@ -22,7 +22,7 @@ function Devoluciones() {
   };
 
   const openAddModal = () => {
-    setModalContent("Agregar Devolucion");
+    setModalContent("Agregar Venta");
     setIsModalAddOpen(true);
   };
   const closeAddModal = () => {
@@ -50,7 +50,7 @@ function Devoluciones() {
             className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
             onClick={openAddModal}
           >
-            Agregar Devolución
+            Agregar Venta
           </button>
         </div>
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
@@ -82,33 +82,29 @@ function Devoluciones() {
           <table className="min-w-[1450px] bg-white shadow-md rounded-lg text-center">
             <thead className=" bg-[#045E9C] text-white">
               <tr>
-                <th className="p-2 text-center">NUMERO DE DEVOLUCIÓN</th>
                 <th className="p-2 text-center">NUMERO DE VENTA</th>
-                <th className="p-2 text-center">NOMBRE PRODUCTO</th>
+                <th className="p-2 text-center">PRODUCTOS VENDIDOS</th>
+                <th className="p-2 text-center">MONTO TOTAL</th>
                 <th className="p-2 text-center">FECHA DE COMPRA</th>
-                <th className="p-2 text-center">FECHA DEVOLUCIÓN</th>
                 <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
             <tbody>
-            <tr className="border-b hover:gb-gray-100 text-gray-800">
+              <tr className="border-b hover:gb-gray-100 text-gray-800">
                 <td className="p-2">
                   <div className="font-bold">0000001</div>
                 </td>
                 <td className="p-2">
-                  <div className="font-bold">12345</div>
+                  <div className="font-bold">12</div>
                 </td>
                 <td className="p-2">
-                  <div className="font-bold">CAMARA DE SEGURIDAD</div>
+                  <div className="font-bold">$20,000.00</div>
                 </td>
                 <td className="p-2">
                   <div className="font-bold">2024-11-5</div>
                 </td>
-                <td className="p-2">
-                  <div className="font-bold">2024-11-10</div>
-                </td>
                 <td className="p-2 flex space-x-2 justify-center items-center">
-                <button
+                  <button
                     onClick={() => openModal()}
                     className="bg-blue-500 text-white px-3 py-1 rounded"
                   >
@@ -120,66 +116,75 @@ function Devoluciones() {
           </table>
         </div>
       </div>
-
       <Modal
         isOpen={isModalAddOpen}
         onClose={closeAddModal}
         title={modalContent}
       >
-    <form>
-      <div className="flex flex-row bg-white max-w-[1550px] mx-auto">
-        <div className="flex-3 p-5">
-          <div className="bg-white rounded-lg shadow-md p-5">
-            <div className="flex flex-wrap mb-5">
-              <div className="w-1/2 pr-2">
-                <label className="block font-bold text-gray-700 mb-1">Producto</label>
-                <select className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500">
-                  <option value="" disabled required selected>
-                    Selectiona un producto
-                  </option>
-                </select>
-              </div>
-              <div className="w-1/2 pl-2">
-                <label className="block font-bold text-gray-700 mb-1">Numero de venta</label>
-                <input
-                  type="number"
-                  placeholder="0000012"
-                  value=""
-                  onChange=""
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <div className="flex flex-wrap mb-5">
-              <div className="w-1/2 pr-2">
-                <label className="block font-bold text-gray-700 mb-1">Fecha</label>
-                <input
-                  type="date"
-                  value=""
-                  onChange=""
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <div className="mb-5">
+        <form>
+          <div className="flex flex-row bg-white max-w-[1550px] mx-auto">
+            <div className="flex-3 p-5">
+              <div className="bg-white rounded-lg shadow-md p-5">
+                <div className="flex flex-wrap mb-5">
+                  <div className="w-1/2 pr-2">
+                    <label className="block font-bold text-gray-700 mb-1">
+                      Numero de venta
+                    </label>
+                    <input
+                      type="number"
+                      placeholder=""
+                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="w-1/2 pl-2">
+                    <label className="block font-bold text-gray-700 mb-1">
+                      Productos totales
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="0000012"
+                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-wrap mb-5">
+                  <div className="w-1/2 pr-2">
+                    <label className="block font-bold text-gray-700 mb-1">
+                        Monto total
+                    </label>
+                    <input
+                      type="number"
+                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="w-1/2 pr-2">
+                    <label className="block font-bold text-gray-700 mb-1">
+                      Fecha de compra
+                    </label>
+                    <input
+                      type="date"
+                      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                </div>
+                <div className="mb-5">
               <label className="block font-bold text-gray-700 mb-1">Descripción</label>
               <textarea
-                placeholder="Descripción del producto..."
-                value=""
-                onChange=""
+                placeholder="Descripción de la venta..."
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500 h-24"
               ></textarea>
             </div>
-            <button
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
-              type="submit"
-            >
-              Guardar Cotización
-            </button>
+                <button
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
+                  type="submit"
+                >
+                  Guardar Venta
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </form>
+        </form>
       </Modal>
       <Modal isOpen={isModalOpen} onClose={closeModal} title={modalContent}>
         <div className="bg-white rounded-lg w-full">
@@ -192,9 +197,8 @@ function Devoluciones() {
                   : "text-gray-600"
               } rounded-t-lg`}
             >
-              Motivo de Devolución
+              Detalle de compra
             </button>
-
           </div>
 
           <div className="mt-6">
@@ -202,12 +206,11 @@ function Devoluciones() {
               <div>
                 <div className="mb-4">
                   <label className="block font-semibold">
-                    Motivo de Devolución:
+                    Detalle de compra:
                   </label>
                 </div>
               </div>
             )}
-            
           </div>
         </div>
       </Modal>
@@ -215,4 +218,4 @@ function Devoluciones() {
   );
 }
 
-export default Devoluciones;
+export default Ventas;

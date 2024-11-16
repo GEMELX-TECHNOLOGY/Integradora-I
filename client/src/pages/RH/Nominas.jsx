@@ -35,12 +35,15 @@ function Nominas() {
       <Navigation />
       <div className="flex-1">
         <Header />
-        <button
-          className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
-          onClick={openAddModal}
-        >
-          Agregar empleado
-        </button>
+        <div className="flex justify-end mr-28">
+          <button
+            className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
+            onClick={openAddModal}
+          >
+            Agregar Nómina
+          </button>
+        </div>
+
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
         <div className="flex flex-col ml-11 underline-offset-1">
           <div className="flex justify-between max-w-[1500px]">
@@ -74,7 +77,6 @@ function Nominas() {
                 <th className="p-2 text-center">FECHA DE PAGO</th>
                 <th className="p-2 text-center">SALARIO BASE</th>
                 <th className="p-2 text-center">SALARIO NETO</th>
-                <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
             <tbody>
@@ -91,20 +93,6 @@ function Nominas() {
                 <td className="p-2">
                   <div className="font-bold">$9,000</div>
                 </td>
-                <td className="p-2 flex space-x-2 justify-center items-center">
-                  <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
-                    onClick={() => openEditModal(user)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => openDeleteModal(user)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -119,88 +107,45 @@ function Nominas() {
         <form>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Username
+              Número de nómina
             </label>
             <input
-              type="text"
+              type="number"
               value=""
               className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
+              placeholder="0000000"
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Password
+              Fechad de pago
             </label>
             <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="date"
+              value=""
               className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Nombre
+              Salario base
             </label>
             <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              type="number"
+              value=""
               className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
+              placeholder="$0000.00"
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Apellido
+              Salario Neto
             </label>
             <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              type="number"
+              value=""
               className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el apellido"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email
-            </label>
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el email"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Rol
-            </label>
-            <select
-              className="bg-white border-transparent shadow-lg w-full h-[36px] rounded-[10px] text-center"
-              value={employeeRol}
-              onChange={(e) => setEmployeeRol(e.target.value)}
-            >
-              {roles.map((role) => (
-                <option key={role.id_rol} value={role.id_rol}>
-                  {role.nombre_rol}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block font-bold text-gray-700 mb-1">
-              Imagen del empleado
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setEmployeeImage(e.target.files[0])}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              placeholder="$0000.00"
             />
           </div>
           <div className="flex justify-end">
@@ -208,7 +153,7 @@ function Nominas() {
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Agregar empleado
+              Agregar Nomina
             </button>
           </div>
         </form>
