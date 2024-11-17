@@ -67,15 +67,7 @@ function FormLogin({ route, method }) {
         />
       </div>
       <div className="extra-options flex justify-between items-center mb-4">
-        <div>
-          <input type="checkbox" id="remember" className="mr-1" />
-          <label htmlFor="remember" className="text-sm">
-            Recordarme
-          </label>
-        </div>
-        <a href="#" className="text-blue-500 text-sm hover:underline">
-          ¿Has olvidado tu contraseña?
-        </a>
+       
       </div>
       <button
         type="submit"
