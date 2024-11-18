@@ -103,7 +103,7 @@ class CotizacionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cotizacion
-        fields = ['id', 'referencia', 'uv', 'pv', 'total_cotizacion', 'detallecotizacion_set']
+        fields = ['id', 'producto','referencia', 'uv', 'pv', 'total_cotizacion', 'detallecotizacion_set']
 
 #Devoluciones
 class DevolucionesSerializer(serializers.ModelSerializer):
