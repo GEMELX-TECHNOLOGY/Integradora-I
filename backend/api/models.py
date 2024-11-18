@@ -135,60 +135,84 @@ class Clientes(models.Model):
     nombre = models.TextField()
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50)
-    telefono = models.IntegerField()
+    telefono = models.CharField(max_length=20)  
     calle = models.CharField(max_length=100)
     numero = models.CharField(max_length=20)
     ciudad = models.CharField(max_length=50)
     estado = models.CharField(max_length=50)
     codigo_postal = models.CharField(max_length=10)
-    correo = models.CharField(max_length=100)
+    correo = models.EmailField(max_length=100) 
 
     def __str__(self):
         return self.nombre
-#Tabla Ventas
+
 class Ventas(models.Model):
     id = models.AutoField(primary_key=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     referencia = models.TextField(max_length=40)
-    uv = models.IntegerField()
-    pv = models.DecimalField(max_digits=10, decimal_places=2)
-    amt = models.DecimalField(max_digits=10, decimal_places=2)
+    uv = models.IntegerField()  # Unidades vendidas
+    pv = models.DecimalField(max_digits=10, decimal_places=2)  # Precio de venta
+    amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Monto total
+
+    def save(self, *args, **kwargs):
+        # Calculo
+        self.amt = self.uv * self.pv
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.referencia
-
 #Tabla Detalle de Venta
 class DetalleVenta(models.Model):
     id_detalle = models.AutoField(primary_key=True)
     cantidad = models.DecimalField(max_digits=10, decimal_places=2)
-    precio_u = models.DecimalField(max_digits=10,decimal_places=2)
+    precio_u = models.DecimalField(max_digits=10, decimal_places=2)
     venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    total_detalle = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Total por producto
+
+    def save(self, *args, **kwargs):
+        # Calculo
+        self.total_detalle = self.cantidad * self.precio_u
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.venta
+        return f"Venta {self.venta.id} - Producto {self.producto.nombre}"
 
-#Tabla Cotizaciones
-class Cotizaciones(models.Model):
-    id_cotizacion = models.AutoField(primary_key=True)
-    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
-    fecha = models.DateTimeField(auto_now_add=True)
-    estado = models.CharField(max_length=50, choices=[('Pendiente', 'Pendiente'), ('Aprobada', 'Aprobada'), ('Rechazada', 'Rechazada')], default='Pendiente')
-    total = models.DecimalField(max_digits=10,decimal_places=2, default=0)
+
+# Modelo Cotización
+class Cotizacion(models.Model):
+    id = models.AutoField(primary_key=True)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)  # Producto relacionado a la cotización
+    referencia = models.TextField(max_length=40)  # Referencia de la cotización
+    uv = models.IntegerField()  # Unidades cotizadas
+    pv = models.DecimalField(max_digits=10, decimal_places=2)  # Precio de cotización
+    total_cotizacion = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Monto total de la cotización
+
+    def save(self, *args, **kwargs):
+        # Cálculo del monto total de la cotización (uv * pv)
+        self.total_cotizacion = self.uv * self.pv
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.cliente
+        return self.referencia
 
-#Tabla Detalle de Cotizaciones
-class DetalleCotizaciones(models.Model):
-    id_de = models.AutoField(primary_key=True)
-    cantidad = models.IntegerField()
-    precio_u = models.DecimalField(max_digits=10,decimal_places=2)
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
-    cotizacion = models.ForeignKey(Cotizaciones, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+# Modelo Detalle de Cotización
+class DetalleCotizacion(models.Model):
+    id_detalle = models.AutoField(primary_key=True)
+    cantidad = models.DecimalField(max_digits=10, decimal_places=2)  # Cantidad cotizada
+    precio_u = models.DecimalField(max_digits=10, decimal_places=2)  # Precio unitario
+    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)  # Relación con la cotización
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)  # Producto relacionado
+    total_detalle = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Total por producto
+
+    def save(self, *args, **kwargs):
+        # Cálculo del total por producto (cantidad * precio unitario)
+        self.total_detalle = self.cantidad * self.precio_u
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.cotizacion
-
+        return f"Cotización {self.cotizacion.id} - Producto {self.producto.nombre}"
+    
 #Tabla Devoluciones
 class Devoluciones(models.Model):
     id_dev = models.AutoField(primary_key=True)
@@ -227,5 +251,3 @@ class ChatMessage(models.Model):
     def reciever_profile(self):
         reciever_profile = UserManager.objects.get(user=self.reciever)
         return reciever_profile
-
-    

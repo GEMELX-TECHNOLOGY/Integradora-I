@@ -183,7 +183,7 @@ class ListaClientesView(generics.ListAPIView):
 class UpdateClientesView(generics.UpdateAPIView):
     queryset = Clientes.objects.all()
     lookup_field = 'id_cliente'
-    serializer_class = UpdateClienteSerializer
+    serializer_class = ClienteSerializer
     permission_classes = [AllowAny]
 
 class DeleteClientesView(generics.DestroyAPIView):
@@ -210,6 +210,20 @@ class CreateVentaView(generics.CreateAPIView):
     serializer_class = VentasSerializer
     permission_classes = [AllowAny]
 
+    def perform_create(self, serializer):
+        venta = serializer.save()
+    
+        detalles = self.request.data.get('detalles', [])
+        for detalle in detalles:
+            
+            DetalleVenta.objects.create(
+                venta=venta,
+                producto_id=detalle['producto'],
+                cantidad=detalle['cantidad'],
+                precio_u=detalle['precio_u']
+            )
+       
+        venta.save()
 class ListaVentasView(generics.ListAPIView):
     queryset = Ventas.objects.all()
     serializer_class = VentasSerializer
@@ -224,57 +238,62 @@ class DetalleVentaView(generics.RetrieveAPIView):
 class UpdateVentaView(generics.UpdateAPIView):
     queryset = Ventas.objects.all()
     lookup_field = 'id'
-    serializer_class = UpdateVentasSerializer
+    serializer_class = VentasSerializer  
     permission_classes = [AllowAny]
+
 
 class DeleteVentaView(generics.DestroyAPIView):
     queryset = Ventas.objects.all()
-    serializer_class= VentasSerializer
+    serializer_class = VentasSerializer
     permission_classes = [AllowAny]
 
-################ - DETALLE VENTAS - ################
 
-
-class ListaDetalleVentasView(generics.ListAPIView):
-    queryset = DetalleVenta.objects.all()
-    serializer_class = DetalleVentaSerializer
-    permission_classes = [AllowAny]
-
-################ - COTIZACIONES - ################
+# Crear una nueva cotización
 class CreateCotizacionView(generics.CreateAPIView):
-    queryset = Cotizaciones
+    queryset = Cotizacion.objects.all()
     serializer_class = CotizacionSerializer
     permission_classes = [AllowAny]
 
+    def perform_create(self, serializer):
+        cotizacion = serializer.save()
+
+        detalles = self.request.data.get('detalles', [])
+        for detalle in detalles:
+            DetalleCotizacion.objects.create(
+                cotizacion=cotizacion,
+                producto_id=detalle['producto'],
+                cantidad=detalle['cantidad'],
+                precio_u=detalle['precio_u']
+            )
+        
+        cotizacion.save()
+
+# Listar todas las cotizaciones
 class ListaCotizacionesView(generics.ListAPIView):
-    queryset = Cotizaciones.objects.all()
+    queryset = Cotizacion.objects.all()
     serializer_class = CotizacionSerializer
     permission_classes = [AllowAny]
 
+# Ver los detalles de una cotización
 class DetalleCotizacionView(generics.RetrieveAPIView):
-    queryset = Cotizaciones.objects.all()
+    queryset = Cotizacion.objects.all()
     serializer_class = CotizacionSerializer
-    lookup_field = 'id_cotizacion'
+    lookup_field = 'id'
     permission_classes = [AllowAny]
 
-class UpdateCotizacionesView(generics.UpdateAPIView):
-    queryset = Cotizaciones.objects.all()
-    lookup_field = 'id_cotizacion'
+# Actualizar una cotización existente
+class UpdateCotizacionView(generics.UpdateAPIView):
+    queryset = Cotizacion.objects.all()
+    lookup_field = 'id'
     serializer_class = CotizacionSerializer
     permission_classes = [AllowAny]
 
+# Eliminar una cotización
 class DeleteCotizacionView(generics.DestroyAPIView):
-    queryset = Cotizaciones.objects.all()
-    serializer_class= CotizacionSerializer
+    queryset = Cotizacion.objects.all()
+    serializer_class = CotizacionSerializer
     permission_classes = [AllowAny]
 
-################ - DETALLE COTIZACIONES - ################
-
-
-class ListaDetalleCotizacionesView(generics.ListAPIView):
-    queryset = DetalleCotizaciones.objects.all()
-    serializer_class = DetalleCotizacionSerializer
-    permission_classes = [AllowAny]
 
 ################ - DEVOLUCIONES - ################
 class CreateDevolucionView(generics.CreateAPIView):
@@ -344,4 +363,3 @@ class DeleteHorarioView(generics.DestroyAPIView):
     queryset = Horario.objects.all()
     serializer_class = HorarioSerializer
     permission_classes = [AllowAny]
-

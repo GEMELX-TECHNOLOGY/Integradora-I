@@ -86,39 +86,32 @@ class ProveedorSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Clientes
-        fields = ['id_cliente', 'nombre', 'telefono', 'direcccion', 'correo']
-
-class UpdateClienteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Clientes
-        fields = ['nombre', 'telefono', 'direcccion', 'correo']
+        fields = ['id_cliente', 'nombre', 'apellido_paterno','apellido_materno','telefono','calle','numero','ciudad','estado','codigo_postal','correo']
 
 
-# Detalle Venta
-class DetalleVentaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DetalleVenta
-        fields = ['id_detalle', 'cantidad', 'precio_u', 'venta', 'producto']
-
-
-#Cotizacion
-class CotizacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cotizaciones
-        fields = ['id_cotizacion', 'cliente', 'fecha', 'estado', 'total']
-
-#Detalle Cotizacion
+# Serializador para DetalleCotizacion
 class DetalleCotizacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DetalleCotizaciones
-        fields = ['id_de', 'cantidad', 'precio_u', 'subtotal', 'cotizacion', 'producto']
+    producto = ProductoSerializer()  # Incluir información del producto
 
+    class Meta:
+        model = DetalleCotizacion
+        fields = ['id_detalle', 'cantidad', 'precio_u', 'producto', 'total_detalle']
+
+# Serializador para Cotizacion
+class CotizacionSerializer(serializers.ModelSerializer):
+    detallecotizacion_set = DetalleCotizacionSerializer(many=True, read_only=True)  # Relación con detalles
+
+    class Meta:
+        model = Cotizacion
+        fields = ['id', 'referencia', 'uv', 'pv', 'total_cotizacion', 'detallecotizacion_set']
 
 #Devoluciones
 class DevolucionesSerializer(serializers.ModelSerializer):
+    venta = serializers.PrimaryKeyRelatedField(queryset=Ventas.objects.all())
+    producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
     class Meta:
         model = Devoluciones
-        fields = ['motivo', 'fecha', 'venta', 'producto']
+        fields = ['id_dev','motivo', 'fecha', 'venta', 'producto']
     
 
 
@@ -134,4 +127,3 @@ class HorarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Horario
         fields = ['id_horario', 'dia_semana', 'hora_entrada', 'hora_salida', 'turno']
-

@@ -62,23 +62,31 @@ urlpatterns = [
     path('api/v1/ventas/eliminar/', DeleteVentaView.as_view(), name='eliminar_venta'),
     path('api/v1/ventas/<int:pk>/', DetalleVentaView.as_view(), name='detalle_venta_api'),
 
-    #urls DetalleVentas
-    path('api/v1/detalle_ventas/', ListaDetalleVentasView.as_view(), name='lista_detalle_ventas_api'),
+
     
 
-    #urls Cotizaciones
+         # Listar todas las cotizaciones
     path('api/v1/cotizaciones/', ListaCotizacionesView.as_view(), name='lista_cotizaciones_api'),
+    
+    # Crear una nueva cotización
     path('api/v1/cotizaciones/crear/', CreateCotizacionView.as_view(), name='crear_cotizacion'),
-    path('api/v1/cotizaciones/<int:id_cotizacion>/', DetalleCotizacionView.as_view(), name='detalle_cotizacion_api'),
+    
+    # Actualizar una cotización existente
+    path('api/v1/cotizaciones/actualizar/<int:pk>/', UpdateCotizacionView.as_view(), name='actualizar_cotizacion'),
+    
+    # Eliminar una cotización
+    path('api/v1/cotizaciones/eliminar/', DeleteCotizacionView.as_view(), name='eliminar_cotizacion'),
+    
+    # Ver los detalles de una cotización
+    path('api/v1/cotizaciones/<int:pk>/', DetalleCotizacionView.as_view(), name='detalle_cotizacion_api'),
 
-    #urls DetalleCotizaciones
-    path('api/v1/detalle_cotizaciones/', ListaDetalleCotizacionesView.as_view(), name='lista_detalle_cotizaciones_api'),
-   
 
     #urls Devoluciones
     path('api/v1/devoluciones/', ListaDevolucionesView.as_view(), name='lista_devoluciones_api'),
     path('api/v1/devoluciones/crear/', CreateDevolucionView.as_view(), name='crear_devolucion'),
     path('api/v1/devoluciones/<int:id_dev>/', DetalleDevolucionesView.as_view(), name='detalle_devoluciones'),
+    path('api/v1/devoluciones/editar/<int:id_dev>/', UpdateDevolucionesView.as_view(), name='editar_dev'),
+    path('api/v1/devoluciones/eliminar/<int:id_dev>/', DeleteDevolucionView.as_view(), name='eliminar_dev'),
 
     #urls Nomina
     path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),
@@ -94,4 +102,3 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
