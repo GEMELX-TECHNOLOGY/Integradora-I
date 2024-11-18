@@ -22,6 +22,7 @@ function Cotizaciones() {
     fetchProductos();
   }, []);
 
+
   const fetchCotizaciones = async () => {
     try {
       const response = await api.get("api/v1/cotizaciones/");
@@ -31,6 +32,7 @@ function Cotizaciones() {
     }
   };
 
+ 
   const fetchProductos = async () => {
     try {
       const response = await api.get("api/v1/productos/");
@@ -40,6 +42,7 @@ function Cotizaciones() {
     }
   };
 
+  // Crear una nueva cotización
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -53,15 +56,17 @@ function Cotizaciones() {
     }
   };
 
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewCotizacion({ ...newCotizacion, [name]: value });
     if (name === "uv" || name === "pv") {
-      calculateTotal(name, value);
+      calculateTotalCotizacion(name, value);
     }
   };
 
-  const calculateTotal = (name, value) => {
+  
+  const calculateTotalCotizacion = (name, value) => {
     const updatedCotizacion = { ...newCotizacion, [name]: value };
     const total_cotizacion = updatedCotizacion.uv * updatedCotizacion.pv;
     setNewCotizacion({ ...updatedCotizacion, total_cotizacion });
@@ -99,7 +104,7 @@ function Cotizaciones() {
                   className="border-b hover:bg-gray-100 text-gray-800"
                 >
                   <td className="p-2">{cotizacion.referencia}</td>
-                  <td className="p-2">{cotizacion.producto}</td>
+                  <td className="p-2">{cotizacion.producto.nombre}</td>
                   <td className="p-2">{cotizacion.uv}</td>
                   <td className="p-2">{cotizacion.pv}</td>
                   <td className="p-2">{cotizacion.total_cotizacion}</td>
@@ -144,7 +149,7 @@ function Cotizaciones() {
                 >
                   <option value="">Seleccionar Producto</option>
                   {productos.map((producto) => (
-                    <option key={producto.cod_producto} value={producto.cod_producto}>
+                    <option key={producto.id} value={producto.id}>
                       {producto.nombre} ({producto.referencia})
                     </option>
                   ))}
