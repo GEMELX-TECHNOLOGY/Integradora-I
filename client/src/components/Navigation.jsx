@@ -78,11 +78,7 @@ const navigationConfig = {
       item: "Ventas",
       icon: <ReportVenIcon className="mr-4"/>,
       subItems: [
-        {
-          item: "Devoluciones",
-          icon: <DevolucionIcon className="mr-4"/>,
-          url: "Devoluciones",
-        },
+
         {
           item: "Cotizaciones",
           icon: <CotizacionIcon className="mr-4"/>,

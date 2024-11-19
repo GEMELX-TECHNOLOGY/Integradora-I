@@ -81,12 +81,6 @@ urlpatterns = [
     path('api/v1/cotizaciones/<int:pk>/', DetalleCotizacionView.as_view(), name='detalle_cotizacion_api'),
 
 
-    #urls Devoluciones
-    path('api/v1/devoluciones/', ListaDevolucionesView.as_view(), name='lista_devoluciones_api'),
-    path('api/v1/devoluciones/crear/', CreateDevolucionView.as_view(), name='crear_devolucion'),
-    path('api/v1/devoluciones/<int:id_dev>/', DetalleDevolucionesView.as_view(), name='detalle_devoluciones'),
-    path('api/v1/devoluciones/editar/<int:id_dev>/', UpdateDevolucionesView.as_view(), name='editar_dev'),
-    path('api/v1/devoluciones/eliminar/<int:id_dev>/', DeleteDevolucionView.as_view(), name='eliminar_dev'),
 
     #urls Nomina
     path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),

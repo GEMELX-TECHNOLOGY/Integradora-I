@@ -295,33 +295,6 @@ class DeleteCotizacionView(generics.DestroyAPIView):
     permission_classes = [AllowAny]
 
 
-################ - DEVOLUCIONES - ################
-class CreateDevolucionView(generics.CreateAPIView):
-    queryset = Devoluciones
-    serializer_class = DevolucionesSerializer
-    permission_classes = [AllowAny]
-
-class ListaDevolucionesView(generics.ListAPIView):
-    queryset = Devoluciones.objects.all()
-    serializer_class = DevolucionesSerializer
-    permission_classes = [AllowAny]
-
-class DetalleDevolucionesView(generics.RetrieveAPIView):
-    queryset = Devoluciones.objects.all()
-    serializer_class = DevolucionesSerializer
-    lookup_field = 'id_dev'
-    permission_classes = [AllowAny]
-
-class UpdateDevolucionesView(generics.UpdateAPIView):
-    queryset = Devoluciones.objects.all()
-    lookup_field = 'id_dev'
-    serializer_class = DevolucionesSerializer
-    permission_classes = [AllowAny]
-
-class DeleteDevolucionView(generics.DestroyAPIView):
-    queryset = Devoluciones.objects.all()
-    serializer_class= DevolucionesSerializer
-    permission_classes = [AllowAny]
 ################ - NOMINA - ################
 class CreateNominaView(generics.CreateAPIView):
     queryset = Nomina

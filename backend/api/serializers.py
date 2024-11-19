@@ -105,14 +105,6 @@ class CotizacionSerializer(serializers.ModelSerializer):
         model = Cotizacion
         fields = ['id', 'producto','referencia', 'uv', 'pv', 'total_cotizacion', 'detallecotizacion_set']
 
-#Devoluciones
-class DevolucionesSerializer(serializers.ModelSerializer):
-    venta = serializers.PrimaryKeyRelatedField(queryset=Ventas.objects.all())
-    producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
-    class Meta:
-        model = Devoluciones
-        fields = ['id_dev','motivo', 'fecha', 'venta', 'producto']
-    
 
 
 #Nomina

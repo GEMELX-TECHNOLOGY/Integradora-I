@@ -213,16 +213,7 @@ class DetalleCotizacion(models.Model):
     def __str__(self):
         return f"Cotización {self.cotizacion.id} - Producto {self.producto.nombre}"
     
-#Tabla Devoluciones
-class Devoluciones(models.Model):
-    id_dev = models.AutoField(primary_key=True)
-    motivo = models.TextField()
-    fecha = models.DateField()
-    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.venta
 
 
 ###########################################

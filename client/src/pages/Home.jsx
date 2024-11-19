@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
@@ -6,12 +6,47 @@ import Estadistic from "@/components/Estadistic";
 import UsersCard from "@/components/UsersCard";
 import BetterProduct from "@/components/BetterProduct";
 import SaleCard from "@/components/SaleCard";
-import { ClientsIcon, NewOrders, PendingOrderIcon, SalesIcon, EstadisticIcon, EstadisticLowIcon } from "@/icons/Icons";
+import { 
+  ClientsIcon, 
+  SalesIcon, 
+  EstadisticIcon, 
+  EstadisticLowIcon 
+} from "@/icons/Icons";
+import api from "@/lib/api";
 
 function Home() {
   const { user } = useUser();
+  const [ventasTotales, setVentasTotales] = useState(0);
+  const [clientes, setClientes] = useState([]); 
 
-  useEffect(() => {}, [user]);
+
+  useEffect(() => {
+    const fetchVentasTotales = async () => {
+      try {
+        const response = await api.get("api/v1/ventas/");
+        const totalVentas = response.data.reduce((sum, venta) => sum + parseFloat(venta.amt), 0);
+        setVentasTotales(totalVentas); // Actualizar el estado
+      } catch (error) {
+        console.error("Error al obtener las ventas totales:", error);
+      }
+    };
+
+    fetchVentasTotales();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchClientes = async () => {
+      try {
+        const response = await api.get("api/v1/clientes/"); 
+        setClientes(response.data);
+      } catch (error) {
+        console.error("Error al obtener los clientes:", error);
+      }
+    };
+
+    fetchClientes();
+  }, []);
 
   return (
     <div className="flex h-screen">
@@ -23,12 +58,27 @@ function Home() {
           {user?.rol === "Ventas" && (
             <div> 
               <div className="flex pb-10 max-w-full justify-between">
-                <SaleCard title="Nuevos Clientes" text="text-green-500" Count="40,689" percentageChange="10" time="Desde ayer" icon={<EstadisticIcon/>} cardIcon={<ClientsIcon/>}/>
-                <SaleCard title="Ordenes Nuevas" text="text-green-500" Count="10,293" percentageChange="1.3" time="Semana pasada" icon={<EstadisticIcon/>} cardIcon={<NewOrders/>}/>
-                <SaleCard title="Ordenes Pendientes" text="text-green-500" Count="2,040" percentageChange="1.8" time="Semana pasada" icon={<EstadisticIcon/>} cardIcon={<PendingOrderIcon/>}/>
-                <SaleCard title="Ventas Totales" text="text-red-500" Count="$89,000" percentageChange="4.3" time="Desde ayer" icon={<EstadisticLowIcon/>} cardIcon={<SalesIcon/>}/>
+                <SaleCard 
+                  title="Nuevos Clientes" 
+                  text="text-green-500" 
+                  Count={clientes.length} 
+                  percentageChange="10" 
+                  time="Desde ayer" 
+                  icon={<EstadisticIcon />} 
+                  cardIcon={<ClientsIcon />} 
+                />
+                
+                <SaleCard 
+                  title="Ventas Totales" 
+                  text="text-green-500" 
+                  Count={`$${ventasTotales.toFixed(2)}`} 
+                  percentageChange="4.3" 
+                  time="Desde ayer" 
+                  icon={<EstadisticLowIcon />} 
+                  cardIcon={<SalesIcon />} 
+                />
               </div>
-              <Estadistic title="Detalle Ventas"/>
+              <Estadistic title="Detalle Ventas" />
             </div>
           )}
         </div>
