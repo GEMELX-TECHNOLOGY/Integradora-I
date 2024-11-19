@@ -35,13 +35,11 @@ function Horario() {
     }
   };
 
-  // Ver Horario
   const handleView = (horario) => {
     setCurrentHorario(horario);
     setIsModalViewOpen(true);
   };
 
-  // Editar Horario
   const handleEdit = (horario) => {
     setCurrentHorario(horario);
     setIsModalEditOpen(true);
@@ -67,7 +65,6 @@ function Horario() {
     }
   };
 
-  // Eliminar Horario
   const handleDelete = async (horarioId) => {
     try {
       await api.delete(`api/v1/horarios/eliminar/${horarioId}/`);
@@ -79,7 +76,6 @@ function Horario() {
     }
   };
 
-  // Agregar Horario
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -93,7 +89,6 @@ function Horario() {
     }
   };
 
-  // Cambio en los inputs (Agregar/Editar)
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (isModalEditOpen) {
@@ -104,11 +99,11 @@ function Horario() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Navigation />
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Header />
-        <div className="flex justify-end mr-28">
+        <div className="flex justify-end mr-8 sm:mr-4">
           <button
             className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
             onClick={() => setIsModalAddOpen(true)}
@@ -118,7 +113,7 @@ function Horario() {
         </div>
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
         <div className="container mx-auto p-4">
-          <table className="min-w-[1450px] bg-white shadow-md rounded-lg text-center">
+          <table className="min-w-full bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
                 <th className="p-2 text-center">DIA DE LA SEMANA</th>

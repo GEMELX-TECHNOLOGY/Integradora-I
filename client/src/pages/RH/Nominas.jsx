@@ -113,9 +113,9 @@ function Nomina() {
   return (
     <div className="flex h-screen">
       <Navigation />
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Header />
-        <div className="flex justify-end mr-28">
+        <div className="flex justify-end mr-8 sm:mr-4">
           <button
             className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
             onClick={() => setIsModalAddOpen(true)}
@@ -125,7 +125,7 @@ function Nomina() {
         </div>
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
         <div className="container mx-auto p-4">
-          <table className="min-w-[1450px] bg-white shadow-md rounded-lg text-center">
+          <table className="min-w-full bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
                 <th className="p-2 text-center">FECHA DE PAGO</th>
@@ -175,7 +175,7 @@ function Nomina() {
               onClick={() => setIsModalViewOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-              <span className="text-2xl">&times;</span> {/* "x" icon */}
+              <span className="text-2xl">&times;</span>
             </button>
             <h2 className="text-xl font-semibold">Detalles de Nómina</h2>
             <p><strong>Fecha de Pago:</strong> {currentNomina.fecha_pago}</p>
@@ -195,7 +195,7 @@ function Nomina() {
               onClick={() => setIsModalEditOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-              <span className="text-2xl">&times;</span> {/* "x" icon */}
+              <span className="text-2xl">&times;</span>
             </button>
             <h2 className="text-xl font-semibold">Editar Nómina</h2>
             <form onSubmit={handleEditSubmit} className="grid grid-cols-1 gap-4 mt-4">
@@ -279,7 +279,7 @@ function Nomina() {
               onClick={() => setIsModalAddOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-              <span className="text-2xl">&times;</span> {/* "x" icon */}
+              <span className="text-2xl">&times;</span>
             </button>
             <h2 className="text-xl font-semibold">Agregar Nómina</h2>
             <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">

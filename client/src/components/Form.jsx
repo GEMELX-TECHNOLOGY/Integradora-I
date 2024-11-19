@@ -13,8 +13,13 @@ function Form() {
   const [productModel, setProductModel] = useState("");
   const [productBrand, setProductBrand] = useState("");
   const [category, setCategories] = useState([]);
-  const [providers, setProviders] = useState([]); // Estado para los proveedores
-  const [productProvider, setProductProvider] = useState(""); // Estado para el proveedor seleccionado
+  const [providers, setProviders] = useState([]); 
+  const [productProvider, setProductProvider] = useState(""); 
+
+  // Para mostrar el formulario de agregar categoría
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryReference, setNewCategoryReference] = useState("");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -29,7 +34,7 @@ function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let categoriaId = productCategory;
-    let proveedorId = productProvider; 
+    let proveedorId = productProvider;
 
     const formData = new FormData();
     formData.append("cod_producto", productCode);
@@ -41,7 +46,7 @@ function Form() {
     formData.append("precio", productPrice);
     formData.append("stock", productQuantity);
     formData.append("categoria", categoriaId);
-    formData.append("proveedor", proveedorId); 
+    formData.append("proveedor", proveedorId);
     if (productImage) {
       formData.append("product_image", productImage);
     }
@@ -61,7 +66,7 @@ function Form() {
       setProductImage(null);
       setProductModel("");
       setProductBrand("");
-      setProductProvider(""); 
+      setProductProvider("");
       succesAdd();
     } catch (error) {
       console.error("Error al guardar el producto:", error.response ? error.response.data : error.message);
@@ -69,26 +74,57 @@ function Form() {
     }
   };
 
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const res = await api.get("api/v1/categorias/");
-        setCategories(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    loadCategories();
+  // Método para crear una categoría usando FormData
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault();
 
-    const loadProviders = async () => {
-      try {
-        const res = await api.get("api/v1/proveedores/");
-        setProviders(res.data);  // Aseguramos que los datos de proveedores se carguen correctamente
-        console.log("Proveedores cargados:", res.data);  // Verificar los datos de proveedores
-      } catch (err) {
-        console.error(err);
+    const formData = new FormData();
+    formData.append("nombre_categoria", newCategoryName);
+    formData.append("referencia_categoria", newCategoryReference);
+
+    try {
+      const res = await api.post("api/v1/categorias/crear/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", 
+        },
+      });
+
+      if (res.status === 201) {
+        toast.success("Categoría agregada correctamente");
+        setShowCategoryForm(false);
+        setNewCategoryName("");
+        setNewCategoryReference("");
+        loadCategories();
+      } else {
+        toast.error("Error al agregar la categoría.");
       }
-    };
+    } catch (error) {
+      console.error("Error al crear la categoría:", error.response ? error.response.data : error.message);
+      toast.error("Error al agregar la categoría");
+    }
+  };
+
+  const loadCategories = async () => {
+    try {
+      const res = await api.get("api/v1/categorias/");
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Error al cargar las categorías:", err);
+      toast.error("Error al cargar las categorías");
+    }
+  };
+
+  const loadProviders = async () => {
+    try {
+      const res = await api.get("api/v1/proveedores/");
+      setProviders(res.data);
+    } catch (err) {
+      console.error("Error al cargar los proveedores:", err);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
     loadProviders();
   }, []);
 
@@ -147,7 +183,14 @@ function Form() {
                       {category.nombre_categoria}
                     </option>
                   ))}
-                </select>        
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowCategoryForm(true)}
+                  className="text-blue-500 hover:underline mt-2"
+                >
+                  Agregar categoría
+                </button>
               </div>
             </div>
             <div className="flex flex-wrap mb-5">
@@ -155,7 +198,7 @@ function Form() {
                 <label className="block font-bold text-gray-700 mb-1">Proveedor</label>
                 <select
                   value={productProvider}
-                  onChange={(e) => setProductProvider(e.target.value)} // Actualizar el estado del proveedor
+                  onChange={(e) => setProductProvider(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
                 >
                   <option value="" disabled required>
@@ -163,7 +206,7 @@ function Form() {
                   </option>
                   {providers.map((provider) => (
                     <option key={provider.id_prov} value={provider.id_prov}>
-                      {provider.nombre} 
+                      {provider.nombre}
                     </option>
                   ))}
                 </select>
@@ -185,71 +228,92 @@ function Form() {
                   type="number"
                   placeholder="Precio"
                   value={productPrice}
-                  min={1}
                   onChange={(e) => setProductPrice(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
                 />
               </div>
               <div className="w-1/2 pl-2">
-                <label className="block font-bold text-gray-700 mb-1">Imagen del Producto</label>
+                <label className="block font-bold text-gray-700 mb-1">Imagen</label>
                 <input
                   type="file"
-                  accept="image/*"
                   onChange={handleImageChange}
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
                 />
               </div>
             </div>
-            <div className="flex flex-wrap mb-5">
-              <div className="w-1/2 pr-2">
-                <label className="block font-bold text-gray-700 mb-1">Modelo</label>
-                <input
-                  type="text"
-                  placeholder="Modelo del producto"
-                  value={productModel}
-                  onChange={(e) => setProductModel(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                />
-              </div>
-              <div className="w-1/2 pl-2">
-                <label className="block font-bold text-gray-700 mb-1">Marca</label>
-                <input
-                  type="text"
-                  placeholder="Marca del producto"
-                  value={productBrand}
-                  onChange={(e) => setProductBrand(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                />
-              </div>
+            <div className="mb-5">
+              <label className="block font-bold text-gray-700 mb-1">Marca</label>
+              <input
+                type="text"
+                placeholder="Marca del producto"
+                value={productBrand}
+                onChange={(e) => setProductBrand(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-5">
+              <label className="block font-bold text-gray-700 mb-1">Modelo</label>
+              <input
+                type="text"
+                placeholder="Modelo"
+                value={productModel}
+                onChange={(e) => setProductModel(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              />
             </div>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 w-full"
               type="submit"
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
             >
-              Guardar Producto
+              Guardar producto
             </button>
           </div>
         </div>
-        <div className="flex-1 ml-5 p-5">
-          <h2 className="text-xl font-bold text-gray-700 mb-2">Vista previa</h2>
-          <div className="border border-gray-300 p-5 rounded-lg shadow-md text-center flex flex-col items-center">
-            {productImage && (
-              <img
-                src={URL.createObjectURL(productImage)} 
-                alt="Imagen del producto"
-                className="w-full max-w-xs mb-3"
-              />
-            )}
-            <h3 className="text-lg text-gray-700 mb-2">{productName || ""}</h3>
-            <div className="flex flex-row w-full justify-center">
-              <p className="mr-10">{productQuantity ? "Cantidad: " + productQuantity : ""}</p>
-              <p>{productPrice ? "Precio: $" + productPrice : ""}</p>
+
+        {/* Formulario de Agregar Categoria debajo de la vista previa */}
+        {showCategoryForm && (
+          <div className="flex-1 p-5">
+            <div className="bg-white rounded-lg shadow-md p-5">
+              <h3 className="text-xl font-bold mb-4">Agregar Categoría</h3>
+              <div className="mb-4">
+                <label className="block font-bold text-gray-700 mb-1">Nombre de la categoría</label>
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block font-bold text-gray-700 mb-1">Referencia de la categoría</label>
+                <input
+                  type="text"
+                  value={newCategoryReference}
+                  onChange={(e) => setNewCategoryReference(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleCategorySubmit}
+                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              >
+                Crear categoría
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowCategoryForm(false)}
+                className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 mt-4"
+              >
+                Cancelar
+              </button>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </form>
   );
 }
 
 export default Form;
+

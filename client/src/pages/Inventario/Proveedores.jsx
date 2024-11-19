@@ -109,11 +109,11 @@ function Proveedor() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Navigation />
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Header />
-        <div className="flex justify-end mr-28">
+        <div className="flex justify-end mr-8 sm:mr-4">
           <button
             className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
             onClick={() => setIsModalAddOpen(true)}
@@ -123,7 +123,7 @@ function Proveedor() {
         </div>
         <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
         <div className="container mx-auto p-4">
-          <table className="min-w-[1450px] bg-white shadow-md rounded-lg text-center">
+          <table className="min-w-full bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
                 <th className="p-2 text-center">NOMBRE</th>
