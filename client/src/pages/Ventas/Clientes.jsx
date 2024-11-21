@@ -23,7 +23,7 @@ function Clientes() {
     ciudad: "",
     estado: "",
     codigo_postal: "",
-    correo: ""
+    correo: "",
   });
 
   const totalPages = Math.ceil(clientes.length / 10);
@@ -52,7 +52,7 @@ function Clientes() {
       ciudad: "",
       estado: "",
       codigo_postal: "",
-      correo: ""
+      correo: "",
     });
     setIsModalAddOpen(true);
   };
@@ -80,13 +80,16 @@ function Clientes() {
     e.preventDefault();
     try {
       if (editCliente) {
-        await api.put(`api/v1/clientes/actualizar/${editCliente.id_cliente}/`, formData);
+        await api.put(
+          `api/v1/clientes/actualizar/${editCliente.id_cliente}/`,
+          formData
+        );
         toast.success("Cliente actualizado correctamente.");
       } else {
         await api.post("api/v1/clientes/crear/", formData);
         toast.success("Cliente agregado correctamente.");
       }
-      fetchClientes(); 
+      fetchClientes();
       setIsModalAddOpen(false);
       setIsModalEditOpen(false);
     } catch (error) {
@@ -99,7 +102,7 @@ function Clientes() {
     try {
       await api.delete(`api/v1/clientes/delete/${editCliente.id_cliente}/`);
       toast.success("Cliente eliminado correctamente.");
-      fetchClientes(); 
+      fetchClientes();
       setIsModalDeleteOpen(false);
     } catch (error) {
       toast.error("Error al eliminar el cliente.");
@@ -149,17 +152,28 @@ function Clientes() {
               {clientes
                 .slice((currentPage - 1) * 10, currentPage * 10)
                 .map((cliente) => (
-                  <tr key={cliente.id_cliente} className="border-b hover:bg-gray-100">
+                  <tr
+                    key={cliente.id_cliente}
+                    className="border-b hover:bg-gray-100"
+                  >
                     <td>{cliente.id_cliente}</td>
-                    <td>{cliente.nombre} {cliente.apellido_paterno} {cliente.apellido_materno}</td>
+                    <td>
+                      {cliente.nombre} {cliente.apellido_paterno}{" "}
+                      {cliente.apellido_materno}
+                    </td>
                     <td>{cliente.telefono}</td>
-                    <td>{cliente.calle}, {cliente.numero}, {cliente.ciudad}, {cliente.estado}</td>
+                    <td>
+                      {cliente.calle}, {cliente.numero}, {cliente.ciudad},{" "}
+                      {cliente.estado}
+                    </td>
                     <td>{cliente.correo}</td>
                     <td className="p-2 flex justify-center space-x-2">
                       <button onClick={() => openEditModal(cliente)}>
                         <EditIcon className="h-6 w-6 text-green-500 hover:text-green-700" />
                       </button>
-                      <button onClick={() => openDeleteModal(cliente.id_cliente)}>
+                      <button
+                        onClick={() => openDeleteModal(cliente.id_cliente)}
+                      >
                         <DeleteIcon className="h-6 w-6 text-red-500 hover:text-red-700" />
                       </button>
                     </td>
@@ -177,7 +191,9 @@ function Clientes() {
           >
             Anterior
           </button>
-          <span>Página {currentPage} de {totalPages}</span>
+          <span>
+            Página {currentPage} de {totalPages}
+          </span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
@@ -188,112 +204,144 @@ function Clientes() {
         </div>
 
         {/* Modal Agregar/Editar Cliente */}
-        <Modal isOpen={isModalAddOpen || isModalEditOpen} onClose={() => setIsModalAddOpen(false)}>
+        <Modal
+          isOpen={isModalAddOpen || isModalEditOpen}
+          onClose={() => setIsModalAddOpen(false)}
+        >
           <form onSubmit={handleSubmit}>
-            <h2 className="text-xl font-semibold">{isModalEditOpen ? "Editar Cliente" : "Agregar Cliente"}</h2>
-            <div className="mt-4 grid grid-cols-1 gap-4">
-              <label>Nombre</label>
-              <input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Apellido Paterno</label>
-              <input
-                type="text"
-                name="apellido_paterno"
-                value={formData.apellido_paterno}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Apellido Materno</label>
-              <input
-                type="text"
-                name="apellido_materno"
-                value={formData.apellido_materno}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Teléfono</label>
-              <input
-                type="text"
-                name="telefono"
-                value={formData.telefono}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Calle</label>
-              <input
-                type="text"
-                name="calle"
-                value={formData.calle}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Número</label>
-              <input
-                type="text"
-                name="numero"
-                value={formData.numero}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Ciudad</label>
-              <input
-                type="text"
-                name="ciudad"
-                value={formData.ciudad}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Estado</label>
-              <input
-                type="text"
-                name="estado"
-                value={formData.estado}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Código Postal</label>
-              <input
-                type="text"
-                name="codigo_postal"
-                value={formData.codigo_postal}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <label>Correo</label>
-              <input
-                type="email"
-                name="correo"
-                value={formData.correo}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-
-            <div className="mt-4 flex justify-between">
-              <button
-                type="button"
-                onClick={() => setIsModalAddOpen(false)}
-                className="bg-gray-300 text-black px-5 py-2 rounded"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-5 py-2 rounded"
-              >
-                Guardar
-              </button>
+            <h2 className="text-xl font-semibold">
+              {isModalEditOpen ? "Editar Cliente" : "Agregar Cliente"}
+            </h2>
+            <div className="flex flex-row max-w-[1550px] mx-auto">
+              <div className="flex-3 p-5">
+                <div className="bg-white rounded-lg shadow-md p-5">
+                  <div className="flex flex-wrap mb-5">
+                    <div className="w-1/2 pr-2">
+                      <label>Nombre</label>
+                      <input
+                        type="text"
+                        name="nombre"
+                        value={formData.nombre}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <label>Apellido Paterno</label>
+                      <input
+                        type="text"
+                        name="apellido_paterno"
+                        value={formData.apellido_paterno}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap mb-5">
+                    <div className="w-1/2 pr-2">
+                      <label>Apellido Materno</label>
+                      <input
+                        type="text"
+                        name="apellido_materno"
+                        value={formData.apellido_materno}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <label>Teléfono</label>
+                      <input
+                        type="text"
+                        name="telefono"
+                        value={formData.telefono}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap mb-5">
+                  <div className="w-1/2 pl-2">
+                      <label>Calle</label>
+                      <input
+                        type="text"
+                        name="calle"
+                        value={formData.calle}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                    <div className="w-1/2 pl-2">
+                      <label>Número EXT</label>
+                      <input
+                        type="text"
+                        name="numero"
+                        value={formData.numero}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap mb-5">
+                    <div className="w-1/2 pr-2">
+                      <label>Ciudad</label>
+                      <input
+                        type="text"
+                        name="ciudad"
+                        value={formData.ciudad}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                    <div className="w-1/2 pr-2">
+                      <label>Estado</label>
+                      <input
+                        type="text"
+                        name="estado"
+                        value={formData.estado}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap mb-5">
+                    <div className="w-1/2 pl-2">
+                      <label>Código Postal</label>
+                      <input
+                        type="text"
+                        name="codigo_postal"
+                        value={formData.codigo_postal}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                    <div className="W-1/2 pl-2">
+                      <label>Correo</label>
+                      <input
+                        type="email"
+                        name="correo"
+                        value={formData.correo}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                  >
+                    Guardar cliente
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </Modal>
 
         {/* Modal de confirmación de eliminación */}
-        <Modal isOpen={isModalDeleteOpen} onClose={() => setIsModalDeleteOpen(false)}>
+        <Modal
+          isOpen={isModalDeleteOpen}
+          onClose={() => setIsModalDeleteOpen(false)}
+        >
           <div className="text-center">
             <p>¿Estás seguro de eliminar este cliente?</p>
             <div className="flex justify-center mt-4">

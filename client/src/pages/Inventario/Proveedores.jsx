@@ -108,6 +108,10 @@ function Proveedor() {
     }
   };
 
+  const closeAddModal = () => {
+    setIsModalAddOpen(false);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Navigation />
@@ -287,7 +291,7 @@ function Proveedor() {
 
       {/* Modal Agregar */}
       {isModalAddOpen && (
-        <Modal isOpen={isModalAddOpen} closeModal={() => setIsModalAddOpen(false)}>
+        <Modal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)}>
           <h2 className="text-xl font-semibold">Agregar Proveedor</h2>
           <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">
             <label>
