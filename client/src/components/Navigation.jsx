@@ -102,11 +102,44 @@ const navigationConfig = {
       ]
     },
   ],
+  Inventario: [
+    {
+      item: "Inicio",
+      icon: <HomeIcon className="mr-4" />,
+      url: "",
+    },
+    {
+      item: "Agregar Producto",
+      icon: <AddProductIcon className="mr-4"/>,
+      url: "/Agregar-Producto",
+    },
+    {
+      item: "Invetario",
+      icon: <InventoryIcon className="mr-4"/>,
+      url: "/Inventario",
+    },
+    {
+      item: "Proveedores",
+      icon: <ProveedoresIcon className="mr-4"/>,
+      url: "/Proveedores"
+    }
+  ],
+
   Ventas: [
     {
       item: "Inicio",
       icon: <HomeIcon className="mr-4" />,
       url: "",
+    },
+    {
+      item: "Cotizaciones",
+      icon: <CotizacionIcon className="mr-4"/>,
+      url: "/Cotizaciones",
+    },
+    {
+      item: "Ventas",
+      icon: <ReportVenIcon className="mr-4"/>,
+      url: "/Ventas",
     },
     {
       item: "Clientes",
