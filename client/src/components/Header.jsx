@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import api from "@/lib/api";
 import Modal from "@/components/Modal";
 
@@ -22,8 +23,8 @@ const NamePage = {
 function Header() {
   const [user, setUser] = useState({
     id: "",
-    first_name: "",
-    last_name: "",
+    nombre: "",
+    apellido_pa: "",
     rol: "",
     profile_image: "",
   });
@@ -34,23 +35,24 @@ function Header() {
 
   useEffect(() => {
     const token = localStorage.getItem("access");
+
     if (token) {
-      getUserDetails(token);
+      const decode = jwtDecode(token)
+      const user_id = decode.user_id;
+      getUserDetails(token, user_id);
     }
   }, []);
 
-  const getUserDetails = async (token) => {
+  const getUserDetails = async (token, user_id) => {
     try {
-      const response = await api.get("/api/v1/user/", {
+      const response = await api.get(`/api/v1/empleado/${user_id}`, {
         headers: {
           Authorization: `Token ${token}`,
         },
       });
-      const { id, first_name, last_name, rol, profile_image } = response.data;
-      const imageUrl = profile_image
-        ? `http://127.0.0.1:8000${profile_image}`
-        : null;
-      setUser({ id, first_name, last_name, rol, profile_image: imageUrl });
+      const { id, nombre, apellido_pa, profile_image } = response.data;
+      const rol = response.data.user.rol.nombre_rol
+      setUser({ id, nombre, apellido_pa, rol, profile_image });
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
@@ -115,12 +117,12 @@ function Header() {
           >
             <img
               src={user.profile_image}
-              alt={`${user.first_name} profile`}
+              alt={`${user.nombre} profile`}
               className="rounded-full h-[42px] w-[42px]"
             />
             <div className="pl-4">
               <span className="text-titlepage font-bold text-sm">
-                {user.first_name} {user.last_name}
+                {user.nombre} {user.apellido_pa}
               </span>
               <p className="text-xs text-black/70 font-medium">{user.rol}</p>
             </div>

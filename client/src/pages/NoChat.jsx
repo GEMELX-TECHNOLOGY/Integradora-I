@@ -1,7 +1,7 @@
 import React from 'react'
 import Navigation from '@/components/Navigation'
 import Header from '@/components/Header'
-import Inbox from '@/components/Inbox'
+import InboxNoChat from '@/components/InboxNoChat'
 
 function Chat() {
   return (
@@ -10,7 +10,7 @@ function Chat() {
     <div className="flex-1">
       <Header />
       <div>
-        <Inbox/>
+        <InboxNoChat/>
       </div>
     </div>
   </div>

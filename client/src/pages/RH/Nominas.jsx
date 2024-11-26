@@ -189,13 +189,13 @@ function Nomina() {
 
       {/* Modal Editar */}
       {isModalEditOpen && currentNomina && (
-        <Modal isOpen={isModalEditOpen} closeModal={() => setIsModalEditOpen(false)}>
+        <Modal isOpen={isModalEditOpen} onClose={() => setIsModalEditOpen(false)}>
           <div className="relative">
             <button
               onClick={() => setIsModalEditOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-              <span className="text-2xl">&times;</span>
+
             </button>
             <h2 className="text-xl font-semibold">Editar Nómina</h2>
             <form onSubmit={handleEditSubmit} className="grid grid-cols-1 gap-4 mt-4">
@@ -273,13 +273,13 @@ function Nomina() {
 
       {/* Modal Agregar Nómina */}
       {isModalAddOpen && (
-        <Modal isOpen={isModalAddOpen} closeModal={() => setIsModalAddOpen(false)}>
-          <div className="relative">
+        <Modal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)}>
+          <div className="relative"><span className="text-2xl">&times;</span>
             <button
               onClick={() => setIsModalAddOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-              <span className="text-2xl">&times;</span>
+              
             </button>
             <h2 className="text-xl font-semibold">Agregar Nómina</h2>
             <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">

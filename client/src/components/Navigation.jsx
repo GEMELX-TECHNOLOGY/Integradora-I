@@ -10,7 +10,6 @@ import {
   EmployeesIcon,
   LogoutIcon,
   CotizacionIcon,
-  DevolucionIcon,
   ReportVenIcon,
   ProveedoresIcon,
   HorarioIcon,
@@ -71,7 +70,7 @@ const navigationConfig = {
           item: "Proveedores",
           icon: <ProveedoresIcon className="mr-4"/>,
           url: "Proveedores"
-        }
+        },
       ]
     },
     {

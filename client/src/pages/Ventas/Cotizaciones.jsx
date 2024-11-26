@@ -7,64 +7,144 @@ import Modal from "@/components/Modal";
 
 function Cotizaciones() {
   const [cotizaciones, setCotizaciones] = useState([]);
+  const [clientes, setClientes] = useState([]);
   const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newCotizacion, setNewCotizacion] = useState({
-    referencia: "",
+    cliente: "",
     producto: "",
-    uv: 0,
-    pv: 0,
+    referencia_producto: "",
+    cantidad: 1,
     total_cotizacion: 0,
   });
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
   useEffect(() => {
-    fetchCotizaciones();
-    fetchProductos();
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const clientesResponse = await api.get("api/v1/clientes/");
+        setClientes(clientesResponse.data);
+
+        const cotizacionesResponse = await api.get("api/v1/cotizaciones/");
+        setCotizaciones(cotizacionesResponse.data);
+
+        const productosResponse = await api.get("api/v1/productos/");
+        setProductos(productosResponse.data);
+      } catch (error) {
+        console.error("Error cargando datos:", error);
+        toast.error("Error al cargar los datos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  const fetchCotizaciones = async () => {
-    try {
-      const response = await api.get("api/v1/cotizaciones/");
-      setCotizaciones(response.data);
-    } catch (error) {
-      console.error("Error al obtener las cotizaciones:", error);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "producto") {
+      const productoSeleccionado = productos.find(
+        (producto) => producto.cod_producto === value
+      );
+      setNewCotizacion((prevCotizacion) => ({
+        ...prevCotizacion,
+        [name]: value,
+        referencia_producto: productoSeleccionado ? productoSeleccionado.referencia : "",
+      }));
+      calculateTotalCotizacion(newCotizacion.cantidad, value);
+    } else if (name === "cantidad") {
+      const cantidad = parseInt(value, 10) || 0;
+      setNewCotizacion((prevCotizacion) => ({
+        ...prevCotizacion,
+        cantidad: cantidad,
+      }));
+      calculateTotalCotizacion(cantidad, newCotizacion.producto);
+    } else {
+      setNewCotizacion((prevCotizacion) => ({
+        ...prevCotizacion,
+        [name]: value,
+      }));
     }
   };
 
-  const fetchProductos = async () => {
-    try {
-      const response = await api.get("api/v1/productos/");
-      setProductos(response.data);
-    } catch (error) {
-      console.error("Error al obtener los productos:", error);
-    }
+  const calculateTotalCotizacion = (cantidad, productoId) => {
+    const productoSeleccionado = productos.find(
+      (producto) => producto.cod_producto === productoId
+    );
+    const total = productoSeleccionado ? cantidad * productoSeleccionado.precio : 0;
+    setNewCotizacion((prevCotizacion) => ({
+      ...prevCotizacion,
+      total_cotizacion: total,
+    }));
+  };
+
+  const getProductoNombre = (id) => {
+    if (!id) return "No disponible";
+    const producto = productos.find((producto) => String(producto.cod_producto) === String(id));
+    return producto ? `${producto.nombre} (${producto.referencia})` : "No disponible";
   };
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
+
+    if (!newCotizacion.cliente || !newCotizacion.producto) {
+      toast.error("Por favor, seleccione un cliente y un producto.");
+      return;
+    }
+
     try {
-      const response = await api.post("api/v1/cotizaciones/crear/", newCotizacion);
-      setCotizaciones([...cotizaciones, response.data]);
+      // Asegurémonos de que los datos estén en el formato correcto
+      const cotizacionData = {
+        cliente: Number(newCotizacion.cliente),
+        producto: String(newCotizacion.producto),
+        referencia_producto: String(newCotizacion.referencia_producto),
+        cantidad: Number(newCotizacion.cantidad),
+        total_cotizacion: Number(newCotizacion.total_cotizacion)
+      };
+
+      console.log("Datos a enviar:", cotizacionData);
+
+      const response = await api.post("api/v1/cotizaciones/crear/", cotizacionData);
+      console.log("Respuesta exitosa:", response.data);
+      
+      const cotizacionesResponse = await api.get("api/v1/cotizaciones/");
+      setCotizaciones(cotizacionesResponse.data);
+      
+      setNewCotizacion({
+        cliente: "",
+        producto: "",
+        referencia_producto: "",
+        cantidad: 1,
+        total_cotizacion: 0,
+      });
+      
       setIsModalAddOpen(false);
-      toast.success("Cotización agregada correctamente.");
+      toast.success("Cotización creada exitosamente");
     } catch (error) {
-      toast.error("Error al agregar la cotización.");
-      console.error(error);
+      console.error("Error completo:", error);
+      console.error("Datos de la respuesta:", error.response?.data);
+      
+      // Mostrar un mensaje de error más específico
+      let errorMessage = "Error al crear la cotización: ";
+      if (error.response?.data) {
+        if (typeof error.response.data === 'object') {
+          // Si es un objeto de errores, mostrar cada campo con error
+          const errorMessages = Object.entries(error.response.data)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ');
+          errorMessage += errorMessages;
+        } else {
+          errorMessage += error.response.data;
+        }
+      } else {
+        errorMessage += "Error desconocido";
+      }
+      
+      toast.error(errorMessage);
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewCotizacion({ ...newCotizacion, [name]: value });
-    if (name === "uv" || name === "pv") {
-      calculateTotalCotizacion(name, value);
-    }
-  };
-
-  const calculateTotalCotizacion = (name, value) => {
-    const updatedCotizacion = { ...newCotizacion, [name]: value };
-    const totalCotizacion = updatedCotizacion.uv * updatedCotizacion.pv;
-    setNewCotizacion({ ...updatedCotizacion, total_cotizacion: totalCotizacion });
   };
 
   return (
@@ -81,33 +161,37 @@ function Cotizaciones() {
           </button>
         </div>
         <hr className="my-4 border-t border-gray-300" />
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg text-center">
-            <thead className="bg-[#045E9C] text-white">
-              <tr>
-                <th className="p-2">Referencia</th>
-                <th className="p-2">Producto</th>
-                <th className="p-2">UV</th>
-                <th className="p-2">PV</th>
-                <th className="p-2">Monto Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cotizaciones.map((cotizacion) => (
-                <tr
-                  key={cotizacion.id}
-                  className="border-b hover:bg-gray-100 text-gray-800"
-                >
-                  <td className="p-2">{cotizacion.referencia}</td>
-                  <td className="p-2">{cotizacion.producto}</td>
-                  <td className="p-2">{cotizacion.uv}</td>
-                  <td className="p-2">{cotizacion.pv}</td>
-                  <td className="p-2">{cotizacion.total_cotizacion}</td>
+        
+        {loading ? (
+          <div className="text-center py-4">Cargando datos...</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white shadow-md rounded-lg text-center">
+              <thead className="bg-[#045E9C] text-white">
+                <tr>
+                  <th className="p-2">Cliente ID</th>
+                  <th className="p-2">Producto</th>
+                  <th className="p-2">Referencia</th>
+                  <th className="p-2">Cantidad</th>
+                  <th className="p-2">Total Cotización</th>
+                  <th className="p-2">Fecha Creación</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {cotizaciones.map((cotizacion) => (
+                  <tr key={cotizacion.id} className="border-b hover:bg-gray-100 text-gray-800">
+                    <td className="p-2">{cotizacion.cliente}</td>
+                    <td className="p-2">{getProductoNombre(cotizacion.producto)}</td>
+                    <td className="p-2">{cotizacion.referencia_producto}</td>
+                    <td className="p-2">{cotizacion.cantidad}</td>
+                    <td className="p-2">{cotizacion.total_cotizacion}</td>
+                    <td className="p-2">{new Date(cotizacion.fecha_creacion).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* Modal Agregar Cotización */}
@@ -117,15 +201,21 @@ function Cotizaciones() {
             <h2 className="text-xl font-semibold">Agregar Cotización</h2>
             <form onSubmit={handleAddSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <label>
-                Referencia
-                <input
-                  type="text"
-                  name="referencia"
-                  value={newCotizacion.referencia}
+                Cliente
+                <select
+                  name="cliente"
+                  value={newCotizacion.cliente}
                   onChange={handleChange}
                   required
                   className="w-full p-2 border border-gray-300 rounded"
-                />
+                >
+                  <option value="">Seleccionar Cliente</option>
+                  {clientes.map((cliente) => (
+                    <option key={cliente.id} value={cliente.id}>
+                      {cliente.nombre}
+                    </option>
+                  ))}
+                </select>
               </label>
               <label>
                 Producto
@@ -145,32 +235,31 @@ function Cotizaciones() {
                 </select>
               </label>
               <label>
-                UV
+                Referencia
                 <input
-                  type="number"
-                  name="uv"
-                  value={newCotizacion.uv}
+                  type="text"
+                  name="referencia_producto"
+                  value={newCotizacion.referencia_producto}
                   onChange={handleChange}
                   required
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </label>
               <label>
-                PV
+                Cantidad
                 <input
                   type="number"
-                  name="pv"
-                  value={newCotizacion.pv}
+                  name="cantidad"
+                  value={newCotizacion.cantidad}
                   onChange={handleChange}
-                  required
+                  min="1"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </label>
               <label>
-                Monto Total
+                Total Cotización
                 <input
                   type="number"
-                  name="total_cotizacion"
                   value={newCotizacion.total_cotizacion}
                   readOnly
                   className="w-full p-2 border border-gray-300 rounded"
@@ -178,16 +267,15 @@ function Cotizaciones() {
               </label>
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded col-span-2"
+                className="mt-4 bg-blue-500 text-white rounded p-2 hover:bg-blue-600"
               >
-                Guardar Cotización
+                Guardar
               </button>
             </form>
           </div>
         </Modal>
       )}
-
-      <Toaster />
+      <Toaster position="top-right" />
     </div>
   );
 }

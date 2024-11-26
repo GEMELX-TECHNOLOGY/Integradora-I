@@ -7,6 +7,7 @@ import { useUser } from "@/context/UserContext";
 import Login from "@/pages/Login";
 import Home from "@/pages/Home";
 import Chat from "@/pages/Chat";
+import NoChat from "@/pages/NoChat"
 import NotFound from "@/pages/NotFound";
 import NoAuthorized from "@/context/NoAuthorized";
 
@@ -41,7 +42,8 @@ function Rutas() {
                 {/* ANY USER */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><Home /></ProtectedRoute>} />
-                <Route path="/Chat" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><Chat /></ProtectedRoute>} />
+                <Route path="/Chat" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><NoChat /></ProtectedRoute>} />
+                <Route path="/Chat/:id" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Recursos Humanos', 'Inventario']}><Chat /></ProtectedRoute>} />
                 
                 {/* INVETARY USER */}
                 <Route path="/Inventario" element={<ProtectedRoute allowedRoles={['Administrador', 'Ventas', 'Inventario']}><Inventary /></ProtectedRoute>} />

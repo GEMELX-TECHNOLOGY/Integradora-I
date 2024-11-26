@@ -180,11 +180,11 @@ function Proveedor() {
 
       {/* Modal Editar */}
       {isModalEditOpen && currentProveedor && (
-        <Modal isOpen={isModalEditOpen} closeModal={() => setIsModalEditOpen(false)}>
+        <Modal isOpen={isModalEditOpen} onClose={() => setIsModalEditOpen(false)}>
           <h2 className="text-xl font-semibold">Editar Proveedor</h2>
-          <form onSubmit={handleEditSubmit} className="grid grid-cols-1 gap-4 mt-4">
-            <label>
-              Nombre
+          <form onSubmit={handleEditSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="flex flex-col">
+              <label className="mb-2">Nombre</label>
               <input
                 type="text"
                 name="nombre"
@@ -193,9 +193,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Apellido Paterno
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Apellido Paterno</label>
               <input
                 type="text"
                 name="apellido_paterno"
@@ -204,9 +204,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Apellido Materno
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Apellido Materno</label>
               <input
                 type="text"
                 name="apellido_materno"
@@ -215,9 +215,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Teléfono
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Teléfono</label>
               <input
                 type="text"
                 name="telefono"
@@ -226,9 +226,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Calle
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Calle</label>
               <input
                 type="text"
                 name="calle"
@@ -237,9 +237,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Número
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Número</label>
               <input
                 type="text"
                 name="numero"
@@ -248,9 +248,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Ciudad
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Ciudad</label>
               <input
                 type="text"
                 name="ciudad"
@@ -259,9 +259,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Estado
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Estado</label>
               <input
                 type="text"
                 name="estado"
@@ -270,9 +270,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Código Postal
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Código Postal</label>
               <input
                 type="text"
                 name="codigo_postal"
@@ -281,8 +281,11 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4"
+            >
               Guardar Cambios
             </button>
           </form>
@@ -293,9 +296,9 @@ function Proveedor() {
       {isModalAddOpen && (
         <Modal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)}>
           <h2 className="text-xl font-semibold">Agregar Proveedor</h2>
-          <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">
-            <label>
-              Nombre
+          <form onSubmit={handleAddSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="flex flex-col">
+              <label className="mb-2">Nombre</label>
               <input
                 type="text"
                 name="nombre"
@@ -304,9 +307,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Apellido Paterno
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Apellido Paterno</label>
               <input
                 type="text"
                 name="apellido_paterno"
@@ -315,9 +318,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Apellido Materno
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Apellido Materno</label>
               <input
                 type="text"
                 name="apellido_materno"
@@ -326,9 +329,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Teléfono
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Teléfono</label>
               <input
                 type="text"
                 name="telefono"
@@ -337,9 +340,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Calle
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Calle</label>
               <input
                 type="text"
                 name="calle"
@@ -348,9 +351,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Número
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Número</label>
               <input
                 type="text"
                 name="numero"
@@ -359,9 +362,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Ciudad
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Ciudad</label>
               <input
                 type="text"
                 name="ciudad"
@@ -370,9 +373,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Estado
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Estado</label>
               <input
                 type="text"
                 name="estado"
@@ -381,9 +384,9 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <label>
-              Código Postal
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2">Código Postal</label>
               <input
                 type="text"
                 name="codigo_postal"
@@ -392,8 +395,11 @@ function Proveedor() {
                 required
                 className="w-full p-2 border border-gray-300 rounded"
               />
-            </label>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4"
+            >
               Guardar Proveedor
             </button>
           </form>

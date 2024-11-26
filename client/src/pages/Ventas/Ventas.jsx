@@ -145,7 +145,7 @@ function Ventas() {
                 </select>
               </label>
               <label>
-                UV
+                Unidad Vendida
                 <input
                   type="number"
                   name="uv"
@@ -156,7 +156,7 @@ function Ventas() {
                 />
               </label>
               <label>
-                PV
+                Precio Venta
                 <input
                   type="number"
                   name="pv"

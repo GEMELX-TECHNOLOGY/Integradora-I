@@ -155,7 +155,7 @@ function Horario() {
 
       {/* Modal Ver */}
       {isModalViewOpen && currentHorario && (
-        <Modal isOpen={isModalViewOpen} closeModal={() => setIsModalViewOpen(false)}>
+        <Modal isOpen={isModalViewOpen} onClose={() => setIsModalViewOpen(false)}>
           <h2 className="text-xl font-semibold">Detalles de Horario</h2>
           <p><strong>Día de la Semana:</strong> {currentHorario.dia_semana}</p>
           <p><strong>Hora de Entrada:</strong> {currentHorario.hora_entrada}</p>
@@ -166,7 +166,7 @@ function Horario() {
 
       {/* Modal Editar */}
       {isModalEditOpen && currentHorario && (
-        <Modal isOpen={isModalEditOpen} closeModal={() => setIsModalEditOpen(false)}>
+        <Modal isOpen={isModalEditOpen} onClose={() => setIsModalEditOpen(false)}>
           <h2 className="text-xl font-semibold">Editar Horario</h2>
           <form onSubmit={handleEditSubmit} className="grid grid-cols-1 gap-4 mt-4">
             <label>
@@ -228,7 +228,7 @@ function Horario() {
 
       {/* Modal Agregar Horario */}
       {isModalAddOpen && (
-        <Modal isOpen={isModalAddOpen} closeModal={() => setIsModalAddOpen(false)}>
+        <Modal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)}>
           <h2 className="text-xl font-semibold">Agregar Horario</h2>
           <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">
             <label>

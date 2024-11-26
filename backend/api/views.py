@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
+from django.db.models import Subquery, OuterRef, Q
 from .models import *
 from rest_framework import generics
 from .serializers import *
@@ -60,6 +61,35 @@ class UserUpdateView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
     lookup_field = 'id'
+    permission_classes = [AllowAny]
+
+################ - Empleados - ################
+class GetEmpleados(generics.ListAPIView):
+
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+    permission_classes = [AllowAny]
+ 
+class CreateEmpleados(generics.CreateAPIView):
+    queryset = Empleados
+    serializer_class = EmpleadosSerializer
+    permission_classes= [AllowAny]
+
+class EmpleadoDetail(generics.RetrieveAPIView):
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+    permission_classes = [AllowAny]
+
+class UpdateEmpleado(generics.UpdateAPIView):
+    queryset = Empleados.objects.all()
+    serializer_class = EmpleadosSerializer
+    lookup_field = 'id'
+    permission_classes = [AllowAny]
+
+class DeleteEmpleado(generics.DestroyAPIView):
+    queryset = Empleados.objects.all()
+    lookup_field = 'id'
+    serializer_class = EmpleadosSerializer
     permission_classes = [AllowAny]
 
 ################ - PRODUCTOS - ################
@@ -336,3 +366,82 @@ class DeleteHorarioView(generics.DestroyAPIView):
     queryset = Horario.objects.all()
     serializer_class = HorarioSerializer
     permission_classes = [AllowAny]
+
+
+################ - CHAT - ################
+class MyInbox(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+
+        messages = ChatMessage.objects.filter(
+            id__in =  Subquery(
+                User.objects.filter(
+                    Q(sender__reciever=user_id) |
+                    Q(reciever__sender=user_id)
+                ).distinct().annotate(
+                    last_msg=Subquery(
+                        ChatMessage.objects.filter(
+                            Q(sender=OuterRef('id'),reciever=user_id) |
+                            Q(reciever=OuterRef('id'),sender=user_id)
+                        ).order_by('-id')[:1].values_list('id',flat=True) 
+                    )
+                ).values_list('last_msg', flat=True).order_by("-id")
+            )
+        ).order_by("-id")
+            
+        return messages
+    
+class GetMessages(generics.ListAPIView):
+    serializer_class= MessageSerializer
+    permission_classes=[AllowAny]
+
+    def get_queryset(self):
+        sender_id = self.kwargs['sender_id']
+        reciever_id = self.kwargs['reciever_id']
+
+        messages = ChatMessage.objects.filter(
+            sender__in=[sender_id, reciever_id],
+            reciever__in=[sender_id, reciever_id]
+        )
+
+        return messages
+    
+class SendMessage(generics.CreateAPIView):
+    serializer_class = MessageSerializer
+    permission_classes=[AllowAny]   
+
+class SearchUser(generics.ListAPIView):
+    serializer_class = EmpleadosSerializer
+    queryset = Empleados.objects.all()
+    lookup_field = 'username'
+    permission_classes = [AllowAny]
+
+    def list(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        logged_in_user = self.request.user
+        users = Empleados.objects.filter(
+            Q(user__username__icontains=username) |
+            Q(nombre__icontains=username) |
+            Q(user__email__icontains=username) 
+        )
+        if not users.exists():
+            return Response(
+                {"detail": "No users founds"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = self.get_serializer(users, many=True)
+        return Response(serializer.data)
+
+##############COTIZACIONES#################
+class CotizacionCreateView(generics.CreateAPIView):
+    queryset = Cotizacion.objects.all()
+    serializer_class = CotizacionSerializer
+    permission_classes = [AllowAny]
+class ListaCotizacionesView(generics.ListAPIView):
+    queryset = Cotizacion.objects.all()
+    serializer_class = CotizacionSerializer
+    permission_classes = [AllowAny]
+    

@@ -4,9 +4,35 @@ import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import api from "@/lib/api";
 import { SearchIcon } from "@/icons/Icons";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 function Employee() {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [newEmployee, setNewEmployee] = useState({
+    nombre: "",
+    apellido_pa: "",
+    apellido_ma: "",
+    rfc: "",
+    calle: "",
+    numero_ext: "",
+    numero_int: "",
+    cod_Postal: "",
+    estado: "",
+    pais: "",
+    horario_id: "",
+    nomina_id: "",
+  });
+  const [newUser, setNewUser] = useState({
+    username: "",
+    password: "",
+    email: "",
+    rol: "",
+  });
+  const [horarios, setHorarios] = useState([]);
+  const [nominas, setNominas] = useState([]);
+
   const [search, setSearch] = useState("");
   const [employees, setEmployees] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -17,29 +43,37 @@ function Employee() {
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [currentEmployee, setCurrentEmployee] = useState(null);
-  const [firstName, setFirstName] = useState(
-    currentEmployee ? currentEmployee.first_name : ""
-  );
-  const [lastName, setLastName] = useState(
-    currentEmployee ? currentEmployee.last_name : ""
-  );
-  const [email, setEmail] = useState(
-    currentEmployee ? currentEmployee.email : ""
-  );
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [employeeRol, setEmployeeRol] = useState(
-    currentEmployee ? currentEmployee.rol : ""
-  );
-  const [employeeImage, setEmployeeImage] = useState(null);
-
   const employeesPerPage = 10;
+
+  useEffect(() => {
+    const loadHorarios = async () => {
+      try {
+        const res = await api.get("api/v1/horarios/");
+        setHorarios(res.data);
+      } catch (error) {}
+    };
+    loadHorarios();
+  }, []);
+
+  useEffect(() => {
+    const loadNominas = async () => {
+      try {
+        const res = await api.get("api/v1/nominas/");
+        setNominas(res.data);
+      } catch (error) {}
+    };
+    loadNominas();
+  }, []);
+
+  useEffect(() => {
+    setPasswordsMatch(newUser.password === confirmPassword);
+  }, [newUser.password, confirmPassword]);
 
   // Fetch employees
   useEffect(() => {
     const loadEmployees = async () => {
       try {
-        const res = await api.get("api/v1/users/");
+        const res = await api.get("api/v1/empleados/");
         setEmployees(res.data);
       } catch (error) {
         console.error("Error: ", error);
@@ -61,19 +95,14 @@ function Employee() {
     loadRoles();
   }, []);
 
-  const getRoleName = (roleId) => {
-    const role = roles.find((r) => r.id_rol === roleId);
-    return role ? role.nombre_rol : "Sin rol";
-  };
-
   const filteredEmployees = employees.filter((employee) => {
     const searchRole =
-      selectedRol === "" || employee.rol === parseInt(selectedRol);
+      selectedRol === "" || employee.user.rol.id_rol === parseInt(selectedRol);
     const searchN =
-      employee.first_name.toLowerCase().includes(search.toLowerCase()) ||
-      employee.last_name.toLowerCase().includes(search.toLowerCase()) ||
-      employee.email.toLowerCase().includes(search.toLowerCase());
-
+      employee.nombre.toLowerCase().includes(search.toLowerCase()) ||
+      employee.apellido_pa.toLowerCase().includes(search.toLowerCase()) ||
+      employee.apellido_ma.toLowerCase().includes(search.toLowerCase()) ||
+      employee.user.email.toLowerCase().includes(search.toLowerCase());
     return searchRole && searchN;
   });
 
@@ -105,31 +134,11 @@ function Employee() {
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}/${month}/${day}`;
-  };
-
   const openAddModal = () => {
     setModalContent("Agregar empleado");
     setCurrentEmployee(null);
-    setEmployeeRol("");
+    //setEmployeeRol("");
     setIsModalAddOpen(true);
-  };
-
-  const openEditModal = (employee) => {
-    setModalContent("Editar empleado");
-    setCurrentEmployee(employee);
-    setFirstName(employee.first_name);
-    setLastName(employee.last_name);
-    setEmail(employee.email);
-    setEmployeeRol(employee.rol);
-    setEmployeeImage(null);
-    setIsModalEditOpen(true);
   };
 
   const openDeleteModal = (employee) => {
@@ -140,7 +149,7 @@ function Employee() {
 
   const closeAddModal = () => {
     setIsModalAddOpen(false);
-    setEmployeeRol("");
+    //setEmployeeRol("");
     setCurrentEmployee(null);
   };
 
@@ -157,39 +166,11 @@ function Employee() {
     setEmployeeRol(e.target.value);
   };
 
-  const succesAdd = () =>
-    toast.success("El registro se ha agregado correctamente");
-  const errorAdd = () =>
-    toast.error("Ha ocurrido un error al agregar el registro", {
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  const succesEdit = () =>
-    toast.success("El registro se ha editado correctamente", {
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  const errorEdit = () =>
-    toast.error("Ha ocurrido un error al editar el registro", {
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewEmployee({ ...newEmployee, [name]: value });
+    setNewUser({ ...newUser, [name]: value });
+  };
 
   const succesDelete = () =>
     toast.success("El registro se ha eliminado correctamente", {
@@ -212,71 +193,25 @@ function Employee() {
       theme: "light",
     });
 
-  const addEmployee = async (e) => {
+  const handleAddEmployee = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("email", email);
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("rol", employeeRol);
-
-    if (employeeImage) {
-      formData.append("image", employeeImage);
-    }
-
     try {
-      const res = await api.post("api/v1/user/register/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      console.log(res.data);
-      setEmployees([...employees, res.data]);
-      closeAddModal();
-      succesAdd();
-    } catch (error) {
-      console.error("Error al agregar el empleado:", error);
-      errorAdd();
-    }
-  };
-
-  const editEmployee = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("email", email);
-    formData.append("rol", employeeRol);
-    if (employeeImage) {
-      formData.append("image", employeeImage);
-    }
-
-    try {
-      const res = await api.put(
-        `api/v1/user/edit/${currentEmployee.id}/`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      const res = await api.post("api/v1/empleados/registrar/", newEmployee);
+      console.log("Respuesta de Empleado:", res);
+      if (res.status === 201) {
+        const response = await api.post("api/v1/user/register/", newUser);
+        console.log("Respuesta de Usuario:", response);
+        if (response.status === 201) {
+          toast.success("Se ha agregado el empleado correctamente");
+          setEmployees([...employees, res.data]);
         }
-      );
-      const updatedEmployees = employees.map((emp) =>
-        emp.id === currentEmployee.id ? res.data : emp
-      );
-      setEmployees(updatedEmployees);
-      closeEditModal();
-      succesEdit();
+      }
     } catch (error) {
       console.error(
-        "Error al editar el empleado:",
-        error.response ? error.response.data : error.message
+        "Error al registrar:",
+        error.response?.data || error.message
       );
-      errorEdit();
+      toast.error("Error al registrar el empleado o usuario");
     }
   };
 
@@ -361,8 +296,10 @@ function Employee() {
             <thead className=" bg-[#045E9C] text-white">
               <tr>
                 <th className="p-2 text-center">NOMBRE</th>
-                <th className="p-2 text-center">ESTATUS</th>
+                <th className="p-2 text-center">RFC</th>
+                <th className="p-2 text-center">Direccion</th>
                 <th className="p-2 text-center">ROL</th>
+                <th className="p-2 text-center">TURNO</th>
                 <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
@@ -374,22 +311,23 @@ function Employee() {
                 >
                   <td className="p-2">
                     <div className="font-bold">
-                      {user.first_name} {user.last_name}
+                      {user.nombre} {user.apellido_pa} {user.apellido_ma}
                     </div>
-                    <div className="text-sm text-gray-500">{user.email}</div>
+                    <div className="text-sm text-gray-500">
+                      {user.user.email}
+                    </div>
                   </td>
                   <td className="p-2">
-                    <span className="flex items-center justify-center">
-                      <span className="h-2 w-2 bg-blue-500 rounded-full mr-2"></span>
-                      <span className="text-blue-500 font-semibold">
-                        Activo
-                      </span>
+                    <span className="flex items-center justify-center font-bold">
+                      {user.rfc}
                     </span>
-                    <div className="text-sm text-gray-500">
-                      Fecha Ingreso: {formatDate(user.date_joined)}
-                    </div>
                   </td>
-                  <td className="p-2">{getRoleName(user.rol)}</td>
+                  <td className="p-2 font-bold">
+                    {user.calle} #{user.numero_ext}, {user.estado},{" "}
+                    {user.cod_Postal}, {user.pais}
+                  </td>
+                  <td className="p-2 font-bold">{user.user.rol.nombre_rol}</td>
+                  <td className="p2- font-bold">{user.horario.turno}</td>
                   <td className="p-2 flex space-x-2 justify-center items-center">
                     <button
                       className="bg-blue-500 text-white px-3 py-1 rounded"
@@ -416,101 +354,306 @@ function Employee() {
         onClose={closeAddModal}
         title="Agregar Empleado"
       >
-        <form onSubmit={addEmployee}>
+        <form onSubmit={handleAddEmployee} className="w-full">
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Username
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
-            />
+            {currentStep === 1 && (
+              <>
+                <h1 className="font-bold text-lg mb-4">Información personal</h1>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Nombre(s)
+                    </label>
+                    <input
+                      type="text"
+                      name="nombre"
+                      value={newEmployee.nombre}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="Juan Alberto"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Apellido Paterno
+                    </label>
+                    <input
+                      type="text"
+                      name="apellido_pa"
+                      value={newEmployee.apellido_pa}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="Lainez"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Apellido Materno
+                    </label>
+                    <input
+                      type="text"
+                      name="apellido_ma"
+                      value={newEmployee.apellido_ma}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="Ortiz"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      RFC
+                    </label>
+                    <input
+                      type="text"
+                      name="rfc"
+                      value={newEmployee.rfc}
+                      maxLength={13}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="LAOJ050102KL4"
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {currentStep === 2 && (
+              <>
+                <h1 className="font-bold text-lg mb-4">
+                  Información domiciliaria
+                </h1>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Calle:
+                    </label>
+                    <input
+                      type="text"
+                      name="calle"
+                      value={newEmployee.calle}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="5 de febrero"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Numero EXT:
+                    </label>
+                    <input
+                      type="number"
+                      name="numero_ext"
+                      value={newEmployee.numero_ext}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="701"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Numero INT:
+                    </label>
+                    <input
+                      type="number"
+                      name="numero_int"
+                      value={newEmployee.numero_int}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="16"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Codigo Postal:
+                    </label>
+                    <input
+                      type="number"
+                      name="cod_Postal"
+                      value={newEmployee.cod_Postal}
+                      onChange={handleChange}
+                      maxLength={5}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="16"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Estado:
+                    </label>
+                    <input
+                      type="text"
+                      name="estado"
+                      value={newEmployee.estado}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="Durango"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Pais:
+                    </label>
+                    <input
+                      type="text"
+                      name="pais"
+                      value={newEmployee.pais}
+                      onChange={handleChange}
+                      className="border rounded w-full py-2 px-3"
+                      placeholder="México"
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {currentStep === 3 && (
+              <>
+                <h1 className="font-bold text-lg mb-4">Perfil de empleado</h1>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Nomina
+                    </label>
+                    <select
+                      name="nomina_id"
+                      value={newEmployee.nomina_id}
+                      onChange={handleChange}
+                    >
+                      <option disabled value="">
+                        Seleccionar Nómina
+                      </option>
+                      {nominas.map((nomina) => (
+                        <option key={nomina.id_nom} value={nomina.id_nom}>
+                          {nomina.referencia}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Horario
+                    </label>
+                    <select
+                      name="horario_id"
+                      value={newEmployee.horario_id}
+                      onChange={handleChange}
+                    >
+                      <option disabled value="">
+                        Seleccionar Horario
+                      </option>
+                      {horarios.map((horario) => (
+                        <option
+                          key={horario.horario_id}
+                          value={horario.horario_id}
+                        >
+                          {horario.turno}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {currentStep === 4 && (
+              <>
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Usuario:
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={newUser.username}
+                    onChange={handleChange}
+                    className="border rounded w-full py-2 px-3"
+                    placeholder="México"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Correo electronico:
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={newUser.email}
+                    onChange={handleChange}
+                    className="border rounded w-full py-2 px-3"
+                    placeholder="México"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Password:
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={newUser.password}
+                    onChange={handleChange}
+                    className="border rounded w-full py-2 px-3"
+                    placeholder="México"
+                    required
+                  />
+                </div>
+                <div>
+                  <select
+                    className="bg-white border-transparent shadow-lg w-auto h-[36px] rounded-[10px] ml-4 text-center"
+                    name="rol"
+                    value={newUser.rol}
+                    onChange={handleChange}
+                  >
+                    <option selected disabled>Selecciona un ro;</option>
+                    {roles.map((role) => (
+                      <option key={role.id_rol} value={role.id_rol}>
+                        {role.nombre_rol}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Nombre
-            </label>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Apellido
-            </label>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el apellido"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email
-            </label>
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el email"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Rol
-            </label>
-            <select
-              className="bg-white border-transparent shadow-lg w-full h-[36px] rounded-[10px] text-center"
-              value={employeeRol}
-              onChange={(e) => setEmployeeRol(e.target.value)}
-            >
-              {roles.map((role) => (
-                <option key={role.id_rol} value={role.id_rol}>
-                  {role.nombre_rol}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block font-bold text-gray-700 mb-1">
-              Imagen del empleado
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setEmployeeImage(e.target.files[0])}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-            />
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Agregar empleado
-            </button>
+          {/* Controles de Navegación */}
+          <div className="flex justify-between">
+            {currentStep > 1 && (
+              <button
+                type="button"
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                onClick={() => setCurrentStep(currentStep - 1)}
+              >
+                Atrás
+              </button>
+            )}
+            {currentStep < 4 && (
+              <button
+                type="button"
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={() => setCurrentStep(currentStep + 1)}
+              >
+                Siguiente
+              </button>
+            )}
+            {currentStep === 4 && (
+              <button
+                type="submit"
+                className={`px-4 py-2 rounded bg-blue-500 text-white`}
+              >
+                Agregar empleado
+              </button>
+            )}
           </div>
         </form>
       </Modal>
@@ -546,87 +689,6 @@ function Employee() {
             </button>
           </div>
         </div>
-      </Modal>
-
-      <Modal
-        isOpen={isModalEditOpen}
-        onClose={closeEditModal}
-        title={modalContent}
-      >
-        <form onSubmit={editEmployee}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Nombre
-            </label>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el nombre"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Apellido
-            </label>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el apellido"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border rounded w-full py-2 px-3"
-              placeholder="Ingresa el email"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Rol
-            </label>
-            <select
-              className="bg-white border-transparent shadow-lg w-full h-[36px] rounded-[10px] text-center"
-              value={employeeRol}
-              onChange={handleRolChangeInForm}
-            >
-              {roles.map((role) => (
-                <option key={role.id_rol} value={role.id_rol}>
-                  {role.nombre_rol}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block font-bold text-gray-700 mb-1">
-              Imagen del empleado
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setEmployeeImage(e.target.files[0])}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-            />
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Guardar Cambios
-            </button>
-          </div>
-        </form>
       </Modal>
     </div>
   );

@@ -1,12 +1,18 @@
 from rest_framework import serializers
 from .models import *
 
+#Roles
+class RolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rol
+        fields = ['id_rol', 'nombre_rol', 'is_staff', 'is_superuser']
 
 #Usuarios
 class UserSerializer(serializers.ModelSerializer):
+    rol = RolSerializer(read_only=True)
     class Meta:
         model = Usuarios
-        fields = ['id', "first_name", "last_name", "email", "username", "password", "rol", "user_profile_image","date_joined"]
+        fields = ['id', "email", "username", "password", "rol", "user_profile_image","date_joined"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -21,24 +27,33 @@ class UserSerializer(serializers.ModelSerializer):
 class UserEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        fields = ['id', "first_name", "last_name", "email", "rol", "user_profile_image"]
+        fields = ['id', "email", "rol", "user_profile_image"]
         extra_kwargs = {"password": {"write_only": True}}
-
-    
-
-class ChatMessageSerializer(serializers.ModelSerializer):
-        #reciever_profile =  UserManager(read_only=True)
-
-        class Meta:
-            model = ChatMessage
-            fields = ['id', 'user', 'sender', 'reciever', 'message', 'is_read', 'date']
-
-
-#Roles
-class RolSerializer(serializers.ModelSerializer):
+#Horarios
+class HorarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Rol
-        fields = ['id_rol', 'nombre_rol', 'is_staff', 'is_superuser']
+        model = Horario
+        fields = ['id_horario', 'dia_semana', 'hora_entrada', 'hora_salida', 'turno']
+
+class EmpleadosSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    horario_info = HorarioSerializer(read_only=True)
+    class Meta:
+        model = Empleados
+        fields = ['id', 'nombre', 'apellido_pa', "apellido_ma", "rfc", "calle", "numero_ext", "numero_int", 'cod_Postal', "estado", 'pais', 'user', 'horario', 'horario_info', 'profile_image']
+
+
+#Chat
+class MessageSerializer(serializers.ModelSerializer):
+    reciever_profile = EmpleadosSerializer(read_only=True)
+    sender_profile = EmpleadosSerializer(read_only=True)
+
+    class Meta:
+        model = ChatMessage
+        fields = ['id','username', 'sender', 'sender_profile', 'reciever', 'reciever_profile', 'message', 'is_read', 'date']
+
+
+
 
 
 #Productos 
@@ -111,11 +126,18 @@ class CotizacionSerializer(serializers.ModelSerializer):
 class NominaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Nomina
-        fields = ['id_nom', 'fecha_pago', 'salario_base', 'bonos', 'salario_nto', 'empleado']
+        fields = ['id_nom', 'fecha_pago', 'salario_base', 'bonos', 'salario_nto', 'referencia']
 
 
-#Horarios
-class HorarioSerializer(serializers.ModelSerializer):
+#Cotizaciones
+
+class CotizacionSerializer(serializers.ModelSerializer):
+    cliente = serializers.PrimaryKeyRelatedField(queryset=Clientes.objects.all())
+    producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
+    
     class Meta:
-        model = Horario
-        fields = ['id_horario', 'dia_semana', 'hora_entrada', 'hora_salida', 'turno']
+        model = Cotizacion
+        fields = ['id', 'cliente', 'producto', 'referencia_producto', 'cantidad', 'total_cotizacion', 'fecha_creacion']
+      
+
+#

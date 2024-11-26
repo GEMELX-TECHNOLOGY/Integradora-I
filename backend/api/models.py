@@ -88,7 +88,16 @@ class Producto(models.Model):
     
 
 ############## RH ##################
-
+#Tabla Nomina
+class Nomina(models.Model):
+    id_nom = models.AutoField(primary_key=True)
+    fecha_pago = models.DateField()
+    salario_base = models.DecimalField(max_digits=10,decimal_places=2)
+    bonos = models.DecimalField(max_digits=10,decimal_places=2)
+    salario_nto = models.DecimalField(max_digits=10,decimal_places=2)
+    referencia = models.CharField(max_length=60, default="")
+    def __str__(self):
+        return self.referencia
 #Tabla Horario
 class Horario(models.Model):
   id_horario = models.AutoField(primary_key=True)
@@ -97,7 +106,7 @@ class Horario(models.Model):
   hora_salida = models.TimeField()
   turno = models.CharField(max_length=100, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')])
   def __str__(self):
-        return self.id_horario
+        return self.turno
 
 class Empleados(models.Model):
     nombre = models.CharField(max_length=255)
@@ -110,23 +119,14 @@ class Empleados(models.Model):
     cod_Postal = models.CharField(max_length=5, default="")
     estado = models.CharField(max_length=60, default="")
     pais = models.CharField(max_length=60, default="")
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
-    horario = models.ForeignKey(Horario, on_delete=models.CASCADE, default="")
+    horario = models.ForeignKey(Horario, on_delete=models.CASCADE, default="", blank=True, null=True)
+    nomina = models.ForeignKey(Nomina, on_delete=models.CASCADE, default="")
+    user = models.ForeignKey(Usuarios, on_delete=models.CASCADE, default="", blank=True, null=True)
+    profile_image = models.ImageField(upload_to='Perfil/', default="Perfil/nophoto.jpg")
     def __str__(self):
         return self.nombre
     
 
-#Tabla Nomina
-class Nomina(models.Model):
-    id_nom = models.AutoField(primary_key=True)
-    fecha_pago = models.DateField()
-    salario_base = models.DecimalField(max_digits=10,decimal_places=2)
-    bonos = models.DecimalField(max_digits=10,decimal_places=2)
-    salario_nto = models.DecimalField(max_digits=10,decimal_places=2)
-    empleado = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.empleado
-#Tabla Horario
 
 ################## VENTAS #################
 #Tabla Clientes
@@ -215,30 +215,57 @@ class DetalleCotizacion(models.Model):
     
 
 
-
 ###########################################
 class ChatMessage(models.Model):
-    user = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="user")
-    sender = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="sender")
-    reciever = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True, related_name="reciever")
+    username = models.ForeignKey(Usuarios, on_delete=models.CASCADE, related_name='user')
+    sender = models.ForeignKey(Usuarios, on_delete=models.CASCADE, related_name='sender')
+    reciever = models.ForeignKey(Usuarios, on_delete=models.CASCADE, related_name='reciever')
 
-    message = models.TextField()
-
+    message = models.CharField(max_length=1000)
     is_read = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['date']
-        verbose_name_plural = "Message"
+        verbose_name_plural = 'Message'
 
-    def __str__(self):
+    def _str__(self):
         return f"{self.sender} - {self.reciever}"
-
+    
     @property
     def sender_profile(self):
-        sender_profile = UserManager.objects.get(user=self.sender)
+        sender_profile = Empleados.objects.get(user=self.sender)
         return sender_profile
+    
     @property
     def reciever_profile(self):
-        reciever_profile = UserManager.objects.get(user=self.reciever)
+        reciever_profile = Empleados.objects.get(user=self.reciever)
         return reciever_profile
+    
+
+#Tabla Cotizacion
+class Cotizacion(models.Model):
+    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
+    referencia_producto = models.CharField(max_length=100)
+    cantidad = models.PositiveIntegerField(default=1)
+    total_cotizacion = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # Obtener el precio del producto y calcular el total
+        self.total_cotizacion = self.cantidad * self.producto.precio
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Cotización de {self.cliente} para {self.producto} - {self.referencia_producto}"
+
+#Tabla detalle cotizaciones
+class DetalleCotizacion(models.Model):
+    id_detalle = models.AutoField(primary_key=True)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    pv = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_total = models.DecimalField(max_digits=10,decimal_places=2)
+    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)
+

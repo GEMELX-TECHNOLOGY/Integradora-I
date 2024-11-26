@@ -13,7 +13,7 @@ function UsersCard() {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await api.get("api/v1/users/");
+        const response = await api.get("api/v1/empleados/");
         setUsuarios(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         console.error("Error al obtener usuarios:", err);
@@ -77,12 +77,12 @@ function UsersCard() {
               <div className="flex items-center space-x-4">
                 <img
                   className="w-16 h-16 rounded-full"
-                  src={user.user_profile_image}
-                  alt={`${user.username}'s perfil`}
+                  src={user.profile_image}
+                  alt={`${user.user.username}'s perfil`}
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-black truncate">
-                    {user.first_name} {user.last_name}
+                    {user.nombre} {user.apellido_pa}
                   </p>
                   <p className="text-sm text-gray-500 truncate">
                     {rolesMap[user.rol]}

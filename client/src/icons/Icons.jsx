@@ -550,3 +550,4 @@ export const EditIcon = ({ className }) => {
     </svg>
   );
 };
+

@@ -15,6 +15,19 @@ urlpatterns = [
     path("api/v1/user/edit/<int:id>/", UserUpdateView.as_view(), name='editar-usuario'),
     path("api/v1/user/delete/<int:pk>/", UsuarioDeleteView.as_view(), name='delete-user'),
     
+    #URLs Empleados
+    path("api/v1/empleados/", GetEmpleados.as_view()),
+    path("api/v1/empleados/registrar/", CreateEmpleados.as_view()),
+    path("api/v1/empleado/<int:pk>/", EmpleadoDetail.as_view()),
+    path("api/v1/empleados/editar/<int:pk>/", UpdateEmpleado.as_view()),
+    path("api/v1/empleados/eliminar/<int:pk>/", DeleteEmpleado.as_view()),
+
+    #URLs Chat
+    path('api/v1/my-messages/<user_id>/', MyInbox.as_view(), name='mis mensajes'),
+    path('api/v1/get-messages/<sender_id>/<reciever_id>/', GetMessages.as_view()),
+    path('api/v1/send-messages/', SendMessage.as_view()),
+    path("api/v1/search/<username>/", SearchUser.as_view()),
+
     #URLs Roles
     path("api/v1/roles/", AllRolView.as_view(), name='roles'),
     path("api/v1/rol/registrar", CreateRoleView.as_view(), name="crear-rol"),
@@ -69,18 +82,9 @@ urlpatterns = [
     path('api/v1/cotizaciones/', ListaCotizacionesView.as_view(), name='lista_cotizaciones_api'),
     
     # Crear una nueva cotización
-    path('api/v1/cotizaciones/crear/', CreateCotizacionView.as_view(), name='crear_cotizacion'),
+    path('api/v1/cotizaciones/crear/', CotizacionCreateView.as_view(), name='crear_cotizacion'),
     
-    # Actualizar una cotización existente
-    path('api/v1/cotizaciones/actualizar/<int:pk>/', UpdateCotizacionView.as_view(), name='actualizar_cotizacion'),
     
-    # Eliminar una cotización
-    path('api/v1/cotizaciones/eliminar/', DeleteCotizacionView.as_view(), name='eliminar_cotizacion'),
-    
-    # Ver los detalles de una cotización
-    path('api/v1/cotizaciones/<int:pk>/', DetalleCotizacionView.as_view(), name='detalle_cotizacion_api'),
-
-
 
     #urls Nomina
     path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),
