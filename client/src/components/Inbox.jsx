@@ -51,9 +51,7 @@ function Inbox() {
       [e.target.name]: e.target.value,
     });
   };
-
-  console.log(historyMessages)
-
+  
   const SendMessage = () => {
     const formData = new FormData();
     formData.append("username", user_id)

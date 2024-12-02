@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include("api.urls")),
     
     #URLs Usuarios
     path("api/v1/user/", user_details, name='usuarios'),
@@ -82,9 +83,18 @@ urlpatterns = [
     path('api/v1/cotizaciones/', ListaCotizacionesView.as_view(), name='lista_cotizaciones_api'),
     
     # Crear una nueva cotización
-    path('api/v1/cotizaciones/crear/', CotizacionCreateView.as_view(), name='crear_cotizacion'),
+    path('api/v1/cotizaciones/crear/', CreateCotizacionView.as_view(), name='crear_cotizacion'),
     
+    # Actualizar una cotización existente
+    path('api/v1/cotizaciones/actualizar/<int:pk>/', UpdateCotizacionView.as_view(), name='actualizar_cotizacion'),
     
+    # Eliminar una cotización
+    path('api/v1/cotizaciones/eliminar/', DeleteCotizacionView.as_view(), name='eliminar_cotizacion'),
+    
+    # Ver los detalles de una cotización
+    path('api/v1/cotizaciones/<int:pk>/', DetalleCotizacionView.as_view(), name='detalle_cotizacion_api'),
+
+
 
     #urls Nomina
     path('api/v1/nominas/', ListaNominasView.as_view(), name='lista_nominas_api'),
@@ -97,6 +107,8 @@ urlpatterns = [
     path('api/v1/horarios/crear/', CreateHorarioView.as_view(), name='crear_horario'),
     path('api/v1/horarios/editar/<int:pk>/', EditHorarioView.as_view(), name='editar_horario'),
     path('api/v1/horarios/eliminar/<int:pk>/', DeleteHorarioView.as_view(), name='eliminar_horario'),
+
+    path('api/v1/sales-report-pdf/', SalesReportPDFAPIView.as_view(), name='sales-report-pdf'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

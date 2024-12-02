@@ -50,9 +50,9 @@ function Header() {
           Authorization: `Token ${token}`,
         },
       });
-      const { id, nombre, apellido_pa, profile_image } = response.data;
+      const { id, nombre, apellido_pa, apellido_ma, profile_image } = response.data;
       const rol = response.data.user.rol.nombre_rol
-      setUser({ id, nombre, apellido_pa, rol, profile_image });
+      setUser({ id, nombre, apellido_pa, apellido_ma, rol, profile_image });
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
@@ -130,8 +130,8 @@ function Header() {
         </div>
 
         <Modal isOpen={isModalOpen} onClose={closeModal} title={modalContent}>
-          <div className="p-4 flex items-center">
-            <div className="flex flex-col max-w-full w-full">
+          <div className="p-4 flex items-center text-center flex-col">
+            <div className="flex flex-col max-w-full w-full items-center gap-auto ">
               <img
                 src={user.profile_image}
                 alt={`${user.first_name} ${user.last_name} profile`}
@@ -147,13 +147,13 @@ function Header() {
 
             {/* User Details */}
             <div className="ml-6 w-full">
-              <div className="mb-4">
+              <div className="mb-4 w-full">
                 <label className="block font-semibold">Nombre(s):</label>
-                <span>{user.first_name}</span>
+                <span>{user.nombre}</span>
               </div>
-              <div className="mb-4">
+              <div className="mb-4 w-full">
                 <label className="block font-semibold">Apellidos:</label>
-                <span>{user.last_name}</span>
+                <p>{user.apellido_pa} {user.apellido_ma}</p>
               </div>
               <div className="mb-4">
                 <label className="block font-semibold">Cargo:</label>

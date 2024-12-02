@@ -11,8 +11,8 @@ function Ventas() {
   const [newVenta, setNewVenta] = useState({
     referencia: "",
     producto: "",
-    uv: 0,
-    pv: 0,
+    uv: 1,
+    pv: 1,
     amt: 0,
   });
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
@@ -26,6 +26,7 @@ function Ventas() {
     try {
       const response = await api.get("api/v1/ventas/");
       setVentas(response.data);
+      console.log(response);
     } catch (error) {
       console.error("Error al obtener las ventas:", error);
     }
@@ -67,6 +68,28 @@ function Ventas() {
     setNewVenta({ ...updatedVenta, amt });
   };
 
+  // Función para generar el reporte en PDF
+  const generatePDF = async () => {
+    try {
+      // Endpoint para generar y descargar el PDF
+      const response = await api.get("/api/v1/sales-report-pdf/", {
+        responseType: "blob", // Para manejar el archivo binario
+      });
+
+      // Crear un enlace para descargar el archivo
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "reporte_ventas.pdf"); // Nombre del archivo
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error al generar el reporte PDF:", error);
+    }
+  };
+
+
   return (
     <div className="flex h-screen flex-col lg:flex-row">
       <Navigation />
@@ -79,17 +102,23 @@ function Ventas() {
           >
             Agregar Venta
           </button>
+          <button
+          className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center self-end mr-5"
+          onClick={generatePDF} // Llamada a la función de generación de PDF
+        >
+          Generar Reporte
+        </button>
         </div>
         <hr className="my-4 border-t border-gray-300" />
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
-                <th className="p-2">Referencia</th>
-                <th className="p-2">Producto</th>
-                <th className="p-2">UV</th>
-                <th className="p-2">PV</th>
-                <th className="p-2">Monto Total</th>
+                <th className="p-2">REFERENCIA DE VENTA</th>
+                <th className="p-2">PRODUCTO</th>
+                <th className="p-2">UNIDADES VENDIDAS</th>
+                <th className="p-2">PRECIO VENTA</th>
+                <th className="p-2">MONTO TOTAL</th>
               </tr>
             </thead>
             <tbody>
@@ -99,10 +128,10 @@ function Ventas() {
                   className="border-b hover:bg-gray-100 text-gray-800"
                 >
                   <td className="p-2">{venta.referencia}</td>
-                  <td className="p-2">{venta.producto}</td>
-                  <td className="p-2">{venta.uv}</td>
-                  <td className="p-2">{venta.pv}</td>
-                  <td className="p-2">{venta.amt}</td>
+                  <td className="p-2">{venta.producto.nombre}</td>
+                  <td className="p-2">{Number(venta.uv).toLocaleString()}</td>
+                  <td className="p-2">${Number(venta.pv).toLocaleString()}</td>
+                  <td className="p-2">${Number(venta.amt).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -115,7 +144,10 @@ function Ventas() {
         <Modal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)}>
           <div className="relative">
             <h2 className="text-xl font-semibold">Agregar Venta</h2>
-            <form onSubmit={handleAddSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <form
+              onSubmit={handleAddSubmit}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4"
+            >
               <label>
                 Referencia
                 <input
@@ -138,28 +170,33 @@ function Ventas() {
                 >
                   <option value="">Seleccionar Producto</option>
                   {productos.map((producto) => (
-                    <option key={producto.cod_producto} value={producto.cod_producto}>
+                    <option
+                      key={producto.cod_producto}
+                      value={producto.cod_producto}
+                    >
                       {producto.nombre} ({producto.referencia})
                     </option>
                   ))}
                 </select>
               </label>
               <label>
-                Unidad Vendida
+                Unidades vendidas
                 <input
                   type="number"
                   name="uv"
                   value={newVenta.uv}
                   onChange={handleChange}
+                  min={1}
                   required
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </label>
               <label>
-                Precio Venta
+                Precio de venta
                 <input
                   type="number"
                   name="pv"
+                  min={1}
                   value={newVenta.pv}
                   onChange={handleChange}
                   required

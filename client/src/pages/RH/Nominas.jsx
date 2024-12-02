@@ -128,11 +128,11 @@ function Nomina() {
           <table className="min-w-full bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
+                <th className="p-2 text-center">REFERENCIA</th>
                 <th className="p-2 text-center">FECHA DE PAGO</th>
                 <th className="p-2 text-center">SALARIO BASE</th>
                 <th className="p-2 text-center">BONOS</th>
                 <th className="p-2 text-center">SALARIO NETO</th>
-                <th className="p-2 text-center">EMPLEADO</th>
                 <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
@@ -144,20 +144,14 @@ function Nomina() {
                     key={nomina.id_nom}
                     className="border-b hover:bg-gray-100 text-gray-800"
                   >
-                    <td className="p-2">{nomina.fecha_pago}</td>
-                    <td className="p-2">{nomina.salario_base}</td>
-                    <td className="p-2">{nomina.bonos}</td>
-                    <td className="p-2">{nomina.salario_nto}</td>
-                    <td className="p-2">{nomina.empleado}</td>
+                    <td className="p-2">{nomina.referencia}</td>
+                    <td className="p-2">Dia: {nomina.fecha_pago.split("-")[2]}</td>
+                    <td className="p-2">${nomina.salario_base}</td>
+                    <td className="p-2">${nomina.bonos}</td>
+                    <td className="p-2">${nomina.salario_nto}</td>
                     <td className="p-2 flex justify-center space-x-2">
-                      <button onClick={() => handleView(nomina)}>
-                        <ViewIcon className="h-6 w-6 text-blue-500 hover:text-blue-700" />
-                      </button>
                       <button onClick={() => handleEdit(nomina)}>
                         <EditIcon className="h-6 w-6 text-green-500 hover:text-green-700" />
-                      </button>
-                      <button onClick={() => handleDelete(nomina.id_nom)}>
-                        <DeleteIcon className="h-6 w-6 text-red-500 hover:text-red-700" />
                       </button>
                     </td>
                   </tr>
@@ -167,35 +161,15 @@ function Nomina() {
         </div>
       </div>
 
-      {/* Modal Ver */}
-      {isModalViewOpen && currentNomina && (
-        <Modal isOpen={isModalViewOpen} closeModal={() => setIsModalViewOpen(false)}>
-          <div className="relative">
-            <button
-              onClick={() => setIsModalViewOpen(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-            >
-              <span className="text-2xl">&times;</span>
-            </button>
-            <h2 className="text-xl font-semibold">Detalles de Nómina</h2>
-            <p><strong>Fecha de Pago:</strong> {currentNomina.fecha_pago}</p>
-            <p><strong>Salario Base:</strong> {currentNomina.salario_base}</p>
-            <p><strong>Bonos:</strong> {currentNomina.bonos}</p>
-            <p><strong>Salario Neto:</strong> {currentNomina.salario_nto}</p>
-            <p><strong>Empleado:</strong> {currentNomina.empleado}</p>
-          </div>
-        </Modal>
-      )}
-
       {/* Modal Editar */}
       {isModalEditOpen && currentNomina && (
-        <Modal isOpen={isModalEditOpen} onClose={() => setIsModalEditOpen(false)}>
+        <Modal isOpen={isModalEditOpen} closeModal={() => setIsModalEditOpen(false)}>
           <div className="relative">
             <button
               onClick={() => setIsModalEditOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-
+              <span className="text-2xl">&times;</span>
             </button>
             <h2 className="text-xl font-semibold">Editar Nómina</h2>
             <form onSubmit={handleEditSubmit} className="grid grid-cols-1 gap-4 mt-4">
@@ -273,13 +247,13 @@ function Nomina() {
 
       {/* Modal Agregar Nómina */}
       {isModalAddOpen && (
-        <Modal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)}>
-          <div className="relative"><span className="text-2xl">&times;</span>
+        <Modal isOpen={isModalAddOpen} closeModal={() => setIsModalAddOpen(false)}>
+          <div className="relative">
             <button
               onClick={() => setIsModalAddOpen(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
             >
-              
+              <span className="text-2xl">&times;</span>
             </button>
             <h2 className="text-xl font-semibold">Agregar Nómina</h2>
             <form onSubmit={handleAddSubmit} className="grid grid-cols-1 gap-4 mt-4">

@@ -127,7 +127,7 @@ function Clientes() {
       <Navigation />
       <div className="flex-1">
         <Header />
-        <div className="flex justify-end mr-8 md:mr-28">
+        <div className="flex justify-end mr-28">
           <button
             className="bg-white w-[200px] h-[36px] rounded-[10px] shadow-lg text-center"
             onClick={openAddModal}
@@ -135,9 +135,9 @@ function Clientes() {
             Agregar Cliente
           </button>
         </div>
-        <hr className="my-4 border-t border-gray-300 max-w-full" />
+        <hr className="my-4 border-t border-gray-300 max-w-[1500px]" />
         <div className="container mx-auto p-4">
-          <table className="min-w-full bg-white shadow-md rounded-lg text-center">
+          <table className="min-w-[1450px] bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
                 <th className="p-2">ID CLIENTE</th>
@@ -206,20 +206,17 @@ function Clientes() {
         {/* Modal Agregar/Editar Cliente */}
         <Modal
           isOpen={isModalAddOpen || isModalEditOpen}
-          onClose={() => {
-            setIsModalAddOpen(false);  // Cerrar el modal de agregar
-            setIsModalEditOpen(false); // Cerrar el modal de editar
-          }}
+          onClose={() => setIsModalAddOpen(false)}
         >
           <form onSubmit={handleSubmit}>
             <h2 className="text-xl font-semibold">
               {isModalEditOpen ? "Editar Cliente" : "Agregar Cliente"}
             </h2>
-            <div className="flex flex-wrap mb-4 max-w-full">
-              <div className="flex-1 p-4">
+            <div className="flex flex-row max-w-[1550px] mx-auto">
+              <div className="flex-3 p-5">
                 <div className="bg-white rounded-lg shadow-md p-5">
                   <div className="flex flex-wrap mb-5">
-                    <div className="w-full sm:w-1/2 pr-2">
+                    <div className="w-1/2 pr-2">
                       <label>Nombre</label>
                       <input
                         type="text"
@@ -229,7 +226,7 @@ function Clientes() {
                         className="w-full p-2 border border-gray-300 rounded"
                       />
                     </div>
-                    <div className="w-full sm:w-1/2 pl-2">
+                    <div className="w-1/2 pl-2">
                       <label>Apellido Paterno</label>
                       <input
                         type="text"
@@ -241,7 +238,7 @@ function Clientes() {
                     </div>
                   </div>
                   <div className="flex flex-wrap mb-5">
-                    <div className="w-full sm:w-1/2 pr-2">
+                    <div className="w-1/2 pr-2">
                       <label>Apellido Materno</label>
                       <input
                         type="text"
@@ -251,7 +248,7 @@ function Clientes() {
                         className="w-full p-2 border border-gray-300 rounded"
                       />
                     </div>
-                    <div className="w-full sm:w-1/2 pl-2">
+                    <div className="w-1/2 pl-2">
                       <label>Teléfono</label>
                       <input
                         type="text"
@@ -263,7 +260,7 @@ function Clientes() {
                     </div>
                   </div>
                   <div className="flex flex-wrap mb-5">
-                    <div className="w-full sm:w-1/2 pl-2">
+                  <div className="w-1/2 pl-2">
                       <label>Calle</label>
                       <input
                         type="text"
@@ -273,7 +270,7 @@ function Clientes() {
                         className="w-full p-2 border border-gray-300 rounded"
                       />
                     </div>
-                    <div className="w-full sm:w-1/2 pl-2">
+                    <div className="w-1/2 pl-2">
                       <label>Número EXT</label>
                       <input
                         type="text"
@@ -285,7 +282,7 @@ function Clientes() {
                     </div>
                   </div>
                   <div className="flex flex-wrap mb-5">
-                    <div className="w-full sm:w-1/2 pr-2">
+                    <div className="w-1/2 pr-2">
                       <label>Ciudad</label>
                       <input
                         type="text"
@@ -295,7 +292,7 @@ function Clientes() {
                         className="w-full p-2 border border-gray-300 rounded"
                       />
                     </div>
-                    <div className="w-full sm:w-1/2 pr-2">
+                    <div className="w-1/2 pr-2">
                       <label>Estado</label>
                       <input
                         type="text"
@@ -307,7 +304,7 @@ function Clientes() {
                     </div>
                   </div>
                   <div className="flex flex-wrap mb-5">
-                    <div className="w-full sm:w-1/2 pl-2">
+                    <div className="w-1/2 pl-2">
                       <label>Código Postal</label>
                       <input
                         type="text"
@@ -317,7 +314,7 @@ function Clientes() {
                         className="w-full p-2 border border-gray-300 rounded"
                       />
                     </div>
-                    <div className="w-full sm:w-1/2 pl-2">
+                    <div className="W-1/2 pl-2">
                       <label>Correo</label>
                       <input
                         type="email"

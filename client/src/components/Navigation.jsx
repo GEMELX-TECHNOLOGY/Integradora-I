@@ -70,7 +70,7 @@ const navigationConfig = {
           item: "Proveedores",
           icon: <ProveedoresIcon className="mr-4"/>,
           url: "Proveedores"
-        },
+        }
       ]
     },
     {
@@ -93,11 +93,6 @@ const navigationConfig = {
           icon: <ClientIcon className="mr-4"/>,
           url: "Clientes"
         },
-        {
-          item: "Reporte de ventas",
-          icon: <ReportVenIcon className="mr-4"/>,
-          url: "Reportes-Ventas",
-        }
       ]
     },
   ],
@@ -145,11 +140,7 @@ const navigationConfig = {
       icon: <ClientIcon className="mr-4" />,
       url: "Clientes",
     },
-    {
-      item: "Reportes Ventas",
-      icon: <ReportVenIcon className="mr-4" />,
-      url: "Reportes-Ventas",
-    },
+
   ],
   "Recursos Humanos": [
     {

@@ -116,10 +116,10 @@ function Horario() {
           <table className="min-w-full bg-white shadow-md rounded-lg text-center">
             <thead className="bg-[#045E9C] text-white">
               <tr>
-                <th className="p-2 text-center">DIA DE LA SEMANA</th>
+                <th className="p-2 text-center">TURNO</th>
+                <th className="p-2 text-center">DIAS LABORALES</th>
                 <th className="p-2 text-center">HORA DE ENTRADA</th>
                 <th className="p-2 text-center">HORA DE SALIDA</th>
-                <th className="p-2 text-center">TURNO</th>
                 <th className="p-2 text-center">ACCIONES</th>
               </tr>
             </thead>
@@ -131,19 +131,13 @@ function Horario() {
                     key={horario.id_horario}
                     className="border-b hover:bg-gray-100 text-gray-800"
                   >
+                    <td className="p-2">{horario.turno}</td>
                     <td className="p-2">{horario.dia_semana}</td>
                     <td className="p-2">{horario.hora_entrada}</td>
                     <td className="p-2">{horario.hora_salida}</td>
-                    <td className="p-2">{horario.turno}</td>
                     <td className="p-2 flex justify-center space-x-2">
-                      <button onClick={() => handleView(horario)}>
-                        <ViewIcon className="h-6 w-6 text-blue-500 hover:text-blue-700" />
-                      </button>
                       <button onClick={() => handleEdit(horario)}>
                         <EditIcon className="h-6 w-6 text-green-500 hover:text-green-700" />
-                      </button>
-                      <button onClick={() => handleDelete(horario.id_horario)}>
-                        <DeleteIcon className="h-6 w-6 text-red-500 hover:text-red-700" />
                       </button>
                     </td>
                   </tr>
@@ -152,17 +146,6 @@ function Horario() {
           </table>
         </div>
       </div>
-
-      {/* Modal Ver */}
-      {isModalViewOpen && currentHorario && (
-        <Modal isOpen={isModalViewOpen} onClose={() => setIsModalViewOpen(false)}>
-          <h2 className="text-xl font-semibold">Detalles de Horario</h2>
-          <p><strong>Día de la Semana:</strong> {currentHorario.dia_semana}</p>
-          <p><strong>Hora de Entrada:</strong> {currentHorario.hora_entrada}</p>
-          <p><strong>Hora de Salida:</strong> {currentHorario.hora_salida}</p>
-          <p><strong>Turno:</strong> {currentHorario.turno}</p>
-        </Modal>
-      )}
 
       {/* Modal Editar */}
       {isModalEditOpen && currentHorario && (
@@ -204,17 +187,14 @@ function Horario() {
             </label>
             <label>
               Turno
-              <select
+              <input
+                type="text"
                 name="turno"
                 value={currentHorario.turno}
                 onChange={handleChange}
                 required
                 className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Seleccionar Turno</option>
-                <option value="Matutino">Matutino</option>
-                <option value="Vespertino">Vespertino</option>
-              </select>
+              />
             </label>
             <button
               type="submit"
@@ -266,17 +246,14 @@ function Horario() {
             </label>
             <label>
               Turno
-              <select
+              <input
+                type="text"
                 name="turno"
                 value={newHorario.turno}
                 onChange={handleChange}
                 required
                 className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Seleccionar Turno</option>
-                <option value="Matutino">Matutino</option>
-                <option value="Vespertino">Vespertino</option>
-              </select>
+              />
             </label>
             <button
               type="submit"

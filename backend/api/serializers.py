@@ -9,7 +9,6 @@ class RolSerializer(serializers.ModelSerializer):
 
 #Usuarios
 class UserSerializer(serializers.ModelSerializer):
-    rol = RolSerializer(read_only=True)
     class Meta:
         model = Usuarios
         fields = ['id', "email", "username", "password", "rol", "user_profile_image","date_joined"]
@@ -24,6 +23,13 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+class UserGetSerializer(serializers.ModelSerializer):
+    rol = RolSerializer(read_only=True)
+    class Meta:
+        model = Usuarios
+        fields = ['id', "email", "username", "password", "rol", "user_profile_image","date_joined"]
+
+
 class UserEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
@@ -35,12 +41,25 @@ class HorarioSerializer(serializers.ModelSerializer):
         model = Horario
         fields = ['id_horario', 'dia_semana', 'hora_entrada', 'hora_salida', 'turno']
 
+#Nomina
+class NominaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nomina
+        fields = ['id_nom', 'fecha_pago', 'salario_base', 'bonos', 'salario_nto', 'referencia']
+
+
 class EmpleadosSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    horario_info = HorarioSerializer(read_only=True)
     class Meta:
         model = Empleados
-        fields = ['id', 'nombre', 'apellido_pa', "apellido_ma", "rfc", "calle", "numero_ext", "numero_int", 'cod_Postal', "estado", 'pais', 'user', 'horario', 'horario_info', 'profile_image']
+        fields = ['nombre', 'apellido_pa', "apellido_ma", "rfc", "calle", "numero_ext", "numero_int", 'cod_Postal', "estado", 'pais', 'user', 'horario', 'nomina', 'profile_image']
+
+class EmpleadosGetSerializer(serializers.ModelSerializer):
+    user = UserGetSerializer(read_only=True)
+    horario = HorarioSerializer(read_only=True)
+    nomina = NominaSerializer(read_only=True)
+    class Meta:
+        model = Empleados
+        fields = ['nombre', 'apellido_pa', "apellido_ma", "rfc", "calle", "numero_ext", "numero_int", 'cod_Postal', "estado", 'pais', 'user', 'horario', 'nomina', 'profile_image']
 
 
 #Chat
@@ -85,6 +104,13 @@ class VentasSerializer(serializers.ModelSerializer):
         model = Ventas
         fields = ['producto','referencia', 'uv', 'pv', 'amt']
 
+class VentasGetSerializer(serializers.ModelSerializer):
+    producto = ProductoSerializer(read_only=True)
+    class Meta:
+        model = Ventas
+        fields = ['referencia', 'producto', 'uv', 'pv', 'amt']
+
+
 
 class UpdateVentasSerializer(serializers.ModelSerializer):
     class Meta:
@@ -122,22 +148,5 @@ class CotizacionSerializer(serializers.ModelSerializer):
 
 
 
-#Nomina
-class NominaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Nomina
-        fields = ['id_nom', 'fecha_pago', 'salario_base', 'bonos', 'salario_nto', 'referencia']
 
 
-#Cotizaciones
-
-class CotizacionSerializer(serializers.ModelSerializer):
-    cliente = serializers.PrimaryKeyRelatedField(queryset=Clientes.objects.all())
-    producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
-    
-    class Meta:
-        model = Cotizacion
-        fields = ['id', 'cliente', 'producto', 'referencia_producto', 'cantidad', 'total_cotizacion', 'fecha_creacion']
-      
-
-#

@@ -104,7 +104,7 @@ class Horario(models.Model):
   dia_semana = models.TextField()
   hora_entrada = models.TimeField()
   hora_salida = models.TimeField()
-  turno = models.CharField(max_length=100, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')])
+  turno = models.CharField(max_length=100)
   def __str__(self):
         return self.turno
 
@@ -119,9 +119,9 @@ class Empleados(models.Model):
     cod_Postal = models.CharField(max_length=5, default="")
     estado = models.CharField(max_length=60, default="")
     pais = models.CharField(max_length=60, default="")
-    horario = models.ForeignKey(Horario, on_delete=models.CASCADE, default="", blank=True, null=True)
-    nomina = models.ForeignKey(Nomina, on_delete=models.CASCADE, default="")
-    user = models.ForeignKey(Usuarios, on_delete=models.CASCADE, default="", blank=True, null=True)
+    horario = models.ForeignKey(Horario, on_delete=models.CASCADE, null=True, default=1)
+    nomina = models.ForeignKey(Nomina, on_delete=models.CASCADE, null=True, default=1)
+    user = models.ForeignKey(Usuarios, on_delete=models.CASCADE, null=True, default=1)
     profile_image = models.ImageField(upload_to='Perfil/', default="Perfil/nophoto.jpg")
     def __str__(self):
         return self.nombre
@@ -178,30 +178,12 @@ class DetalleVenta(models.Model):
     def __str__(self):
         return f"Venta {self.venta.id} - Producto {self.producto.nombre}"
 
-
-# Modelo Cotización
-class Cotizacion(models.Model):
-    id = models.AutoField(primary_key=True)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)  # Producto relacionado a la cotización
-    referencia = models.TextField(max_length=40)  # Referencia de la cotización
-    uv = models.IntegerField()  # Unidades cotizadas
-    pv = models.DecimalField(max_digits=10, decimal_places=2)  # Precio de cotización
-    total_cotizacion = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Monto total de la cotización
-
-    def save(self, *args, **kwargs):
-        # Cálculo del monto total de la cotización (uv * pv)
-        self.total_cotizacion = self.uv * self.pv
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.referencia
-
 # Modelo Detalle de Cotización
 class DetalleCotizacion(models.Model):
     id_detalle = models.AutoField(primary_key=True)
     cantidad = models.DecimalField(max_digits=10, decimal_places=2)  # Cantidad cotizada
     precio_u = models.DecimalField(max_digits=10, decimal_places=2)  # Precio unitario
-    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)  # Relación con la cotización
+    referencia = models.TextField(max_length=40)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)  # Producto relacionado
     total_detalle = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Total por producto
 
@@ -213,6 +195,18 @@ class DetalleCotizacion(models.Model):
     def __str__(self):
         return f"Cotización {self.cotizacion.id} - Producto {self.producto.nombre}"
     
+
+# Modelo Cotización
+class Cotizacion(models.Model):
+    id = models.AutoField(primary_key=True)
+    referencia = models.ForeignKey(DetalleCotizacion, on_delete=models.CASCADE)  # Referencia de la cotización
+    unidades = models.IntegerField()  # Unidades cotizadas
+    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.referencia
+
+
 
 
 ###########################################
@@ -242,30 +236,3 @@ class ChatMessage(models.Model):
         reciever_profile = Empleados.objects.get(user=self.reciever)
         return reciever_profile
     
-
-#Tabla Cotizacion
-class Cotizacion(models.Model):
-    cliente = models.ForeignKey('Clientes', on_delete=models.CASCADE)
-    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
-    referencia_producto = models.CharField(max_length=100)
-    cantidad = models.PositiveIntegerField(default=1)
-    total_cotizacion = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        # Obtener el precio del producto y calcular el total
-        self.total_cotizacion = self.cantidad * self.producto.precio
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"Cotización de {self.cliente} para {self.producto} - {self.referencia_producto}"
-
-#Tabla detalle cotizaciones
-class DetalleCotizacion(models.Model):
-    id_detalle = models.AutoField(primary_key=True)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad = models.PositiveIntegerField(default=1)
-    pv = models.DecimalField(max_digits=10, decimal_places=2)
-    precio_total = models.DecimalField(max_digits=10,decimal_places=2)
-    cotizacion = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)
-

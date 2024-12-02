@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALPRO DEV</title>
+  </head>
+  <style>
+    /* lexend-latin-wght-normal */
+    @font-face {
+      font-family: "Lexend Variable";
+      font-style: normal;
+      font-display: swap;
+      font-weight: 100 900;
+      src: url(@fontsource-variable/lexend/files/lexend-latin-wght-normal.woff2)
+        format("woff2-variations");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC,
+        U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    body {
+      font-family: "Lexend Variable", sans-serif;
+      background-color: #f4ecec;
+    }
+
+    header {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      justify-content: center;
+      height: 50px;
+
+      div {
+        width: 95%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      div img {
+        width: 200px;
+      }
+    }
+
+    .nav-header {
+      display: flex;
+      gap: 20px;
+
+      a {
+        text-decoration: none;
+        color: black;
+        font-size: 18px;
+        transition: all ease-in-out 0.3s;
+        opacity: 80%;
+      }
+
+      a:hover {
+        opacity: 100%;
+      }
+    }
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+
+      .hero-section {
+        overflow-x: hidden;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-image: url("{% static 'hero-section.jpeg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 700px;
+        color: white;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+
+        h1 {
+          font-size: 2rem;
+          font-weight: 100;
+        }
+      }
+      .description-section {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding-top: 20px;
+        padding-bottom: 15px;
+
+        p {
+          opacity: 70%;
+        }
+      }
+      .start-section{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color: #b8b8b8;
+        height: 96px;
+
+        div{
+          display: flex;
+          width: 500px;
+          justify-content: space-between;
+          align-items: center;
+
+          span{
+            opacity: 50%;
+          }
+
+          a{
+            background-color: #5b5bfd;
+            text-decoration: none;
+            color: white;
+            padding: 20px 5px;
+            border-radius: 10px;
+            transition: all ease-in-out .3s;
+          }
+          a:hover{
+            background-color: #4747c2;
+          }
+        }
+      }
+    }
+  </style>
+
+  <body>
+    <header>
+      <div>
+        <img src="{% static 'logo.png' %}" alt="ALPRO LOGO" />
+        <nav class="nav-header">
+          <a href="/guide">Cómo Empezar</a>
+          <a href="/Documentation">Docs</a>
+        </nav>
+      </div>
+    </header>
+    <div class="main-container">
+      <section class="hero-section">
+        <img src="{% static 'hero-section.jpeg'}" alt="" />
+        <h1>Alpro DEV</h1>
+        <span>Herramientas que impulsan el desarollo</span>
+      </section>
+      <article class="description-section">
+        <h1>API ALPRO</h1>
+        <p>
+          La api de <b>ALPRO</b> te permite obtener y crear listas de nuestros
+          productos.
+        </p>
+      </article>
+      <div class="start-section">
+        <div>
+
+          <span>COMIENZA A USAR NUESTRA API</span>
+          <a href="/login">INICIAR SESIÓN</a>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
